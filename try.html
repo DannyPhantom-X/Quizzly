@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+  .form-group {
+    position: relative;
+    margin-top: 20px;
+  }
+
+  input {
+    padding: 12px;
+    font-size: 16px;
+    width: 50%;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .number{
+    text-align: right;
+  }
+  label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    pointer-events: none;
+    color: gray;
+    transition: 0.2s ease all;
+  }
+
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: -8px;
+    left: 8px;
+    font-size: 12px;
+    background: white;
+    padding: 0 4px;
+    color: #007bff;
+  }
+</style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="form-group">
+        <input type="text" placeholder=" " required />
+        <label>Username</label>
+    </div>
+    <input type="number" class="number" width="50%">
+    <select name="" id="" width="50%">
+      <option value="1">1</option>
+      <option value="2">2</option>
+    </select>
+</body>
+</html>

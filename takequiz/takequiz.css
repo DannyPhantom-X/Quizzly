@@ -1,0 +1,40 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../resources/quizzlyBackground.png);
+    background-size: 300px;
+    padding-top: 200px;
+}
+.input-id{
+    border-color: black;
+    border-style: solid;
+    outline: none;
+    border-width: 1px;
+    border-radius: 5px;
+    margin-bottom: 50px;
+    width: 200px;
+    height: 30px;
+    text-align: center;
+    font-size: large;
+}
+.submit{
+    border: none;
+    border-radius: 10px;
+    background-color: #BD53ED;
+    color: white;
+    width: 200px;
+    font-weight: bolder;
+    height: 50px;
+    font-size: x-large;
+}
+.input-id::placeholder{
+    text-align: center;
+    opacity: 0.6;
+}
+@media (max-width: 600px) {
+    body{
+        background-size: 150px;
+    }
+}

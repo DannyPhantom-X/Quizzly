@@ -1,0 +1,112 @@
+const slides = document.querySelectorAll('.slide')
+let currentIndex = 0;
+let isTyping = true;
+const fullnameInput = document.getElementById('fullnameInput')
+const emailInput = document.getElementById('emailInput')
+const passwordInput = document.getElementById('passwordInput')
+const confirmPasswordInput = document.getElementById('confirmPasswordInput')
+const surnameOriginalStyle = surnameInput.getAttribute("style")
+const firstnameOriginalStyle = firstnameInput.getAttribute('style')
+const emailOriginalStyle = emailInput.getAttribute('style')
+const passwordOriginalStyle = passwordInput.getAttribute('style')
+const confirmPasswordOriginalStyle = confirmPasswordInput.getAttribute('style')
+
+
+
+setInterval(() => {
+    if (isTyping === true) {
+        isTyping = false;
+        document.querySelectorAll('.description div span').forEach((span) =>{
+            span.style.animation = 'delete 3s ease-in-out';
+        })
+    }else {
+        isTyping = true;
+        document.querySelectorAll('.description div span').forEach((span) =>{
+            span.style.animation = 'typing 3s ease-in-out';
+        })
+    }    
+}, 3000)
+
+setInterval(() => {
+    
+    if (currentIndex < (slides.length - 1)) {
+        // slides.style.transition = 'transform 0.5s eas-in-out';
+        nextDescription();
+    }else{
+        // slides.style.transition '';
+        currentIndex = -1;
+        nextDescription();
+    }
+
+    
+}, 6000)    
+
+function nextDescription() {
+    currentIndex ++;
+    let offset = -currentIndex * 100;
+    slides.forEach((slide) => {
+        slide.style.transform = `translateX(${offset}%)`;
+    })
+}
+
+document.getElementById('signupButton').addEventListener('click' || 'touch', async () => {
+    surnameInput.setAttribute('style', surnameOriginalStyle)
+    firstnameInput.setAttribute('style', firstnameOriginalStyle)
+    emailInput.setAttribute('style', emailOriginalStyle)
+    passwordInput.setAttribute('style', passwordOriginalStyle)
+    confirmPasswordInput.setAttribute('style', confirmPasswordOriginalStyle)
+    const surname = document.getElementById('surnameInput').value
+    const firstname = document.getElementById('firstnameInput').value
+    const email = document.getElementById('emailInput').value
+    const password = document.getElementById('passwordInput').value
+    const confirmPassword = document.getElementById('confirmPasswordInput').value
+    const response = await fetch('http://localhost:7050/signup', {
+        method: 'Post',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+                surname: surname,
+                firstname: firstname,
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword
+            })
+    })
+    const result = await response.json()
+    console.log(result)
+    if (result.statuz === 'failed') {
+        if (result.reason === 'surname') {
+            Object.assign(surnameInput.style, {
+                borderWidth: '2px',
+                borderColor: 'red'
+            })
+        }else if(result.reason === 'firstname'){
+            Object.assign(firstnameInput.style, {
+                borderWidth: '2px',
+                borderColor: 'red'
+            })
+        }
+        else if(result.reason === 'email') {
+            Object.assign(emailInput.style, {
+                borderWidth: '2px',
+                borderColor: 'red',
+            })
+        }else if(result.reason === 'password') {
+            Object.assign(passwordInput.style, {
+                borderWidth: '2px',
+                borderColor: 'red',
+            })
+        }else if(result.reason === 'confirmpassword') {
+            Object.assign(confirmPasswordInput.style, {
+                borderWidth: '2px',
+                borderColor: 'red'
+            })
+        }
+        document.getElementById('message').innerHTML = result.message
+    }
+})
+
+document.getElementById('loginLink').addEventListener('click' || 'touch', () => {
+    window.location.href = '../login/login.html'
+})
