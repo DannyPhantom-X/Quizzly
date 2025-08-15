@@ -3,6 +3,7 @@ body, html{
     height: 100%;
     margin: 0px;
     font-family: 'Roboto', sans-serif;
+    background-color: aliceblue;
 }
 .body{
     padding-bottom: 2%;
@@ -32,6 +33,7 @@ header{
     border-color: gray;
     border-width: 1px;
     margin-right: 2%;
+    padding-left: 1%;
 }
 .add-button,.delete-button{
     height: calc(3vw);
@@ -40,6 +42,7 @@ header{
     background-color: #BD53ED;
     border-radius: 5%;
     font-size: calc(2vw);
+    cursor: pointer;
 }
 .delete-button {
     opacity: 0;
@@ -57,5 +60,6 @@ header{
     background-color: #BD53ED;
     width: 80px;
     border-radius: 2px;
-    font-size: calc(1.5vw);
+    font-size: 100%;
+    cursor: pointer;
 }

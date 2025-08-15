@@ -16,28 +16,28 @@
         <div class="details">
             <div class="subjectDiv">
                 <div><label for="subject" class="hhh">Name of Subject:</label></div>
-                <div><input type="text" name="subject" class="original-input"></div>
+                <div><input type="text" name="subject" class="original-input" id="subjectInput"></div>
                 <div></div>
-                <div></div> 
+                <div></div>
             </div>
             <div class="durationDiv">
                 <div><label for="">Duration:</label></div> 
                 <div>
-                    <input type="number" id="" placeholder="Hour" class="duration-input" value="00">
+                    <input type="number" id="hourInput" placeholder="Hour" class="duration-input" value="00" maxlength="2">
                     <span class="colon">:</span>
-                    <input type="number" id="" placeholder="Minutes" class="duration-input" value="00">
+                    <input type="number" id="minutesInput" placeholder="Minutes" class="duration-input" value="00">
                     <span class="colon">:</span>
-                    <input type="number" id="" placeholder="Seconds" class="duration-input" value="00">
+                    <input type="number" placeholder="Seconds" class="duration-input" value="00" id="secondsInput">
                 </div>
                 <div></div>
                 <div></div>
             </div>
             <div class="questionsDiv">
                 <div><label for="no_questions">Number of Questions:</label></div>
-                <div><input type="number" name="no_questions" id="" class="original-input"></div>
+                <div><input type="number" name="no_questions" class="original-input" id="noQuesInput"></div>
                 <div>
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="randQuesInput">
                         <span class="slider"></span>
                     </label>
                     <label for="rq">Randomised Questions</label>
@@ -46,17 +46,17 @@
             </div>
             <div class="optionsDiv">
                 <div class="fade"><label for="no_options">Number of Options:</label></div>
-                <div class="fade"><input type="number" name="no_options" class="original-input"></div>
+                <div class="fade"><input type="number" name="no_options" class="original-input" id="noOptionsInput"></div>
                 <div>
                     <label class="switch">
-                        <input type="checkbox" name="options" id="optionCheckbox">
+                        <input type="checkbox" name="options" id="optionsCheckbox" >
                         <span class="slider"></span>
                     </label>
                     <label for="options">Options</label>
                 </div>
                 <div class="fade">
                     <label class="switch">
-                        <input type="checkbox" name="ro">
+                        <input type="checkbox" name="ro" id="randOptionsInput">
                         <span class="slider"></span>
                     </label>
                     <label for="ro">Randomised Optioning</label>
@@ -64,10 +64,10 @@
             </div>
             <div class="instruction-div">
                 <div><label for="">Instructions:</label></div>
-                <div><textarea name="" id="" class="instructions-input"></textarea></div>
+                <div><textarea name="" id="instructionsInput" class="instructions-input"></textarea></div>
             </div>
-            <button class="next-button">Next</button>
         </div>       
+        <button class="next-button">Next</button>
     </body>
 
     <script src="createquiz.js"></script>
