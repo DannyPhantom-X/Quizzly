@@ -1,6 +1,8 @@
-const nextButton = document.getElementById('nextButton')
-const previousButton = document.getElementById('previousButton')
-const quizInfo = JSON.parse(sessionStorage.getItem('quizInfo'))
+const nextButton = document.querySelector('.nextButton');
+const previousButton = document.getElementById('previousButton');
+const quizInfo = JSON.parse(sessionStorage.getItem('quizInfo'));
+const questionNum = document.getElementById('questionNum');
+let num = 1
 let currentIndex = 0;
 console.log(quizInfo)
 const loadOut = `<div class="qanda">
@@ -29,22 +31,24 @@ if (quizInfo.options) {
         })
     }
 }
-onclickNextButton()
 onclickPreviousButton()
 previousChecker()
 nextChecker()
+
 function onclickNextButton() {
-    nextButton.addEventListener('click' || 'touch', () => {
         console.log(quizInfo)
         currentIndex ++;
         let offset = -currentIndex * 100;
         document.querySelectorAll('.qanda').forEach((qa) => {
             qa.style.transform = `translateX(${offset}%)`
         })
+        num += 1
+        questionNum.innerHTML = num
         previousChecker()
         nextChecker()
-    })
 }
+
+
 
 function onclickPreviousButton () {
     previousButton.addEventListener('click' || 'touch', () => {
@@ -53,6 +57,8 @@ function onclickPreviousButton () {
         document.querySelectorAll('.qanda').forEach((qa) => {
             qa.style.transform = `translateX(${offset}%)`
         })
+        num -= 1
+        questionNum.innerHTML = num
         previousChecker()
         nextChecker()
     })
@@ -66,8 +72,16 @@ function previousChecker() {
 }
 
 function nextChecker() {
-    if (currentIndex == quizInfo.noQues) {
-        nextButton.innerHTML = 'Create'
-        
+    if (currentIndex == (quizInfo.noQues - 1)) {
+        // nextButton.classList.add('remove-button');
+        // nextButton.classList.remove('nextButton');
+        // console.log(nextButton.classList);
+        // console.log('yooooo');
+        nextButton.removeEventListener('click' || 'touch', onclickNextButton)
+        nextButton.innerHTML = 'Create';
+    }
+    else{
+        nextButton.addEventListener('click' || 'touch', onclickNextButton)
+        nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>'
     }
 }

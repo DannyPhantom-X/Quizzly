@@ -9,3 +9,7 @@ document.querySelector('.add-button').addEventListener('click' || 'touch', () =>
     originalInput.value = ''
     container.insertBefore(div, target)
 })
+
+document.querySelector('.next-button').addEventListener('click' || 'touch', () => {
+    window.location.href = 'createquiz-ques-ans.html'
+})
