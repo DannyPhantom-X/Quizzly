@@ -76,7 +76,7 @@ body{
 }
 .login-input label{
     margin-bottom: 1%;
-    font-size: calc(2vw);
+    font-size: 1.2rem;
     cursor: pointer;
 }
 .login-input input{
@@ -101,16 +101,16 @@ body{
     margin-top: 2%;
 }
 .name span{
-    font-size: calc(5vw);
+    font-size: 2rem;
     font-weight: bold;
-    background-image: linear-gradient(90deg, #BD53ED ,#5396ED);
+    /* background-image: linear-gradient(90deg, #BD53ED ,#5396ED);
     background-clip: text;
-    color: transparent;
+    color: transparent; */
 }
 .login-input:nth-child(5) {
     display: flex;
     align-items: center;
-    font-size: calc(1.5vw);
+    font-size: 1.2rem;
 }
 .login-input:nth-child(5) span {
     color: blue;
@@ -125,7 +125,7 @@ body{
     border: none;
     background-color: #BD53ED;
     height: 40px;
-    font-size: calc(2vw);
+    font-size: 1.2rem;
     font-weight: bold;
     width: 70%;
     border-radius: 3px;
@@ -135,5 +135,18 @@ body{
 @media (max-width: 600px) {
     body{
         background-size: 100px;
+        
+    }
+    .description{
+        display: none;
+    }
+    .body{
+        grid-template-columns: 1fr;
+    }
+    .message{
+        height: 7px;
+    }
+    .quizzlyIcon{
+        width: 80px;
     }
 }

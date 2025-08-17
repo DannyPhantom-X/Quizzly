@@ -21,6 +21,8 @@ header h1{
     background-image: linear-gradient(90deg, #BD53ED,#5396ED);
     background-clip: text;
     color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Safari (needed) */
     font-weight: bold;
     animation: typing 10s forwards;
 }
@@ -121,6 +123,8 @@ footer{
     background-image: linear-gradient(90deg, #BD53ED,#5396ED);
     background-clip: text;
     color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 }
 .top{
     display: grid;

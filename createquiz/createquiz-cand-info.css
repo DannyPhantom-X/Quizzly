@@ -41,7 +41,7 @@ header{
     border: none;
     background-color: #BD53ED;
     border-radius: 5%;
-    font-size: calc(2vw);
+    font-size: calc(1.1vw);
     cursor: pointer;
 }
 .delete-button {

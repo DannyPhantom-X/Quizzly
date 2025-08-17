@@ -23,15 +23,13 @@ body{
     background-size: 200px;
     padding-top: 200px;
     padding: 0px;
+    font-family: 'Poppin', sans-serif;
 }
 body, html{
     height: 100%;
     margin: 0px;
 }
-.quizzlyIcon{
-    margin-top: 3%;
-    width: calc(7vw);
-}
+
 .body{
     width: 90vw;
     height: 90vh;
@@ -60,7 +58,7 @@ body, html{
     max-width: fit-content;
     white-space: nowrap;
     overflow: hidden;
-    font-size: calc(2vw);
+    font-size: 1.5rem;
     color: white;
     animation: typing 3s;
     font-weight: bolder;
@@ -101,12 +99,15 @@ body, html{
     column-gap: 6%;
 }
 .signupinfo span{
-    font-size: calc(5vw);
+    font-size: 2rem;
     height: 70px;
     font-weight: bold;
     background-image: linear-gradient(90deg, #BD53ED,#5396ED);
+    -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    -webkit-text-fill-color: transparent; /* Safari (needed) */
+
     margin-bottom: 3%;
     display: flex;
     align-items: center;
@@ -116,7 +117,7 @@ body, html{
     top: 1%;
     left: 8%;
     color: #BD53ED;
-    font-size: calc(2vh);
+    font-size: 0.6rem;
     background: transparent;
 }
 .signupinfo div:nth-child(7){
@@ -125,27 +126,40 @@ body, html{
     align-items: center;
     margin-top: 5%;
 }
-.signupinfo div:nth-child(7) div{
+.full-statement{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-top: 2%;
+}
+.login-link{
     color: blue;
     cursor: pointer;
-    margin-top: 2%;
-    font-size: calc(1.5vw);
+    
 }
 .signup-button{
     border: none;
-    font-size: calc(2vw);
+    font-size: 1.2rem;
     background-color: #BD53ED;
     padding: 1%;
     width: 50%;
+    height: 40px;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 5%;
     margin-bottom: 2%;
+    font-weight: bold;
 }
 .message{
     color: red;
     text-align: center;
     height: 10px;
     font-size: calc(1.5vw);
+}
+.quizzlyIcon{
+    margin-top: 3%;
+    width: 4rem;
 }
 @media (max-width: 600px) {
     body{
@@ -156,5 +170,9 @@ body, html{
     }
     .description{
         display: none;
+    }
+    .signupinfo{
+        width: 75vw;
+        margin: 3%;
     }
 }
