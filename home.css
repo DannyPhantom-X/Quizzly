@@ -118,7 +118,7 @@ footer{
 }
 .name{
     width: fit-content;
-    font-size: calc(5vw);
+    font-size: 2rem;
     font-weight: bold;
     background-image: linear-gradient(90deg, #BD53ED,#5396ED);
     background-clip: text;
@@ -136,7 +136,7 @@ footer{
     align-items: center;
 }
 .login-signup-info div:nth-child(2) {
-    font-size: calc(3vw);
+    font-size: 1.2rem;
     margin-left: 5%;
     margin-right: 5%;
 }
@@ -146,11 +146,10 @@ footer{
     margin-right: 5%;
     cursor: pointer;
     /* background-color: red; */
-    height: calc(5vh);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: calc(1.7vw);
+    font-size: 1.2rem;
 }
 .login-div span, .signup-div span {
     color: blue;

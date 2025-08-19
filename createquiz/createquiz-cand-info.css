@@ -16,9 +16,15 @@ header{
     text-align: center;    
 }
 .intro{
-    font-size: calc(2vw);
+    font-size: 1.2rem;
     text-align: center;
+    
+}
+.eg{
+    opacity: 0.3;
     margin-bottom: 5%;
+    text-align: center;
+    font-size: 1rem;
 }
 .info{
     margin: 2%;
@@ -27,7 +33,7 @@ header{
     align-items: center;
 }
 .info input{
-    height: calc(3vw);
+    height: 35px;
     width: 30%;
     border-style: solid;
     border-color: gray;
@@ -36,30 +42,47 @@ header{
     padding-left: 1%;
 }
 .add-button,.delete-button{
-    height: calc(3vw);
+    height: 35px;
     width: 7%;
     border: none;
     background-color: #BD53ED;
     border-radius: 5%;
-    font-size: calc(1.1vw);
+    font-size: 1.2rem;
     cursor: pointer;
 }
-.delete-button {
+/* .delete-button {
     opacity: 0;
 }
 .delete-button:hover {
     opacity: 1;
-}
+} */
 .next-button{
     position: absolute;
     right: 5%;
     bottom: 5%;
     /* margin-bottom: 5%; */
     border: none;
-    height: calc(4vw);
-    background-color: #BD53ED;
+    height: 40px;
+    background-color: hsl(281, 81%, 63%);
     width: 80px;
     border-radius: 2px;
-    font-size: 100%;
+    font-size: 1.2rem;
     cursor: pointer;
+}
+@media (max-width: 800px) {
+    .add-button,.delete-button {
+        height: 35px;
+        width: 15%;
+    }
+    .info input{
+        height: 35px;
+        width: 50%;
+    }
+    .eg{
+        margin-bottom: 10%;
+    }
+    .next-button{
+        bottom: 0%;
+        height: 40px;
+    }
 }

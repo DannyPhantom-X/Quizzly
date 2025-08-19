@@ -1,4 +1,4 @@
-const target = document.getElementById('infoOriginal')
+let target;
 const container = document.getElementById('body')
 const originalInput = document.getElementById('originalInput')
 console.log(JSON.parse(sessionStorage.getItem('quizInfo')))
@@ -7,26 +7,24 @@ document.querySelector('.add-button').addEventListener('click' || 'touch', () =>
     const div = document.createElement('div')
     div.classList.add('info')
     div.dataset.index = currentIndex
-    div.innerHTML = `<input type="text" value="${originalInput.value}"> <button class='delete-button'><i class="fas fa-trash" title="Delete"></i></button>`
-    originalInput.value = ''
-    container.insertBefore(div, target)
-    document.querySelectorAll(`.delete-button`).forEach((delet, i) => {
-            delet.addEventListener('click' || 'touch', (event) => {
-                document.querySelectorAll(`.info`).forEach((inf, j) => {
-                    const infoIndex = inf.dataset.index 
-                    console.log(infoIndex)
-                    if (infoIndex == i) {
-                    console.log('deleting info with index')
-                        const numb = currentIndex
-                        console.log(currentIndex)
-                        inf.remove()
-                    }
-                })
-                event.stopImmediatePropagation()
-                
-        })
-    }) 
-    currentIndex += 1;
+    const info = document.querySelectorAll('.info')
+    console.log(info.length)
+    if (info.length == 1) {
+        target = document.getElementById('infoOriginal')
+        div.classList.add('deleteInfo')
+        div.innerHTML = `<input type="text" class="deleteInput" value="${originalInput.value}"> <button class='delete-button'><i class="fas fa-trash" title="Delete"></i></button>`
+        originalInput.value = ''
+        container.insertBefore(div, target)
+        target = document.querySelector('.deleteInfo')
+    }else {
+        div.innerHTML = `<input type="text" value="${originalInput.value}">`
+        originalInput.value = ''
+        container.insertBefore(div, target)
+    }
+
+   onclickDeleteButton()
+    
+    
 })
 
 document.querySelector('.next-button').addEventListener('click' || 'touch', () => {
@@ -46,3 +44,25 @@ document.querySelector('.next-button').addEventListener('click' || 'touch', () =
     }
     
 })
+
+function onclickDeleteButton() {
+    document.querySelector(`.delete-button`).addEventListener('click' || 'touch', (event) => {
+        console.log('delete')
+        document.querySelector('.deleteInfo').remove()
+        event.stopImmediatePropagation()
+        const info = document.querySelectorAll('.info')
+        document.querySelectorAll('.info').forEach((inf, i) => {
+            console.log('in loop')
+            console.log(inf.id)
+            console.log(inf.classList.length)
+            if (inf.id == 'infoOriginal') {
+                let j = i - 1
+                console.log(i, j)
+                info[j].innerHTML += `<button class='delete-button'><i class="fas fa-trash" title="Delete"></i></button>`
+                info[j].classList.add('deleteInfo')
+                event.stopImmediatePropagation()
+                onclickDeleteButton()
+            }
+        })
+    })
+}

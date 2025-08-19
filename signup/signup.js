@@ -109,4 +109,8 @@ document.getElementById('signupButton').addEventListener('click' || 'touch', asy
 
 document.getElementById('loginLink').addEventListener('click' || 'touch', () => {
     window.location.href = '../login/login.html'
+    // document.querySelector('.signupinfo').style.transform = 'rotateY(360deg)'
+    // document.querySelector('.signupinfo').classList.add('description')
+
+
 })
