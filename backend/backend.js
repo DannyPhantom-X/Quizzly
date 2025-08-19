@@ -1,9 +1,22 @@
 const express = require('express')
 const nodemailer = require('nodemailer')
+const bcrypt = require('bcrypt')
 const cors = require('cors')
 const app = express()
 app.use(cors())
 app.use(express.json())
+
+
+const transport = nodemailer.createTransport({
+    service: 'gmial',
+    auth: {
+        user: 'dtaiwo453@gmail.com',
+        pass: 'Dann33_07'
+    }
+})
+
+
+
 app.post('/signup', (req, res) => {
     const {surname, firstname, email, password, confirmPassword} = req.body
     console.log(req.body)
@@ -46,6 +59,16 @@ app.post('/signup', (req, res) => {
         })
         return;
     }
+    let mailOptions = {
+        from: 'dtaiwo453@gmail.com',
+        to: 'dev.phantomx7@gmail.com',
+        subject: 'Sending Email using Node.js',
+        text: 'That was easy!'
+    };
+    transport.sendMail(mailOptions, () => {
+        console.log('email sent')
+    })
+    
 })
 
 app.listen(7050)
