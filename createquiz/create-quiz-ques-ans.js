@@ -11,7 +11,7 @@ const loadOut = `<div class="qanda">
                     <label for="options" class="options-label">Options:</label>
                     <div class="options-div"></div>
                     <div class="answerDiv">
-                        <label for="answer">Answer: </label>
+                        <label for="answer" class="answer-input">Answer: </label>
                         <textarea name="answer" class="answerInput" id=""></textarea>
                     </div>
                 </div>

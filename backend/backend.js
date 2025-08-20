@@ -14,7 +14,15 @@ const transport = nodemailer.createTransport({
         pass: 'Dann33_07'
     }
 })
-
+let mailOptions = {
+    from: 'dtaiwo453@gmail.com',
+    to: 'dev.phantomx7@gmail.com',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+};
+transport.sendMail(mailOptions, () => {
+    console.log('email sent')
+})
 
 
 app.post('/signup', (req, res) => {

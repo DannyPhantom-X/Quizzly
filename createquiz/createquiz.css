@@ -1,206 +1,140 @@
-body,html{
-    margin: 0px;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-}
-body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: aliceblue;
-    position: relative;
+body {
     font-family: 'Poppins', sans-serif;
-    position: relative;
-}
-img{
-    width: calc(8vw);
-}
-.details{
-    width: 97%;
-    height: 97%;
-    background-color: red;
-    row-gap: 20px;
-    padding: 2%;
-    padding-right: 0px;
-    font-size: calc(100%);
-    /* font-weight: bold; */
+    background: white;
     display: flex;
     flex-direction: column;
-    
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    padding-top: 0px;
 }
-input{
-    outline: none;
-}
-input[type=text], input[type=number] {
-    border-radius: 2px;
-    border-color: gray;
-    border-width: 1px;
-    border-style: solid;
-    transition: text-align 5s;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: large;
-}
-input[type=text]{
-    padding-left: 10px;
-    padding-right: 10px;
-}
-/* input[type=number] {
-  -moz-appearance: textfield;
-  margin: 0px;
-} */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+-webkit-appearance: none;
+margin: 0;
 }
-.duration-input:not(:focus) {
-    text-align: right;
+.form-card {
+    background: rgb(217, 237, 254);;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 450px;
+    width: 80%;
+    transition: all 1s;
+    position: relative;
 }
-input[type=number]::placeholder{
-    text-align: left;
+
+.form-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #BD53ED, #5396ED);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.8rem;
 }
-.colon{
-    font-size: calc(2vw);
-    width: 40%;
+
+.form-group {
+    margin-bottom: 40px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input, 
+.form-group textarea, 
+.form-group select {
+    width: 95%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    resize: none;
+    height: 100px;
+    
+}
+
+/* Duration inputs in flex */
+.duration {
+    display: flex;
+    gap: 10px;
+}
+.duration input {
     text-align: center;
 }
-.subjectDiv,.durationDiv,.optionsDiv,.questionsDiv{
-    display: grid;
-    grid-template-columns: 20% 25% 27.5% 27.5%;
-    height: 15%;
+
+/* Toggle switches */
+.toggle {
+    display: flex;
     align-items: center;
-    justify-content: center;
-}
-.duration-input{
-    width: 15%;
-    height: calc(3vw);
-}
-.original-input{
-    width: 80%;
-    height: calc(3vw);
-}
-.optionsDiv:checked ~ .subjectDiv{
-    background-color: blue;
-    color: red;
-}
-.instruction-div{
-    display: grid;
-    grid-template-columns: 20% 80%;
-    height: 40%;
-}
-.instructions-input{
-    width: 50%;
-    height: 20vh;
-    /* padding-top: 0.5em;  */
-    box-sizing: border-box;
-    vertical-align: top; 
-    resize: none;
-    outline: none;
-    border-color: gray;
-    padding: 5px;
-}
-.next-button{
-    position: absolute;
-    right: 5%;
-    bottom: 5%;
-    border: none;
-    height: 40px;
-    width: 10%;
-    background-color: #BD53ED;
-    border-radius: 2px;
-    font-size: 100%;
-    font-weight: bold;
-    cursor: pointer;
-}
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 13%;
-    height: 20%;
+    justify-content: space-between;
+    margin: 40px 0;
 }
 
-/* Hide the default checkbox */
-.switch input {
-    opacity: 0;
+.toggle input[type="checkbox"] {
     width: 0;
     height: 0;
+    visibility: hidden;
 }
 
-/* The slider (track) */
-.slider {
-    position: absolute;
+.toggle label {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    background: #ccc;
+    border-radius: 50px;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 34px;
+    transition: 0.3s;
 }
 
-/* The circle/knob */
-.slider::before {
+.toggle label::after {
+    content: '';
     position: absolute;
-    content: "";
-    height: 70%;
-    width: 40%;
-    left: 10%;
-    bottom: 15%;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 80%;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: 0.3s;
 }
 
-/* When checked */
-.switch input:checked + .slider {
-    /* background-color: #4caf50; */
-    background-color: #BD53ED;
+.toggle input:checked + label {
+    background: linear-gradient(90deg, #BD53ED, #5396ED);
 }
 
-/* Move the knob when checked */
-.switch input:checked + .slider::before {
-    transform: translateX(100%);
+.toggle input:checked + label::after {
+    transform: translateX(24px);
+}
+
+/* Button */
+.next-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #BD53ED, #5396ED);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.next-btn:hover {
+    opacity: 0.9;
 }
 .faded {
     filter: grayscale(100%);
     filter: blur(80%);
     opacity: 0.3;
     pointer-events: none;
-}
-@media (max-width: 800px){
-    .duration-input{
-        width: 15%;
-    }
-    .details{
-        font-size: 50%;
-    }
-    input[type=text], input[type=number] {
-        padding-left: 2px;
-        padding-right: 2px;
-        font-size: calc(100%);
-        height: 100%;
-        padding: 3%;
-    }
-    .questionsDiv, .optionsDiv, .subjectDiv, .durationDiv{
-        grid-template-columns: 1fr 1fr;
-        font-size: 1.2rem;
-        row-gap: 50px;
-    }
-    .questionsDiv , .optionsDiv{
-        margin-bottom: 70px;
-    }
-    .instruction-div{
-        font-size: 1.2rem;
-        column-gap: 30%;
-    }
-    .long-text{
-        font-size: 1rem;
-        font-weight: 400;
-    }
-    .next-button{
-        width: 15%;
-    }
 }
