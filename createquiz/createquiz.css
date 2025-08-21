@@ -1,35 +1,65 @@
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto';
     background: white;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     min-height: 100vh;
     margin: 0;
     padding: 20px;
     padding-top: 0px;
+    background-color: #0f172a;
+    margin: 0px;
+    
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
--webkit-appearance: none;
-margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
-.form-card {
-    background: rgb(217, 237, 254);;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-    max-width: 450px;
-    width: 80%;
-    transition: all 1s;
+.form-card{
+    perspective: 1000px;
+    margin-top: calc(15vh);
     position: relative;
 }
-
-.form-card h2 {
+.form-card-inner{
+    max-width: 450px;
+    width: calc(80vw);
+    position: relative;
+    transition: transform 1s;
+    height: 450px;
+    border-radius: 16px;
+    transform-style: preserve-3d;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+}
+.quiz-info-form-card, .cand-info-form-card{
+    position: absolute;
+    transition: all 1s;    
+    color: black;
+    width: 95%;
+    height: 100%;
+    padding-left: 5%;
+    left: 0;
+    top: 0;
+    border-radius: 16px;
+    overflow: scroll;
+    scrollbar-width: none;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+}
+.cand-info-form-card{
+    color: #0f172a;
+    transform: rotateY(180deg);
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    
+}
+.quiz-info-form-card h2 {
     text-align: center;
     margin-bottom: 20px;
-    background: linear-gradient(90deg, #BD53ED, #5396ED);
+    background: #0f172a;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 1.8rem;
@@ -37,13 +67,14 @@ margin: 0;
 
 .form-group {
     margin-bottom: 40px;
+    margin-right: 30px;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 6px;
     font-weight: 500;
-    color: #333;
+    color: black;
 }
 
 .form-group input, 
@@ -78,6 +109,7 @@ margin: 0;
     align-items: center;
     justify-content: space-between;
     margin: 40px 0;
+    margin-right: 30px;
 }
 
 .toggle input[type="checkbox"] {
@@ -109,7 +141,7 @@ margin: 0;
 }
 
 .toggle input:checked + label {
-    background: linear-gradient(90deg, #BD53ED, #5396ED);
+    background: #0f172a;
 }
 
 .toggle input:checked + label::after {
@@ -118,16 +150,18 @@ margin: 0;
 
 /* Button */
 .next-btn {
-    width: 100%;
+    width: 95%;
     padding: 12px;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(90deg, #BD53ED, #5396ED);
+    background: #0f172a;
     color: white;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
+    margin-right: 30px;
+    margin-bottom: 30px;
 }
 .next-btn:hover {
     opacity: 0.9;
@@ -137,4 +171,23 @@ margin: 0;
     filter: blur(80%);
     opacity: 0.3;
     pointer-events: none;
+}
+.simplebar-scrollbar::before {
+    background: #0f172a; /* blue scrollbar thumb */
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.simplebar-track.simplebar-horizontal {
+  display: none !important;
+}
+.simplebar-track.simplebar-vertical {
+    background: transparent; /* vertical track color */
+}
+@media (max-width: 800px) {
+    .form-card{
+        margin-top: calc(20vh);
+    }
+    .form-card-inner{
+        height: 550px;
+    }
 }

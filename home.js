@@ -3,19 +3,13 @@ let currentIndex = 0;
 let isTyping = true;
 const loginSignupInfo = document.getElementById('loginSignupInfo');          
 const loadOut = `<div class="top">
-                    <div></div>
-                    <div><img class="logo" src="resources/quizzlyIcon.png" alt=""><span class="name">Quizzly</span></div>
-                    <div class="cancel"><button class="cancel-button">X</button></div>
+                    <img class="logo" src="resources/Quizzlylogodesign.png" alt="">
+                    <button class="cancel-button">X</button>
                 </div>
                 
-                <div class="info-div">To create a quiz you need to be logged in</div>
-                <div class="login-div"><span class="login">Login</span></div>
-                <div>
-                    <div class="line"></div> 
-                    <div style="text-align: center;">or</div> 
-                    <div class="line"></div>
-                </div>
-                <div class="signup-div"><span class="signup">Signup</span></div>`;
+                <div class="info-div">Log in or Sign up to either create or take quiz</div>
+                <button class="signup-bttn">Sign up</button>
+                <button class="login-bttn">Log in</button>`;
 setInterval(() => {
     if (isTyping === true) {
         isTyping = false;
@@ -66,10 +60,10 @@ document.getElementById('createQuiz').addEventListener('click', () => {
     document.querySelector('.site-info').classList.add('faded')
     document.querySelector('footer').classList.add('faded')
     onclickcancelButton()
-    document.querySelector('.login').addEventListener('click' || 'touch', () => {
+    document.querySelector('.login-bttn').addEventListener('click' || 'touch', () => {
         window.location.href = 'login/login.html'
     })
-    document.querySelector('.signup').addEventListener('click' || 'touch', () => {
+    document.querySelector('.signup-bttn').addEventListener('click' || 'touch', () => {
         window.location.href = 'signup/signup.html'
     })
 })

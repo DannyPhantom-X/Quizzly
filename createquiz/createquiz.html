@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="createquiz.css">
   <link rel="stylesheet" href="createquiz-cand-info.css">
+  <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quizzly Setup</title>
@@ -12,57 +16,78 @@
 <body>
   <header><img src="../resources/Quizzlylogodesign.png" alt=""></header>
   <div class="form-card">
-    <h2>Quiz Info</h2>
+    <div class="form-card-inner">
+      <div data-simplebar class="quiz-info-form-card">
+        
+        <h2>Quiz Info</h2>
 
-    <div class="form-group">
-      <label for="subject">Name of Subject</label>
-      <input type="text" id="subjectInput" placeholder="Enter subject name">
-    </div>
+        <div class="form-group">
+          <label for="subject">Name of Subject</label>
+          <input type="text" id="subjectInput" placeholder="Enter subject name">
+        </div>
 
-    <div class="form-group">
-      <label>Duration</label>
-      <div class="duration">
-        <input type="number" min="0" placeholder="HH" id="hourInput">
-        <input type="number" min="0" max="59" placeholder="MM" id="minutesInput">
-        <input type="number" min="0" max="59" placeholder="SS" id="secondsInput">
+        <div class="form-group">
+          <label>Duration</label>
+          <div class="duration">
+            <input type="number" min="0" placeholder="HH" id="hourInput">
+            <input type="number" min="0" max="59" placeholder="MM" id="minutesInput">
+            <input type="number" min="0" max="59" placeholder="SS" id="secondsInput">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="questions">Number of Questions</label>
+          <input type="number" id="noQuesInput" placeholder="Enter number of questions">
+        </div>
+
+        <div class="toggle">
+          <span>Randomised Questions</span>
+          <input type="checkbox" id="randQuesInput">
+          <label for="randQuesInput"></label>
+        </div>
+
+        <div class="form-group fade">
+          <label for="options">Number of Options</label>
+          <input type="number" id="noOptionsInput" placeholder="Enter number of options">
+        </div>
+
+        <div class="toggle">
+          <span>Options</span>
+          <input type="checkbox" id="optionsToggle">
+          <label for="optionsToggle"></label>
+        </div>
+
+        <div class="toggle fade">
+          <span>Randomised Optioning</span>
+          <input type="checkbox" id="randOptionsInput">
+          <label for="randOptionsInput"></label>
+        </div>
+
+        <div class="form-group">
+          <label for="instructions">Instructions</label>
+          <textarea id="instructionsInput" placeholder="Write quiz instructions..."></textarea>
+        </div>
+
+        <button class="next-btn">Next</button>
+        
+      </div>
+      <div class="cand-info-form-card"> 
+        <div class="intro"><i>Please Create the Candidates Information Section</i></div>
+        <div class="eg"><i>e.g Name, Mobile Number, Email</i></div>
+        <div class="body" id="cand-body">
+            <div class="info" id="infoOriginal">
+                <input type="text" id="originalInput">
+                <button class="add-button"><i class="fas fa-plus" title="plus"></i></button>
+            </div>
+            <button class="next-button">Next</button>
+        </div>
       </div>
     </div>
-
-    <div class="form-group">
-      <label for="questions">Number of Questions</label>
-      <input type="number" id="noQuesInput" placeholder="Enter number of questions">
-    </div>
-
-    <div class="toggle">
-      <span>Randomised Questions</span>
-      <input type="checkbox" id="randQuesInput">
-      <label for="randQuesInput"></label>
-    </div>
-
-    <div class="form-group fade">
-      <label for="options">Number of Options</label>
-      <input type="number" id="noOptionsInput" placeholder="Enter number of options">
-    </div>
-
-    <div class="toggle">
-      <span>Options</span>
-      <input type="checkbox" id="optionsToggle">
-      <label for="optionsToggle"></label>
-    </div>
-
-    <div class="toggle fade">
-      <span>Randomised Optioning</span>
-      <input type="checkbox" id="randOptionsInput">
-      <label for="randOptionsInput"></label>
-    </div>
-
-    <div class="form-group">
-      <label for="instructions">Instructions</label>
-      <textarea id="instructionsInput" placeholder="Write quiz instructions..."></textarea>
-    </div>
-
-    <button class="next-btn">Next</button>
+    
   </div>
+  
 </body>
-<script src="createquiz.js"></script>
+<script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+<script type="module" src="createquiz.js"></script>
+<script src="createquiz-cand-info.js"></script>
 </html>

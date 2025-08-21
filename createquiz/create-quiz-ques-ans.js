@@ -10,10 +10,8 @@ const loadOut = `<div class="qanda">
                     <textarea name="" class="questions-input" id="questionsInput"></textarea>
                     <label for="options" class="options-label">Options:</label>
                     <div class="options-div"></div>
-                    <div class="answerDiv">
-                        <label for="answer" class="answer-input">Answer: </label>
-                        <textarea name="answer" class="answerInput" id=""></textarea>
-                    </div>
+                    <label for="answer" class="answer-label">Answer: </label>
+                    <textarea name="answer" class="answerInput" id=""></textarea>
                 </div>
 `;
 const optionLoadOut = `
@@ -78,10 +76,13 @@ function nextChecker() {
         // console.log(nextButton.classList);
         // console.log('yooooo');
         nextButton.removeEventListener('click' || 'touch', onclickNextButton)
-        nextButton.innerHTML = 'Create';
+        nextButton.innerHTML = '<i class="fas fa-angle-double-right"></i>';
     }
     else{
         nextButton.addEventListener('click' || 'touch', onclickNextButton)
         nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>'
+        // <i class='fas fa-caret-left'></i>
+        // <i class='fas fa-chevron-circle-left'></i>
     }
 }
+

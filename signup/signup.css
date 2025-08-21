@@ -19,7 +19,8 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url(../resources/quizzlyBackground.png);
+    /* background-image: url(../resources/quizzlyBackground.png); */
+    background-color: #0b1220;
     background-size: 200px;
     padding-top: 200px;
     padding: 0px;
@@ -95,7 +96,7 @@ body, html{
     left: 7%;
     color: gray;
     pointer-events: none;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 .name-form-group{
     display: flex;
@@ -105,7 +106,6 @@ body, html{
     font-size: 2rem;
     height: 70px;
     font-weight: bold;
-    background-image: linear-gradient(90deg, #BD53ED,#5396ED);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -133,7 +133,7 @@ body, html{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-top: 2%;
 }
 .login-link{
@@ -144,8 +144,8 @@ body, html{
 .signup-button{
     border: none;
     font-size: 1.2rem;
-    background-color: #BD53ED;
     padding: 1%;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
     width: 50%;
     height: 40px;
     cursor: pointer;
@@ -161,7 +161,7 @@ body, html{
 }
 .quizzlyIcon{
     margin-top: 3%;
-    width: 4rem;
+    width: 70%;
 }
 @media (max-width: 600px) {
     body{
