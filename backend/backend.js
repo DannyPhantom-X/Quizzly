@@ -8,20 +8,24 @@ app.use(express.json())
 
 
 const transport = nodemailer.createTransport({
-    service: 'gmial',
+    service: 'gmail',
     auth: {
-        user: 'dtaiwo453@gmail.com',
-        pass: 'Dann33_07'
+        user: 'dev.phantomx7@gmail.com',
+        pass: 'kwnmhifqhzahdvne'
     }
 })
 let mailOptions = {
-    from: 'dtaiwo453@gmail.com',
-    to: 'dev.phantomx7@gmail.com',
+    from: 'dev.phantomx7@gmail.com',
+    to: 'dtaiwo453@gmail.com',
     subject: 'Sending Email using Node.js',
     text: 'That was easy!'
 };
-transport.sendMail(mailOptions, () => {
-    console.log('email sent')
+transport.sendMail(mailOptions, (err, info) => {
+  if (err) {
+    console.error("Error:", err);
+  } else {
+    console.log("Email sent:", info.response);
+  }
 })
 
 
@@ -70,7 +74,7 @@ app.post('/signup', (req, res) => {
     let mailOptions = {
         from: 'dtaiwo453@gmail.com',
         to: 'dev.phantomx7@gmail.com',
-        subject: 'Sending Email using Node.js',
+        subject: '',
         text: 'That was easy!'
     };
     transport.sendMail(mailOptions, () => {
