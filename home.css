@@ -2,7 +2,7 @@ body, html{
     font-family: 'Poppins', sans-serif;
     height: 100%;
     padding: 0px;
-    margin: 0px;    
+    margin: 0px;  
 }
 body{
     padding-top: 10px;
@@ -52,7 +52,7 @@ header h1{
 .site-info{
     overflow: hidden;
     display: flex;
-    height: 350px;
+    height: 500px;
     background-image: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
     width: 100%;
 }

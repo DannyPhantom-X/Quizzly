@@ -66,7 +66,12 @@
                 .switch input:checked + .slider::before {
                     transform: translateX(26px);
                 }
-                    
+                .try{
+                    width: 500px;
+                    height: 500px;
+                    background-color: blue;
+                    clip-path: path("M 1, 10 L 9, 10 L 10, 9 L 10, 1 L 11, 0 L 99, 0 L 100, 1 L 100, 99 L 99, 100 L 1, 100 L 0, 99 L 0, 11 L 1, 10 Z");
+                }    
             </style>
         </head>
     <body>
@@ -78,6 +83,6 @@
             <input type="checkbox">
             <span class="slider"></span>
         </label>
-
+        <div class="try"></div>
     </body>
 </html>

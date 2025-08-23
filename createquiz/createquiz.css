@@ -183,6 +183,18 @@ input[type=number]::-webkit-outer-spin-button {
 .simplebar-track.simplebar-vertical {
     background: transparent; /* vertical track color */
 }
+.back-bttn{
+    position: absolute;
+    left: 10px;
+    top: 25px;
+    background-color: transparent;
+    border-style: solid;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 @media (max-width: 800px) {
     .form-card{
         margin-top: calc(20vh);

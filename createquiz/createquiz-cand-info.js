@@ -27,7 +27,7 @@ function candInfoJs () {
         
         
     })
-
+    backCandInfo()
     document.querySelector('.next-button').addEventListener('click' || 'touch', () => {
         let status = true
         document.querySelectorAll('.info input').forEach((inp) => {
@@ -66,6 +66,13 @@ function candInfoJs () {
                     onclickDeleteButton()
                 }
             })
+        })
+    }
+
+    function backCandInfo() {
+        document.getElementById('backBttnCandInfo').addEventListener('click' || 'touch', () => {
+            console.log('cand clicked')
+            document.querySelector('.form-card-inner').style.transform = 'rotateY(360deg)';
         })
     }
 }

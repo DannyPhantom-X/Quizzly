@@ -95,10 +95,13 @@ header div:nth-child(2) {
     height: fit-content;
     width: 86%;
     display: grid;
-    grid-template-columns: 1fr;
-    /* column-gap: 5%; */
     row-gap: 5%;
-    margin-bottom: 15px;
+    margin-bottom: 55px;
+}
+.options-div div{
+    display: grid;
+    grid-template-columns: 10% 85%;
+    column-gap: 5%;
 }
 .questions-label{
     margin-bottom: 2%;
@@ -132,25 +135,27 @@ header div:nth-child(2) {
     background-color: #BD53ED;
     border: none;
     height: 7%;
-    width: 7%;
+    width: 5%;
     bottom: 10%;
     right: 6%;
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
     /* font-size: 120%;     */
+    border-radius: 50%;
 }
 .previous-button{
     position: absolute;
     background-color: #BD53ED;
     border: none;
     height: 7%;
-    width: 7%;
+    width: 5%;
     bottom: 10%;
     left: 6%;
     color: white;
     font-size: 1.5rem;
     font-weight: bolder;
+    border-radius: 50%;
 }
 .faded {
     filter: grayscale(100%);

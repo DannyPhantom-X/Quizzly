@@ -20,7 +20,7 @@ body{
     align-items: center;
     justify-content: center;
     /* background-image: url(../resources/quizzlyBackground.png); */
-    background-color: #0b1220;
+    background-color: #0f172a;
     background-size: 200px;
     padding-top: 200px;
     padding: 0px;
@@ -46,7 +46,7 @@ body, html{
     display: flex;
     overflow: hidden;
     height: 60%;
-    background-image: linear-gradient(to bottom right, #BD53ED,#5396ED);
+    background-image: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
 }
 .slide{
     min-width: 100%;
@@ -67,11 +67,12 @@ body, html{
 .signupinfo{
     display: flex;
     flex-direction: column;
-    background-color: aliceblue;
+    background-color: #243045;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
     padding: 2% 5% 5% 5%;
     margin-top: 4%;
     transition: all 0.5s;
+    position: relative;
 }
 .form-group{
     position: relative;
@@ -83,11 +84,13 @@ body, html{
     width: 90%;
     border: none;
     border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-color: gray;
+    border-bottom-width: 2px;
+    border-color: #BD53ED;
+    border-radius: 5px;
     height: 100%;
     outline: none;
     padding-left: 3%;
+    font-size: 1rem;
 }
 
 .form-group label{
@@ -119,27 +122,28 @@ body, html{
     top: 1%;
     left: 8%;
     color: #BD53ED;
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     background: transparent;
 }
-.signupinfo div:nth-child(7){
+.signupinfo div:nth-child(11){
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 5%;
 }
-.full-statement{
+.choice{
     width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1rem;
     margin-top: 2%;
+    color: white;
 }
 .login-link{
     color: blue;
     cursor: pointer;
-    
+    margin-left: 10px;
 }
 .signup-button{
     border: none;
@@ -149,9 +153,10 @@ body, html{
     width: 50%;
     height: 40px;
     cursor: pointer;
-    border-radius: 5%;
+    border-radius: 5px;
     margin-bottom: 2%;
     font-weight: bold;
+    color: #243045;
 }
 .message{
     color: red;
@@ -163,7 +168,48 @@ body, html{
     margin-top: 3%;
     width: 70%;
 }
-@media (max-width: 600px) {
+.design-left{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10%;
+    height: 7%;
+    border-bottom-right-radius: 15px;
+    border-top-left-radius: 15px;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+}
+.design-right{
+    position: absolute;
+    top: 0;
+    width: 10%;
+    height: 7%;
+    right: 0;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+    
+}
+.design-left-bttm{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 10%;
+    height: 7%;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+}
+.design-right-bttm{
+    position: absolute;
+    bottom: 0;
+    width: 10%;
+    height: 7%;
+    right: 0;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+}
+@media (max-width: 700px) {
     body{
         background-size: 100px;
     }
@@ -178,10 +224,13 @@ body, html{
         margin: 3%;
     }
     .form-group{
-        height: 60px;
+        height: 40px;
     }
     .form-group input{
-        font-size: 1.2rem;
+        font-size: 16px;
         padding-bottom: 0px;
+    }
+    input{
+        font-size: 10px;
     }
 }

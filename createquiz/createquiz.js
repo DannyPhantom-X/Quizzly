@@ -11,7 +11,7 @@ const randOptionsInput = document.getElementById('randOptionsInput')
 const instructionsInput = document.getElementById('instructionsInput')
 
 
-
+backQuizInfo()
 if (!optionsCheckbox.checked) {
     console.log('not checked')
     document.querySelectorAll('.fade').forEach((faded) => {
@@ -83,9 +83,18 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
         instructions = instructionsInput.value
         sessionStorage.setItem('quizInfo', JSON.stringify({ subject, interval, noQues, randQues, instructions, options}))
     }
-    console.log(JSON.parse(sessionStorage.getItem('quizInfo')))
-    document.querySelector('.form-card-inner').style.transform = 'rotateY(180deg)'
+    console.log(JSON.parse(sessionStorage.getItem('quizInfo')));
+    document.querySelector('.form-card-inner').style.transform = 'rotateY(180deg)';
     candInfoJs()
     // window.location.href = 'createquiz-cand-info.html'
-    console.log(sessionStorage.getItem('quizInfo'))    
+    console.log(sessionStorage.getItem('quizInfo'));    
 })
+
+
+
+function backQuizInfo() {
+    document.getElementById('backBttnQuizInfo').addEventListener('click' || 'touch', () => {
+        console.log('clicked')
+        window.location.href = '../home.html';
+    })
+}

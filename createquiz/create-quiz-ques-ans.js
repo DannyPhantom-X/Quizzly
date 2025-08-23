@@ -10,28 +10,58 @@ const loadOut = `<div class="qanda">
                     <textarea name="" class="questions-input" id="questionsInput"></textarea>
                     <label for="options" class="options-label">Options:</label>
                     <div class="options-div"></div>
-                    <label for="answer" class="answer-label">Answer: </label>
-                    <textarea name="answer" class="answerInput" id=""></textarea>
                 </div>
 `;
 const optionLoadOut = `
-                        <textarea class="options-input" name="options" id=""></textarea>
+                        <div><input type="radio" name="option"><textarea class="options-input" name="options" id=""></textarea></div>
 `;
 
-// window.onload
-for(let i = 1; i <= quizInfo.noQues; i++) {
-    document.querySelector('.body').innerHTML += loadOut;
-}
-if (quizInfo.options) {
-    for(let i = 1; i <= quizInfo.noOptions; i++) {
-        document.querySelectorAll('.options-div').forEach((opd) => {
-          opd.innerHTML += optionLoadOut;  
-        })
+const zeroOptionLoadout = `<div class="qanda">
+                                <label class="questions-label">Questions:</label>
+                                <textarea name="" class="questions-input" id="questionsInput"></textarea>
+                                <label for="answer" class="answer-label">Answer: </label>
+                                <textarea name="answer" class="answerInput" id=""></textarea>
+                            </div>
+
+`
+console.log('loading')
+if (quizInfo) {
+    if (quizInfo.options) {
+        for(let i = 1; i <= quizInfo.noQues; i++) {
+            document.querySelector('.body').innerHTML += loadOut;
+        }
+        if (quizInfo.options) {
+            for(let i = 1; i <= quizInfo.noOptions; i++) {
+                document.querySelectorAll('.options-div').forEach((opd) => {
+                opd.innerHTML += optionLoadOut;  
+                })
+            }
+        }
+        onclickPreviousButton()
+        previousChecker()
+        nextChecker()
+
+
+    }else{
+        for(let i = 1; i <= quizInfo.noQues; i++) {
+            document.querySelector('.body').innerHTML += zeroOptionLoadout;
+        }
+        onclickPreviousButton()
+        previousChecker()
+        nextChecker()
+
     }
+}else{
+    console.log('unable to connect')
+    document.body.innerHTML = `Unable to connect at this time........   Please suply Quiz info and Candidate info`;
+    Object.assign(document.body.style, {
+        textAlign: 'center',
+        color: 'red',
+        marginTop: '250px',
+        fontSize: '2.5rem'
+    })
+
 }
-onclickPreviousButton()
-previousChecker()
-nextChecker()
 
 function onclickNextButton() {
         console.log(quizInfo)
@@ -82,7 +112,6 @@ function nextChecker() {
         nextButton.addEventListener('click' || 'touch', onclickNextButton)
         nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>'
         // <i class='fas fa-caret-left'></i>
-        // <i class='fas fa-chevron-circle-left'></i>
     }
 }
 

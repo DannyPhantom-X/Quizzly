@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            @keyframes typing{
+                0%{
+                    width: 0%;
+                }
+                100%{
+                    width: 100%;
+                }
+            }
+            @keyframes delete{
+                0%{
+                    width: 100%;
+                }
+                100%{
+                    width: 0%;
+                }
+            }
+
+            body,html{
+                margin: 0px;
+                height: 100vh;
+                width: 100vw;
+            }
+            body{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-image: url(resources/quizzlyBackground.png);
+                background-size: 200px;
+            }
+            .body{
+                width: 90vw;
+                height: 90vh;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+                column-gap: 10%;
+            }
+            .description,.login-info{
+                height: 380px;
+                border-radius: 10px;
+                padding: 5px;
+            }
+            .description{
+                display: flex;
+                overflow: hidden;
+                color: white;
+                background-image: linear-gradient(to bottom right, #BD53ED ,#5396ED);
+            }
+            .slide{
+                min-width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .slide span{
+                display: inline-block;
+                max-width: fit-content;
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: calc(2vw);
+                color: white;
+                animation: typing 3s;
+                font-weight: bolder;
+            }
+            .login-info{
+                display: flex;
+                flex-direction: column;
+                background-color: aliceblue;
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
+            }
+            .login-input{
+                display: flex;
+                flex-direction: column;
+                margin-left: 5%;
+                margin-top: 5%;
+            }
+            .login-input label{
+                margin-bottom: 1%;
+                font-size: 1.2rem;
+                cursor: pointer;
+            }
+            .login-input input{
+                height: 30px;
+                border: solid;
+                border-color: gray;
+                border-width: 1px;
+                border-radius: 5px;
+                outline: none;
+                width: 70%;
+                padding-left: 7px;
+            }
+            .quizzlyIcon{
+                margin-top: 2%;
+                width: calc(7vw);
+            }
+            .name{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 50px;
+                margin-top: 2%;
+            }
+            .name span{
+                font-size: 2rem;
+                font-weight: bold;
+                /* background-image: linear-gradient(90deg, #BD53ED ,#5396ED);
+                background-clip: text;
+                color: transparent; */
+            }
+            .login-input:nth-child(5) {
+                display: flex;
+                align-items: center;
+                font-size: 1.2rem;
+            }
+            .login-input:nth-child(5) span {
+                color: blue;
+                cursor: pointer ;
+            }
+            .message{
+                margin-top: 4%;
+                height: 20px;
+                text-align: center;
+            }
+            .login-button{
+                border: none;
+                background-color: #BD53ED;
+                height: 40px;
+                font-size: 1.2rem;
+                font-weight: bold;
+                width: 70%;
+                border-radius: 3px;
+                margin-bottom: 2%;
+                cursor: pointer;
+            }
+            @media (max-width: 600px) {
+                body{
+                    background-size: 100px;
+                    
+                }
+                .description{
+                    display: none;
+                }
+                .body{
+                    grid-template-columns: 1fr;
+                }
+                .message{
+                    height: 7px;
+                }
+                .quizzlyIcon{
+                    width: 80px;
+                }
+            }
+        </style>
+        <link rel="stylesheet" href="login.css">
+        <link rel="icon" href="../resources/quizzlyIcon_512x512.png" sizes="512x512">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quizzly | login</title>
+    </head>
+    <body>
+        <div class="body">
+            <div class="description">
+                <div class="slide"><span>Quiz Smatter With Quizzly</span></div>
+                <div class="slide"><span>Personified Testing, Simplified</span></div>
+                <div class="slide"><span>Share Quiz With Just One Id</span></div>
+                <div class="slide"><span>No Logins No Hassles</span></div>
+                <div class="slide"><span>Sharpen Your Mind, Race The Time</span></div>
+            </div>
+            <div class="login-info">
+                <div class="name">
+                    <img src="./resources/quizzlyIcon.png" class="quizzlyIcon">
+                    <span>Quizzly</span>
+                </div>
+                <div class="login-input">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="">
+                </div>
+                <div class="login-input">
+                    <label for="">Password:</label>
+                    <input type="password" name="email" id="">
+                </div>
+                <div class="message"></div>
+                <div class="login-input">
+                    <button class="login-button">Login</button>
+                    <div>Don't have an account ? <span class="signup" id="signupLink">Signup</span></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="login.js"></script>
+</html>
