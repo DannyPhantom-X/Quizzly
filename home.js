@@ -40,6 +40,11 @@ setInterval(() => {
     
 }, 6000)    
 
+setTimeout(() => {
+    document.body.style.overflowY = 'scroll'
+    document.querySelector('header div').innerHTML = '<img src="resources/quizzlydesign.png">'
+}, 7000)
+
 function nextDescription() {
     currentIndex ++;
     let offset = -currentIndex * 100;

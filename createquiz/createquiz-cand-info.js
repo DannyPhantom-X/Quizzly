@@ -5,12 +5,12 @@ function candInfoJs () {
     console.log(JSON.parse(sessionStorage.getItem('quizInfo')))
     let currentIndex = 0
     document.querySelector('.add-button').addEventListener('click' || 'touch', () => {
-        const div = document.createElement('div')
-        div.classList.add('info')
-        div.dataset.index = currentIndex
+        let div;
         const info = document.querySelectorAll('.info')
         console.log(info.length)
-        if (info.length == 1) {
+        if (info.length === 1) {
+            div = document.createElement('div')
+            div.classList.add('info')
             target = document.getElementById('infoOriginal')
             div.classList.add('deleteInfo')
             div.innerHTML = `<input type="text" class="deleteInput" value="${originalInput.value}"> <button class='delete-button'><i class="fas fa-trash" title="Delete"></i></button>`
@@ -18,6 +18,9 @@ function candInfoJs () {
             container.insertBefore(div, target)
             target = document.querySelector('.deleteInfo')
         }else {
+            div = document.createElement('div')
+            div.classList.add('info')
+            target = document.querySelector('.deleteInfo')
             div.innerHTML = `<input type="text" value="${originalInput.value}">`
             originalInput.value = ''
             container.insertBefore(div, target)

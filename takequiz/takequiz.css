@@ -6,6 +6,7 @@ body{
     background-image: url(../resources/quizzlyBackground.png);
     background-size: 300px;
     padding-top: 200px;
+    background-color: #0f172a;
 }
 .input-id{
     border-color: black;

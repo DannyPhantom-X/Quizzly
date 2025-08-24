@@ -2,16 +2,21 @@ body, html{
     font-family: 'Poppins', sans-serif;
     height: 100%;
     padding: 0px;
-    margin: 0px;  
+    margin: 0px;
+    background-color: #0f172a;  
+}
+header{
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 body{
     padding-top: 10px;
+    overflow: hidden;
 }
-header{
-    height: 9%;
-    text-align: center;
-}
-header h1{
+/* header h1{
     display: inline-block;
     max-width: fit-content;
     margin: 0px;
@@ -21,9 +26,17 @@ header h1{
     background-clip: text;
     color: transparent;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; /* Safari (needed) */
+    -webkit-text-fill-color: transparent;
     font-weight: bold;
     animation: typing 10s forwards;
+} */
+ header>div{
+    height: 95%;
+    padding-right: 10px;
+    width: 20%;
+ }
+header>div>img{
+    width: 100%;
 }
 .input{
     padding-top: 10%;
@@ -86,7 +99,7 @@ header h1{
     padding: 3px;
     height: 350px;
     box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.25);
-    background-color: #0f172a;
+    background-color: #243045;
     color: white ;
 }
 .cancel{
@@ -189,6 +202,15 @@ footer{
     .info-div{
         font-size: 1.2rem;
     }
+    header{
+        height: 8%;
+    }
+    header>div{
+        width: 45%;
+    }
+    header>div>img{
+        width: 100%;
+    }
     /* .login-signup-info{
         height: 30%;
     } */
@@ -208,9 +230,4 @@ footer{
     100%{
         width: 0%;
     }
-}
-.flip-cards{
-    margin-top: 200px;
-    height: 500px;
-    background-color: #0f172a;
 }

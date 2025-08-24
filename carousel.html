@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Rotating Carousel</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111;
+      perspective: 1000px; /* ✅ Needed for 3D */
+    }
+
+    .carousel {
+      width: 300px;
+      height: 300px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotate 20s infinite linear;
+    }
+
+    .carousel-div {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      left: 50%;
+      top: 50%;
+      transform-style: preserve-3d;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      /* transform: translate(-50%, -50%); */
+    }
+
+    /* ✅ Use .carousel-div instead of img */
+    .carousel .carousel-div:nth-child(1) {  transform: rotateY(0deg) translateZ(300px); }
+    .carousel .carousel-div:nth-child(2) { transform: rotateY(60deg) translateZ(300px); }
+    .carousel .carousel-div:nth-child(3) { transform: rotateY(120deg) translateZ(300px); }
+    .carousel .carousel-div:nth-child(4) { transform: rotateY(180deg) translateZ(300px); }
+    .carousel .carousel-div:nth-child(5) { transform: rotateY(240deg) translateZ(300px); }
+    .carousel .carousel-div:nth-child(6) { transform: rotateY(300deg) translateZ(300px); }
+
+    @keyframes rotate {
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="carousel">
+    <div class="carousel-div">Quizzly</div>
+    <div class="carousel-div">Quizzly</div>
+    <div class="carousel-div">Quizzly</div>
+    <div class="carousel-div">Quizzly</div>
+    <div class="carousel-div">Quizzly</div>
+    <div class="carousel-div">Quizzly</div>
+  </div>
+</body>
+</html>

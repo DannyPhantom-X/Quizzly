@@ -9,7 +9,8 @@ const noQuesInput = document.getElementById('noQuesInput')
 const noOptionsInput = document.getElementById('noOptionsInput')
 const randOptionsInput = document.getElementById('randOptionsInput')
 const instructionsInput = document.getElementById('instructionsInput')
-
+const hourInput = document.getElementById('hourInput')
+const secondsInput = document.getElementById('secondsInput')
 
 backQuizInfo()
 if (!optionsCheckbox.checked) {
@@ -47,7 +48,7 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
         subjectInput.style.borderColor = 'red';
         return;
     }
-    if (minutesInput.value == '00' || minutesInput.value == '0' || !minutesInput) {
+    if ((minutesInput.value == '00' || minutesInput.value == '0' || !minutesInput) && (hourInput == '00' || hourInput == '0' || !hourInput)) {
         minutesInput.style.borderColor ='red';
         return;
     }
@@ -63,7 +64,7 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
         }
         subject = subjectInput.value;
         noQues = noQuesInput.value;
-        interval = `${document.getElementById('hourInput').value}:${document.getElementById('minutesInput').value}:${document.getElementById('secondsInput').value}`;
+        interval = `${hourInput.value}:${minutesInput.value}:${secondsInput.value}`;
         randQues = document.getElementById('randQuesInput').checked
         console.log(randQues)
         noOptions = noOptionsInput.value
@@ -76,7 +77,7 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
     else{
         subject = subjectInput.value;
         noQues = noQuesInput.value;
-        interval = `${document.getElementById('hourInput').value}:${document.getElementById('minutesInput').value}:${document.getElementById('secondsInput').value}`;
+        interval = `${hourInput.value}:${minutesInput.value}:${secondsInput.value}`;
         randQues = document.getElementById('randQuesInput').checked
         console.log(randQues)
         options = optionsCheckbox.checked
