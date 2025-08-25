@@ -9,13 +9,14 @@
     <body>
         <div class="otp-container">
             <span class="otp">OTP</span>
-            <div class="num-cont">
-                <input type="text" class="otp-num">
-                <input type="number" class="otp-num">
-                <input type="number" class="otp-num">
-                <input type="number" class="otp-num">
+            <div class="num-cont" maxlength="2">
+                <input type="number" class="otp-num" id="numInput">
+                <input type="number" class="otp-num" id="numInput">
+                <input type="number" class="otp-num" id="numInput">
+                <input type="number" class="otp-num" id="numInput">
             </div>
-            <div class="resend">Resend</div>
+            <div class="resend"><span class="minutes">2</span>:<span class="seconds">00</span></div>
         </div>
     </body>
+    <script src="otp.js"></script>
 </html>

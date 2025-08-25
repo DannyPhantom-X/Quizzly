@@ -48,8 +48,8 @@ function nextDescription() {
         slide.style.transform = `translateX(${offset}%)`;
     })
 }
-
 document.getElementById('signupButton').addEventListener('click' || 'touch', async () => {
+    loadScreen('add')
     surnameInput.setAttribute('style', surnameOriginalStyle)
     firstnameInput.setAttribute('style', firstnameOriginalStyle)
     emailInput.setAttribute('style', emailOriginalStyle)
@@ -75,6 +75,7 @@ document.getElementById('signupButton').addEventListener('click' || 'touch', asy
     })
     const result = await response.json()
     console.log(result)
+    loadScreen('remove')
     if (result.statuz === 'failed') {
         if (result.reason === 'surname') {
             Object.assign(surnameInput.style, {
@@ -104,6 +105,9 @@ document.getElementById('signupButton').addEventListener('click' || 'touch', asy
             })
         }
         document.getElementById('message').innerHTML = result.message
+    }else if(result.statuz === 'Success') {
+        sessionStorage.setItem('userLogToken', result.token)
+        window.location.href = '../otp.html'
     }
 })
 
@@ -114,3 +118,17 @@ document.getElementById('loginLink').addEventListener('click' || 'touch', () => 
 
 
 })
+
+
+function loadScreen(param) {
+    if (param === 'add') {
+        document.querySelector('.body').classList.add('faded')
+        document.querySelector('.load-screen').classList.add('load-screen-style')
+        document.querySelector('.load-screen-style').innerHTML = '<div class="image-div"><img src="../resources/quizzlyIcon.png"></div>'
+    }else if( param === 'remove') {
+        document.querySelector('.body').classList.remove('faded')
+    document.querySelector('.load-screen').classList.remove('load-screen-style')
+    document.querySelector('.load-screen').innerHTML = ''
+    }
+
+}

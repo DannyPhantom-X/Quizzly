@@ -10,6 +10,7 @@
     align-items: center;
     animation: remove 2s ease-in-out 5s;
     animation-fill-mode: forwards;
+    z-index: 5;
 }
 
 .welcome-div{
