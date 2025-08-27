@@ -96,6 +96,6 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
 function backQuizInfo() {
     document.getElementById('backBttnQuizInfo').addEventListener('click' || 'touch', () => {
         console.log('clicked')
-        window.location.href = '../home.html';
+        window.location.href = 'home.html';
     })
 }

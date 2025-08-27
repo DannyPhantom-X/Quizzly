@@ -3,7 +3,7 @@ let currentIndex = 0;
 let isTyping = true;
 const loginSignupInfo = document.getElementById('loginSignupInfo');          
 const loadOut = `<div class="top">
-                    <img class="logo" src="resources/Quizzlylogodesign.png" alt="">
+                    <img class="logo" src="public/resources/quizzlydesign.png" alt="">
                     <button class="cancel-button">X</button>
                 </div>
                 
@@ -40,10 +40,10 @@ setInterval(() => {
     
 }, 6000)    
 
-// setTimeout(() => {
-//     document.body.style.overflowY = 'scroll'
-//     document.querySelector('header div').innerHTML = '<img src="resources/quizzlydesign.png">'
-// }, 7000)
+setTimeout(() => {
+    document.body.style.overflowY = 'scroll'
+    document.querySelector('header div').innerHTML = '<img src="resources/quizzlydesign.png">'
+}, 7000)
 
 function nextDescription() {
     currentIndex ++;
@@ -54,23 +54,29 @@ function nextDescription() {
 }
 
 document.getElementById('takeQuiz').addEventListener('click' || 'touch', () => {
-    window.location.href = 'takequiz/takequiz.html';
+    window.location.href = 'takequiz.html';
 })
 
 document.getElementById('createQuiz').addEventListener('click', () => {
-    loginSignupInfo.classList.add('login-signup-info-style');
-    loginSignupInfo.innerHTML = loadOut;
-    document.querySelector('.input').classList.add('faded')
-    document.querySelector('header').classList.add('faded')
-    document.querySelector('.site-info').classList.add('faded')
-    document.querySelector('footer').classList.add('faded')
-    onclickcancelButton()
-    document.querySelector('.login-bttn').addEventListener('click' || 'touch', () => {
-        window.location.href = 'login/login.html'
-    })
-    document.querySelector('.signup-bttn').addEventListener('click' || 'touch', () => {
-        window.location.href = 'signup/signup.html'
-    })
+    if (sessionStorage.getItem('userLogToken')) {
+        window.location.href = 'createQuiz/createQuiz.html'
+    }else{
+        loginSignupInfo.classList.add('login-signup-info-style');
+        loginSignupInfo.innerHTML = loadOut;
+        document.querySelector('.input').classList.add('faded')
+        document.querySelector('header').classList.add('faded')
+        document.querySelector('.site-info').classList.add('faded')
+        document.querySelector('footer').classList.add('faded')
+        onclickcancelButton()
+        document.querySelector('.login-bttn').addEventListener('click' || 'touch', () => {
+            // window.location.href = 'login.html'
+            window.location.href = 'http://127.0.0.1:7050/login'
+        })
+        document.querySelector('.signup-bttn').addEventListener('click' || 'touch', () => {
+            window.location.href = 'http://127.0.0.1:7050/signup'
+            // window.location.href = 'signup.html'
+        })
+    }
 })
 
 function onclickcancelButton() {

@@ -50,5 +50,5 @@ function nextDescription() {
 }
 
 document.getElementById('signupLink').addEventListener('click' || 'touch', () => {
-    window.location.href = '../signup/signup.html'
+    window.location.href = 'signup.html'
 })

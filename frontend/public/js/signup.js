@@ -106,13 +106,13 @@ document.getElementById('signupButton').addEventListener('click' || 'touch', asy
         }
         document.getElementById('message').innerHTML = result.message
     }else if(result.statuz === 'Success') {
-        sessionStorage.setItem('userLogToken', result.token)
-        window.location.href = '../otp.html'
+        sessionStorage.setItem('userLogToken', JSON.stringify(result.token))
+        window.location.href = 'otp.html'
     }
 })
 
 document.getElementById('loginLink').addEventListener('click' || 'touch', () => {
-    window.location.href = '../login/login.html'
+    window.location.href = 'login.html'
     // document.querySelector('.signupinfo').style.transform = 'rotateY(360deg)'
     // document.querySelector('.signupinfo').classList.add('description')
 

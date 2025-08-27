@@ -30,22 +30,41 @@ numInputs.forEach((numInput, i)=> {
                 numInput.nextElementSibling.focus();
             }
         }
+        console.log(typeof numInput.value)
     })
 })
 
 submit()
 
 function submit() {
-    document.body.addEventListener('keyup', () => {
+    document.body.addEventListener('keyup', async () => {
         if(numInputs[0].value !== '' && numInputs[1].value !== '' && numInputs[2].value !== '' && numInputs[3].value !== '') {
             console.log('Submitted!!!')
+            const token = JSON.parse(sessionStorage('userLogToken'))
+            let otp = ''
+            numInputs.forEach((numInput) => {
+                otp += numInput.value
+            })
+            const response = await fetch('http://localhost:7050/signup/otp/verification', {
+                method: Post,
+                headers: {
+                    "Authorization": token
+                },
+                body: JSON.stringify({
+                    otp: otp
+                })
+            })
+            const result = await response.json()
+            if (result.statuz === 'Success') {
+                window.location.href = 'home.html';
+            }
         }
     })
     
 }
 
-setInterval(() => {
-    if(seconds.innerHTML === '00') {
+const intervalId = setInterval(() => {
+    if(seconds.innerHTML == '00' || sec == 0) {
         sec = 59;
         min -= 1
         seconds.innerHTML = sec
@@ -59,3 +78,8 @@ setInterval(() => {
         }
     }
 }, 1000)
+
+setTimeout(() => {
+    clearInterval(intervalId)
+    document.querySelector('.resend').innerHTML = "Resend OTP"
+}, 120000)

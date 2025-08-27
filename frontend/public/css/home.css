@@ -93,6 +93,7 @@ header div img{
     box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.25);
     background-color: #243045;
     color: white ;
+    overflow: hidden;
 }
 .cancel{
     display: flex;
@@ -120,9 +121,10 @@ footer{
     height: 150px;
 }
 .logo{
-    width: 60%;
+    width: 40%;
     margin-top: 5%;
     /* height: 100%; */
+    animation: appearLeft 0.5s;
 }
 .top{
     display: flex;
@@ -154,11 +156,25 @@ footer{
     background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
     font-weight: bold;
     color: white;
+    animation: appearLeft 0.5s;
+}
+.signup-bttn:hover{
+    background: #243045;
+    border-color: #BD53ED;
+    border-style: solid;
+    border-width: 5px;
 }
 .login-bttn{
     background: white;
     font-weight: bolder;
     color: #BD53ED;
+    animation: appearRight 0.5s;
+}
+.login-bttn:hover{
+    background: transparent;
+    border-color: white;
+    border-style: solid;
+    border-width: 5px;
 }
 .info-div{
     display: flex;
@@ -169,6 +185,7 @@ footer{
     font-size: 1.5rem;
     margin-left: 5%;
     margin-right: 5%;
+    animation: appearRight 0.5s;
 }
 .faded {
     filter: grayscale(70%);
@@ -210,4 +227,12 @@ footer{
     100%{
         width: 0%;
     }
+}
+@keyframes appearLeft {
+    from{ transform: translateX(-100%);}
+    to{ transform: translateX(0px);}
+}
+@keyframes appearRight {
+    from{ transform: translateX(100%);}
+    to{ transform: translateX(0px);}
 }
