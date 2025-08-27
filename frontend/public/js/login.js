@@ -49,6 +49,23 @@ function nextDescription() {
     })
 }
 
+document.getElementById('loginBttn').addEventListener('click', () => {
+    console.log('clicked')
+    const email = document.getElementById('emailInput').value
+    const password = document.getElementById('passwordInput').value
+    console.log(email, password)
+    fetch('http://localhost:7050/login', {
+        method: 'Post',
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    })
+})
+
 document.getElementById('signupLink').addEventListener('click' || 'touch', () => {
-    window.location.href = 'signup.html'
+    window.location.href = 'http://localhost:7050/signup'
 })

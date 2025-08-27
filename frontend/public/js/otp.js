@@ -30,6 +30,7 @@ numInputs.forEach((numInput, i)=> {
                 numInput.nextElementSibling.focus();
             }
         }
+        submit()
         console.log(typeof numInput.value)
     })
 })
@@ -46,18 +47,15 @@ function submit() {
                 otp += numInput.value
             })
             const response = await fetch('http://localhost:7050/signup/otp/verification', {
-                method: Post,
+                method: 'Post',
                 headers: {
-                    "Authorization": token
+                    "content-type": "application/json"
                 },
                 body: JSON.stringify({
                     otp: otp
                 })
             })
             const result = await response.json()
-            if (result.statuz === 'Success') {
-                window.location.href = 'home.html';
-            }
         }
     })
     
@@ -81,5 +79,8 @@ const intervalId = setInterval(() => {
 
 setTimeout(() => {
     clearInterval(intervalId)
-    document.querySelector('.resend').innerHTML = "Resend OTP"
+    document.querySelector('.resend').innerHTML = `Didn't recieve OTP, <span class="resend-link">Resend</span>`
+    document.querySelector('.resend-link').addEventListener('click', () => {
+        fetch('http://localhost:7050/signup/otp/resend');
+    })
 }, 120000)

@@ -24,7 +24,7 @@ body{
     background-size: 200px;
     padding-top: 200px;
     padding: 0px;
-    font-family: 'Poppin', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 body, html{
     height: 100%;
@@ -69,7 +69,7 @@ body, html{
     flex-direction: column;
     background-color: #243045;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.25);
-    padding: 2% 5% 5% 5%;
+    padding: 1% 5% 2% 5%;
     margin-top: 4%;
     transition: all 0.5s;
     position: relative;
@@ -80,11 +80,14 @@ body, html{
     height: 35px;
     margin-bottom: 10%;
 }
+.conf-form-group{
+    margin-bottom: 4%;
+}
 .form-group input{
     width: 90%;
     border: none;
     border-bottom-style: solid;
-    border-bottom-width: 2px;
+    border-bottom-width: 3px;
     border-color: #BD53ED;
     border-radius: 5px;
     height: 100%;
@@ -125,18 +128,17 @@ body, html{
     font-size: 0.7rem;
     background: transparent;
 }
-.signupinfo div:nth-child(11){
+.last{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 5%;
 }
 .choice{
     width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-top: 2%;
     color: white;
 }
@@ -147,7 +149,7 @@ body, html{
 }
 .signup-button{
     border: none;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     padding: 1%;
     background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
     width: 50%;
@@ -161,8 +163,9 @@ body, html{
 .message{
     color: red;
     text-align: center;
-    height: 10px;
-    font-size: calc(1.5vw);
+    height: 27px;
+    font-size: 1.2rem;
+    margin-bottom: 2%;
 }
 .quizzlyIcon{
     margin-top: 3%;

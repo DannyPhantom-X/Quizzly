@@ -16,7 +16,7 @@ app.use(cookieParser())
 app.use(cors())
 app.use(express.json())
 console.log(__dirname)
-app.use('/public', express.static(path.join(__dirname, '../frontend/public')))
+app.use('/public/', express.static(path.join(__dirname, '../frontend/public')))
 const usersSchema = new mongoose.Schema({
     _id: {
             type: String,
@@ -64,10 +64,13 @@ app.get('/signup', (req, res) => {
 app.get('/login', async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/login.html'))
 })
-app.get('/createquiz', () => {
+app.get('/createquiz', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/createquiz.html'))
 })
-app.get('/signup/otp', verifyToken ,async (req, res) => {
+app.get('/createquiz/ques&ans', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/createquiz-ques-ans.html'))
+})
+app.get('/signup/otp', verifyToken,async (req, res) => {
     const recordUser = await usersCollection.findOne({_id: req.user.uid})
     if(recordUser){
         if(!recordUser.verified){
@@ -76,10 +79,10 @@ app.get('/signup/otp', verifyToken ,async (req, res) => {
         }
         res.redirect('/')
     }
+    res.sendFile(path.join(__dirname, '../frontend/otp.html'))
 })
 app.post('/signup', async (req, res) => {
     const existingToken = req.cookies.token
-    // if()
     const {surname, firstname, email, password, confirmPassword} = req.body
     console.log(req.body)
     if (surname === '') {
@@ -115,7 +118,7 @@ app.post('/signup', async (req, res) => {
     }
     if(password !== confirmPassword) {
         res.json({
-            stauz: 'failed',
+            statuz: 'failed',
             reason: 'confirmpassword',
             message: 'Password and Confim Password are not equal'       
         })
@@ -124,10 +127,11 @@ app.post('/signup', async (req, res) => {
     const exists = await usersCollection.findOne({email: email})
     if (exists != null) {
         res.json({
-            stauz: 'failed',
+            statuz: 'failed',
             reason: 'email exists',
             message: 'Email already exists'
         })
+        console.log('already failed')
         return;
     }
     const hashedpassword = await bcrypt.hash(password, 10)
@@ -147,14 +151,14 @@ app.post('/signup', async (req, res) => {
     }, process.env.SECRET, {expiresIn: '1h'});
     console.log(token);
     setTimeout(async () => {
-        await sendOTP(newuser._id, newuser.email)
-        res.cookie('token', token, {
+        await sendOTP(newuser._id, newuser.email);
+        await res.cookie('token', token, {
             httpOnly: true,
             secure: false,
             maxAge: 1000 * 60 *60
         })
+        res.redirect('/signup/otp')
     }, 2000)
-    res.json({statuz: 'Success'})
     
 })
 
@@ -182,7 +186,7 @@ app.post('/signup/otp/verification', verifyToken,async (req, res) => {
     }
 })
 
-app.post('/signup/otp/resend', verifyToken,async(req, res) => {
+app.get('/signup/otp/resend', verifyToken,async(req, res) => {
     const usersexists = await usersCollection.findOne({_id: req.user.uid})
     console.log(usersexists)
     if(usersexists !== null) {
@@ -208,13 +212,15 @@ app.delete('/delete', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password} = req.body
-    const recordUser = await usersCollection.findOne({email:email})
+    console.log(email)
+    const recordUser = await usersCollection.findOne( {email: email} )
     if(recordUser === null) {
         res.json({
             statuz: 'failed',
             reason: 'wrong email',
             message: 'This is Email is invalid'
         })
+        console.log('wrong email')
         return;
     }else{
         if (!recordUser.verified) {
@@ -223,28 +229,34 @@ app.post('/login', async (req, res) => {
                 reason: 'unverified',
                 message: 'This account has not been verified'
             })
-            return
+            console.log('unverified')
+            return;
         }
         const isValid = await bcrypt.compare(password, recordUser.password)
+        console.log(isValid)
         if(isValid) {
-            const token = jwt.sign({
+            const token = await jwt.sign({
                     uid: recordUser._id,
                     surname: recordUser.surname,
                     firstname: recordUser.firstname,
                     email: recordUser.email
                 }, process.env.SECRET, {expiresIn: '1h'})
-            res.cookie('token', token, {
-                httpOnly: true,
-                secure: false,
-                maxAge: 1000*60*60
-            })
-            res.redirect('/')
+                console.log(token)
+                console.log('logged in')
+            // res.cookie('token', token, {
+            //     httpOnly: true,
+            //     secure: false,
+            //     maxAge: 1000*60*60
+            // })
+            res.redirect('http://localhost:7050/')
+            return;
         }else{
             res.json({
                 statuz: 'failed',
                 reason: 'incorrect password',
                 message: 'This password is incorrect'
             })
+            console.log('incorrect password')
         }
     }
 })
@@ -258,9 +270,10 @@ async function sendOTP(id, email) {
         subject: 'Quizzly OTP Verification',
         html: `<b><p style="font-size: 1.5rem; color: #0f172a;">Hi,</p>
                 <p style="font-size: 1.5rem; color: #0f172a;">Please use the OTP code below to complete your account setup</p>
-                <p>${otp}</p> </b>`
+                <p style="font-size: 1.5rem; color: #BD53ED">${otp}</p> </b>`
     };
-    transport.sendMail(mailOptions, (err, info) => {
+    console.log('Mail Time')
+    await transport.sendMail(mailOptions, (err, info) => {
       if (err) {
         console.error("Error:", err);
       } else {
@@ -292,7 +305,7 @@ async function verifyToken(req, res, next) {
 async function connect() {
     await quizzlyuriconnect;
     console.log('connected to db')
-    app.listen(7050, '127.0.0.1',() => {console.log('pipe conccefte')})
+    app.listen(7050 ,() => {console.log('pipe conccefte')})
 }
 
 connect()

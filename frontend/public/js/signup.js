@@ -79,40 +79,32 @@ document.getElementById('signupButton').addEventListener('click' || 'touch', asy
     if (result.statuz === 'failed') {
         if (result.reason === 'surname') {
             Object.assign(surnameInput.style, {
-                borderWidth: '2px',
                 borderColor: 'red'
             })
         }else if(result.reason === 'firstname'){
             Object.assign(firstnameInput.style, {
-                borderWidth: '2px',
                 borderColor: 'red'
             })
         }
         else if(result.reason === 'email') {
             Object.assign(emailInput.style, {
-                borderWidth: '2px',
                 borderColor: 'red',
             })
         }else if(result.reason === 'password') {
             Object.assign(passwordInput.style, {
-                borderWidth: '2px',
                 borderColor: 'red',
             })
         }else if(result.reason === 'confirmpassword') {
             Object.assign(confirmPasswordInput.style, {
-                borderWidth: '2px',
                 borderColor: 'red'
             })
         }
         document.getElementById('message').innerHTML = result.message
-    }else if(result.statuz === 'Success') {
-        sessionStorage.setItem('userLogToken', JSON.stringify(result.token))
-        window.location.href = 'otp.html'
     }
 })
 
 document.getElementById('loginLink').addEventListener('click' || 'touch', () => {
-    window.location.href = 'login.html'
+    window.location.href = '/login'
     // document.querySelector('.signupinfo').style.transform = 'rotateY(360deg)'
     // document.querySelector('.signupinfo').classList.add('description')
 
@@ -124,7 +116,7 @@ function loadScreen(param) {
     if (param === 'add') {
         document.querySelector('.body').classList.add('faded')
         document.querySelector('.load-screen').classList.add('load-screen-style')
-        document.querySelector('.load-screen-style').innerHTML = '<div class="image-div"><img src="../resources/quizzlyIcon.png"></div>'
+        document.querySelector('.load-screen-style').innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
     }else if( param === 'remove') {
         document.querySelector('.body').classList.remove('faded')
     document.querySelector('.load-screen').classList.remove('load-screen-style')
