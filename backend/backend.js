@@ -15,6 +15,7 @@ const app = express()
 app.use(cookieParser())
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true}))
 console.log(__dirname)
 app.use('/public/', express.static(path.join(__dirname, '../frontend/public')))
 const usersSchema = new mongoose.Schema({
@@ -56,33 +57,68 @@ const transport = nodemailer.createTransport({
     }
 })
 app.get('/', async (req, res) => {
+    const token = req.cookies.token
+    console.log(token)
     res.sendFile(path.join(__dirname, '../frontend/home.html'))
 })
 app.get('/signup', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/signup.html') )
+    if(req.user === 'tokenissue' || req.user === undefined || req.user === null) {
+        res.sendFile(path.join(__dirname, '../frontend/signup.html'))
+        }else{
+            if(req.user.verified) {
+                res.redirect('/')
+            }
+    }
 })
-app.get('/login', async (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/login.html'))
+app.get('/login', verifyToken,async (req, res) => {
+    if(req.user === 'tokenissue' || req.user === undefined || req.user === null) {
+        res.sendFile(path.join(__dirname, '../frontend/login.html'))
+        }else{
+            if(req.user.verified) {
+                res.redirect('/')
+            }else{
+                res.redirect('/signup/otp')
+            }
+    }
 })
-app.get('/createquiz', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/createquiz.html'))
+app.get('/createquiz', verifyToken,async (req, res) => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        res.redirect('/')
+        return;
+    }
+    if(req.user.verified) {
+        res.sendFile(path.join(__dirname, '../frontend/createquiz.html'))
+    }else{
+        res.redirect('/signup/otp')
+    }
 })
-app.get('/createquiz/ques&ans', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/createquiz-ques-ans.html'))
+app.get('/createquiz/ques&ans', verifyToken,async (req, res) => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        res.redirect('/')
+        return;
+    }
+    const recordUser = await usersCollection.findOne({_id: req.user.id})
+    if(recordUser.verified) {
+        res.sendFile(path.join(__dirname, '../frontend/createquiz-ques-ans.html'))
+    }else{
+        res.redirect('/signup/otp')
+    }
+    
 })
 app.get('/signup/otp', verifyToken,async (req, res) => {
-    const recordUser = await usersCollection.findOne({_id: req.user.uid})
-    if(recordUser){
-        if(!recordUser.verified){
-            res.sendFile(path.join(__dirname, '../frontend/otp.html'))
-            return;
-        }
+    if(req.user === 'tokenissue' || req.user === null || req.user === undefined){
         res.redirect('/')
     }
-    res.sendFile(path.join(__dirname, '../frontend/otp.html'))
+    else{
+        if(!req.user.verified){
+            res.sendFile(path.join(__dirname, '../frontend/otp.html'))
+            return;            
+        }else{
+            res.redirect('/')
+        }    
+    }
 })
 app.post('/signup', async (req, res) => {
-    const existingToken = req.cookies.token
     const {surname, firstname, email, password, confirmPassword} = req.body
     console.log(req.body)
     if (surname === '') {
@@ -120,12 +156,12 @@ app.post('/signup', async (req, res) => {
         res.json({
             statuz: 'failed',
             reason: 'confirmpassword',
-            message: 'Password and Confim Password are not equal'       
+            message: 'Password is incorrect '       
         })
         return;
     }
     const exists = await usersCollection.findOne({email: email})
-    if (exists != null) {
+    if (exists !== null) {
         res.json({
             statuz: 'failed',
             reason: 'email exists',
@@ -135,6 +171,7 @@ app.post('/signup', async (req, res) => {
         return;
     }
     const hashedpassword = await bcrypt.hash(password, 10)
+    console.log(hashedpassword)
     const newuser = await usersCollection.create({
         surname: surname,
         firstname: firstname,
@@ -148,22 +185,31 @@ app.post('/signup', async (req, res) => {
         surname: newuser.surname,
         firstname: newuser.firstname,
         email: newuser.email
-    }, process.env.SECRET, {expiresIn: '1h'});
+    }, process.env.SECRET, {expiresIn: '12h'});
     console.log(token);
     setTimeout(async () => {
         await sendOTP(newuser._id, newuser.email);
         await res.cookie('token', token, {
             httpOnly: true,
             secure: false,
-            maxAge: 1000 * 60 *60
+            maxAge: 12 * 1000 * 60 *60
         })
-        res.redirect('/signup/otp')
+        res.json({
+            statuz: 'success',
+            redirect: 'signup/otp'
+        })
     }, 2000)
     
 })
 
 app.post('/signup/otp/verification', verifyToken,async (req, res) => {
-    const recorduserotp = await otpCollection.findOne({ _id: req.user.uid })
+    if (req.user === 'tokenissues' && req.user === undefined && req.user === null) {
+        if(!req.user.verified) {
+            res.redirect('/')
+            return;
+        }
+    }
+    const recorduserotp = await otpCollection.findOne({ _id: req.user.id })
     console.log(recorduserotp)
     const otpStats = await bcrypt.compare(req.body.otp, recorduserotp.otp)
     if (!otpStats) {
@@ -175,19 +221,30 @@ app.post('/signup/otp/verification', verifyToken,async (req, res) => {
         return;
     }
     if (Date.now() < recorduserotp.expiresin) {
-        await usersCollection.findOneAndUpdate({ _id: user.uid }, {verified: true})
-        res.redirect('/')
+        await usersCollection.findOneAndUpdate({ _id: req.user._id }, {verified: true})
+        res.json({
+            statuz: 'success',
+            redirect: '/',
+            names: {
+                surname: req.user.surname,
+                firstname: req.user.firstname
+            }
+        })
     }else{
         res.json({
             statuz: 'failed',
             reason: 'expired otp',
-            message: 'Expired OTP'
+            message: 'OTP has expired'
         })
-    }
+    }_
 })
 
 app.get('/signup/otp/resend', verifyToken,async(req, res) => {
-    const usersexists = await usersCollection.findOne({_id: req.user.uid})
+    if (req.user === 'tokenissues' || req.user === null || req.user === undefined) { 
+        res.redirect('/')
+        return;
+    }
+    const usersexists = await usersCollection.findOne({_id: req.user._id})
     console.log(usersexists)
     if(usersexists !== null) {
         if (usersexists.verified) { 
@@ -195,7 +252,7 @@ app.get('/signup/otp/resend', verifyToken,async(req, res) => {
             return;
             }
     }
-    await sendOTP(req.user.uid, user.email)
+    await sendOTP(req.user._id, req.user.email)
     res.send('Done')
 })
 
@@ -212,13 +269,20 @@ app.delete('/delete', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password} = req.body
-    console.log(email)
+    if(email === '' || email.indexOf('@') < 1 || email.lastIndexOf('.') < email.indexOf('@') ) {
+        res.json({
+            statuz: 'failed',
+            reason: 'email',
+            message: 'Provide a valid Email'
+        })
+        return;
+    }
     const recordUser = await usersCollection.findOne( {email: email} )
     if(recordUser === null) {
         res.json({
             statuz: 'failed',
             reason: 'wrong email',
-            message: 'This is Email is invalid'
+            message: 'Provide a valid'
         })
         console.log('wrong email')
         return;
@@ -240,21 +304,28 @@ app.post('/login', async (req, res) => {
                     surname: recordUser.surname,
                     firstname: recordUser.firstname,
                     email: recordUser.email
-                }, process.env.SECRET, {expiresIn: '1h'})
+                }, process.env.SECRET, {expiresIn: '12h'})
                 console.log(token)
                 console.log('logged in')
-            // res.cookie('token', token, {
-            //     httpOnly: true,
-            //     secure: false,
-            //     maxAge: 1000*60*60
-            // })
-            res.redirect('http://localhost:7050/')
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 12*1000*60*60
+            })
+            res.json({
+                statuz: 'success',
+                redirect: '/',
+                names: {
+                    surname: recordUser.surname,
+                    firstname: recordUser.firstname
+                }
+            })
             return;
         }else{
             res.json({
                 statuz: 'failed',
                 reason: 'incorrect password',
-                message: 'This password is incorrect'
+                message: 'Password is incorrect'
             })
             console.log('incorrect password')
         }
@@ -292,20 +363,23 @@ async function verifyToken(req, res, next) {
     if (token) {
         try{
             const userPayload = await jwt.verify(token, process.env.SECRET)
-            req.user = userPayload;
+            const recordUser  = await usersCollection.findOne({_id: userPayload.uid})
+            req.user = recordUser;
             next()
         }catch (err){
-            res.redirect('/login')
+            req.user = 'tokenissue'
+            next()
         } 
     }else{
-        res.redirect('/login')
+        req.user = 'tokenissue'
+        next()
     }
     
 }
 async function connect() {
     await quizzlyuriconnect;
     console.log('connected to db')
-    app.listen(7050 ,() => {console.log('pipe conccefte')})
+    app.listen(7050, 'localhost',() => {console.log('pipe conccefte')})
 }
 
 connect()

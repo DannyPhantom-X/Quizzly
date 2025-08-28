@@ -58,8 +58,8 @@ document.getElementById('takeQuiz').addEventListener('click' || 'touch', () => {
 })
 
 document.getElementById('createQuiz').addEventListener('click', () => {
-    if (sessionStorage.getItem('userLogToken')) {
-        window.location.href = 'createQuiz/createQuiz.html'
+    if (sessionStorage.getItem('user')) {
+        window.location.href = '/createQuiz'
     }else{
         loginSignupInfo.classList.add('login-signup-info-style');
         loginSignupInfo.innerHTML = loadOut;
@@ -70,10 +70,10 @@ document.getElementById('createQuiz').addEventListener('click', () => {
         onclickcancelButton()
         document.querySelector('.login-bttn').addEventListener('click' || 'touch', () => {
             // window.location.href = 'login.html'
-            window.location.href = 'http://127.0.0.1:7050/login'
+            window.location.href = 'http://localhost:7050/login'
         })
         document.querySelector('.signup-bttn').addEventListener('click' || 'touch', () => {
-            window.location.href = 'http://127.0.0.1:7050/signup'
+            window.location.href = 'http://localhost:7050/signup'
             // window.location.href = 'signup.html'
         })
     }
@@ -89,3 +89,11 @@ function onclickcancelButton() {
         document.querySelector('footer').classList.remove('faded')
     })
 }
+
+if(sessionStorage.getItem('user')) {
+    console.log('alright')
+    const user  = JSON.parse(sessionStorage.getItem('user'))
+    console.log(user)
+    document.querySelector('.last-div').innerHTML = user.surname
+    document.querySelector('.last-div').style.cssText = 'color: #BD53ED; font-size: 1.2rem; font-weight: bold;'
+} 

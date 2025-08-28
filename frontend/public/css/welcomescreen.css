@@ -14,7 +14,7 @@
 }
 
 .welcome-div{
-    width: 310px;
+    width: 330px;
     height: 300px;
     display: flex;
     flex-direction: column;
@@ -65,9 +65,9 @@
     transform: translateY(-100px);
 }
 @keyframes firstlineintro {
-    50%{ transform: translateX(60px); }
+    50%{ transform: translateX(70px); }
     90%{ transform: translateX(0px);}
-    100%{ transform: translateX(30px); }
+    100%{ transform: translateX(20px); }
 }
 @keyframes arrival {
     to{

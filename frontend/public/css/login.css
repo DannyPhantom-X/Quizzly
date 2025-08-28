@@ -120,6 +120,7 @@ body{
     margin-top: 4%;
     height: 20px;
     text-align: center;
+    color: red;
 }
 .login-button{
     border: none;

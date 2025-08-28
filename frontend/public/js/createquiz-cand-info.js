@@ -45,7 +45,7 @@ function candInfoJs () {
             }
         })
         if (status) {
-            window.location.href = 'createquiz-ques-ans.html'
+            window.location.href = '/createquiz-ques-ans'
         }
         
     })

@@ -14,14 +14,12 @@ const secondsInput = document.getElementById('secondsInput')
 
 backQuizInfo()
 if (!optionsCheckbox.checked) {
-    console.log('not checked')
     document.querySelectorAll('.fade').forEach((faded) => {
         faded.classList.add('faded')
     })
 }
 optionsCheckbox.addEventListener('click' || 'touch', () => {
     if (!optionsCheckbox.checked) {
-        console.log('not checked')
         document.querySelectorAll('.fade').forEach((faded) => {
             faded.classList.add('faded')
         })
@@ -43,7 +41,6 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
     let options;
     let randOptions;
     let instructions;
-    console.log('next -button')
     if (!subjectInput.value) {
         subjectInput.style.borderColor = 'red';
         return;
@@ -96,6 +93,6 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
 function backQuizInfo() {
     document.getElementById('backBttnQuizInfo').addEventListener('click' || 'touch', () => {
         console.log('clicked')
-        window.location.href = 'home.html';
+        window.location.href = '/';
     })
 }

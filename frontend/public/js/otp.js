@@ -41,7 +41,6 @@ function submit() {
     document.body.addEventListener('keyup', async () => {
         if(numInputs[0].value !== '' && numInputs[1].value !== '' && numInputs[2].value !== '' && numInputs[3].value !== '') {
             console.log('Submitted!!!')
-            const token = JSON.parse(sessionStorage('userLogToken'))
             let otp = ''
             numInputs.forEach((numInput) => {
                 otp += numInput.value
@@ -56,6 +55,12 @@ function submit() {
                 })
             })
             const result = await response.json()
+            if(result.statuz === 'failed') {
+                document.querySelector('.message').innerHTML = result.message
+            }else if(result.statuz === 'success') {
+                sessionStorage.setItem('user', JSON.stringify(result.names))
+                window.location.href= '/'
+            }
         }
     })
     
@@ -81,6 +86,11 @@ setTimeout(() => {
     clearInterval(intervalId)
     document.querySelector('.resend').innerHTML = `Didn't recieve OTP, <span class="resend-link">Resend</span>`
     document.querySelector('.resend-link').addEventListener('click', () => {
-        fetch('http://localhost:7050/signup/otp/resend');
+        fetch('http://localhost:7050/signup/otp/resend', {
+            method: 'Post',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        });
     })
 }, 120000)

@@ -49,12 +49,12 @@ function nextDescription() {
     })
 }
 
-document.getElementById('loginBttn').addEventListener('click', () => {
+document.getElementById('loginBttn').addEventListener('click', async () => {
     console.log('clicked')
     const email = document.getElementById('emailInput').value
     const password = document.getElementById('passwordInput').value
     console.log(email, password)
-    fetch('http://localhost:7050/login', {
+    const response = await fetch('http://localhost:7050/login', {
         method: 'Post',
         headers: {
             "content-type": "application/json"
@@ -64,6 +64,13 @@ document.getElementById('loginBttn').addEventListener('click', () => {
             password: password
         })
     })
+    const result = await response.json()
+    if (result.statuz === 'failed') {
+        document.querySelector('.message').innerHTML = result.message
+    }else if(result.statuz === 'success') {
+        window.location.href = result.redirect
+        sessionStorage.setItem('user', JSON.stringify(result.names))
+    }
 })
 
 document.getElementById('signupLink').addEventListener('click' || 'touch', () => {
