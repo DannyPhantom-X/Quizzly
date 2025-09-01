@@ -12,7 +12,6 @@ body{
     justify-content: center;
     background-color: #0b1220;
     position: relative;
-    
 }
 textarea{
     outline: none;
@@ -57,7 +56,12 @@ header div:nth-child(2) {
     flex-direction: row;
     overflow: hidden;
     border-radius: 15px;
-    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+    /* background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%); */
+    background: linear-gradient(to bottom right, #5396ED, #0f172a);
+    /* background-color: #243045;
+    backdrop-filter: blur(20px); 
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);  */
     box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     max-width: 450px;
     width: 70%;
@@ -102,6 +106,8 @@ header div:nth-child(2) {
     display: grid;
     grid-template-columns: 10% 85%;
     column-gap: 5%;
+    justify-content: center;
+    align-items: center;
 }
 .questions-label{
     margin-bottom: 2%;
@@ -162,6 +168,22 @@ header div:nth-child(2) {
     filter: blur(80%);
     opacity: 0.3;
     pointer-events: none;
+}
+input[type="radio"] {
+    appearance: none; /* Remove browser default */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border-width: 3px;
+    cursor: pointer;
+    border-color: #0f172a;
+    border-style: solid;
+    border-radius: 50px;
+}
+input[type="radio"]:checked {
+  background: #BD53ED;
 }
 @media (max-width: 800px) {
     .next-button{

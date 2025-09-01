@@ -9,23 +9,21 @@ body{
     background-color: #0f172a;
 }
 .input-id{
-    border-color: black;
-    border-style: solid;
+    border: none;
     outline: none;
-    border-width: 1px;
-    border-radius: 5px;
-    margin-bottom: 50px;
-    width: 200px;
-    height: 30px;
+    border-radius: 50px;
+    margin-bottom: 30px;
+    width: 350px;
+    height: 40px;
     text-align: center;
     font-size: large;
 }
 .submit{
     border: none;
-    border-radius: 10px;
-    background-color: #BD53ED;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
     color: white;
-    width: 200px;
+    width: 350px;
     font-weight: bolder;
     height: 50px;
     font-size: x-large;

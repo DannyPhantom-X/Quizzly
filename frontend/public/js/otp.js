@@ -45,6 +45,7 @@ function submit() {
             numInputs.forEach((numInput) => {
                 otp += numInput.value
             })
+            loadScreen('add')
             const response = await fetch('http://localhost:7050/signup/otp/verification', {
                 method: 'Post',
                 headers: {
@@ -55,9 +56,19 @@ function submit() {
                 })
             })
             const result = await response.json()
+            await delay(3000)
             if(result.statuz === 'failed') {
+                loadScreen('remove')
+                numInputs.forEach((numInput) => {
+                    numInput.value = ''
+                    numInput.style.animation = 'wrongShake 0.5s'
+                    numInput.style.fillmode = 'forwards'
+                })
+                document.querySelector('.message').innerHTML = result.message
+                await delay(1000)
                 document.querySelector('.message').innerHTML = result.message
             }else if(result.statuz === 'success') {
+                loadScreen('remove')
                 sessionStorage.setItem('user', JSON.stringify(result.names))
                 window.location.href= '/'
             }
@@ -84,9 +95,10 @@ const intervalId = setInterval(() => {
 
 setTimeout(() => {
     clearInterval(intervalId)
-    document.querySelector('.resend').innerHTML = `Didn't recieve OTP, <span class="resend-link">Resend</span>`
-    document.querySelector('.resend-link').addEventListener('click', () => {
-        fetch('http://localhost:7050/signup/otp/resend', {
+    document.querySelector('.resend').innerHTML = `Didn't recieve OTP, <span class="resend-link"> Resend</span>`
+    document.querySelector('.resend-link').addEventListener('click', async () => {
+        console.log('resend')
+        await fetch('http://localhost:7050/signup/otp/resend', {
             method: 'Post',
             headers: {
                 'Content-type': 'application/json'
@@ -94,3 +106,22 @@ setTimeout(() => {
         });
     })
 }, 120000)
+
+
+function loadScreen(param) {
+    if (param === 'add') {
+        document.querySelector('.otp-container').classList.add('faded')
+        document.querySelector('.load-screen').classList.add('load-screen-style')
+        document.querySelector('.load-screen-style').innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
+    }else if( param === 'remove') {
+        document.querySelector('.otp-container').classList.remove('faded')
+    document.querySelector('.load-screen').classList.remove('load-screen-style')
+    document.querySelector('.load-screen').innerHTML = ''
+    }
+
+}
+
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

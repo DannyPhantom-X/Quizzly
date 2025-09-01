@@ -54,6 +54,7 @@ document.getElementById('loginBttn').addEventListener('click', async () => {
     const email = document.getElementById('emailInput').value
     const password = document.getElementById('passwordInput').value
     console.log(email, password)
+    loadScreen('add')
     const response = await fetch('http://localhost:7050/login', {
         method: 'Post',
         headers: {
@@ -65,9 +66,13 @@ document.getElementById('loginBttn').addEventListener('click', async () => {
         })
     })
     const result = await response.json()
+    await delay(3000)
+    console.log('delayed')
     if (result.statuz === 'failed') {
+        loadScreen('remove')
         document.querySelector('.message').innerHTML = result.message
     }else if(result.statuz === 'success') {
+        loadScreen('remove')
         window.location.href = result.redirect
         sessionStorage.setItem('user', JSON.stringify(result.names))
     }
@@ -76,3 +81,21 @@ document.getElementById('loginBttn').addEventListener('click', async () => {
 document.getElementById('signupLink').addEventListener('click' || 'touch', () => {
     window.location.href = 'http://localhost:7050/signup'
 })
+
+function loadScreen(param) {
+    if (param === 'add') {
+        document.querySelector('.body').classList.add('faded')
+        document.querySelector('.load-screen').classList.add('load-screen-style')
+        document.querySelector('.load-screen-style').innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
+    }else if( param === 'remove') {
+        document.querySelector('.body').classList.remove('faded')
+    document.querySelector('.load-screen').classList.remove('load-screen-style')
+    document.querySelector('.load-screen').innerHTML = ''
+    }
+
+}
+
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

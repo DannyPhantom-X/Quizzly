@@ -75,6 +75,7 @@ document.getElementById('signupButton').addEventListener('click' || 'touch', asy
     })
     const result = await response.json()
     console.log(result)
+    await delay(3000)
     loadScreen('remove')
     if (result.statuz === 'failed') {
         if (result.reason === 'surname') {
@@ -121,4 +122,7 @@ function loadScreen(param) {
     document.querySelector('.load-screen').innerHTML = ''
     }
 
+}
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

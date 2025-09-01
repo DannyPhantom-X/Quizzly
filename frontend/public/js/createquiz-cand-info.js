@@ -30,6 +30,7 @@ function candInfoJs () {
         
         
     })
+    let candInfo = []
     backCandInfo()
     document.querySelector('.next-button').addEventListener('click' || 'touch', () => {
         let status = true
@@ -37,15 +38,21 @@ function candInfoJs () {
             console.log(inp)
             if (!inp.value) {
                 inp.style.borderColor = '#DC2626'
+                inp.style.borderWidth = '2px'
                 inp.style.borderRadius = '5px'
                 status = false
                 setTimeout(() => {
                     inp.style.borderColor = 'gray'
+                    inp.style.borderWidth = '1px'
+                    inp.style.borderRadius = '10px'
                 }, 5000)
+            }else{
+                candInfo.push(inp.value)
             }
         })
         if (status) {
-            window.location.href = '/createquiz-ques-ans'
+            sessionStorage.setItem('candInfo', JSON.stringify(candInfo))
+            window.location.href = '/createquiz/ques&ans'
         }
         
     })

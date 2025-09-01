@@ -64,12 +64,12 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
         interval = `${hourInput.value}:${minutesInput.value}:${secondsInput.value}`;
         randQues = document.getElementById('randQuesInput').checked
         console.log(randQues)
+        options = optionsCheckbox.checked
         noOptions = noOptionsInput.value
         randOptions = randOptionsInput.checked
-        options = optionsCheckbox.checked
         instructions = instructionsInput.value
         console.log(instructions)
-        sessionStorage.setItem('quizInfo', JSON.stringify({subject, interval, noQues, randQues, noOptions, randOptions, instructions, options}))
+        sessionStorage.setItem('quizInfo', JSON.stringify({subject, interval, noQues, randQues, options, noOptions, randOptions, instructions}))
     }
     else{
         subject = subjectInput.value;
@@ -78,8 +78,10 @@ document.querySelector('.next-btn').addEventListener('click' || 'touch', () => {
         randQues = document.getElementById('randQuesInput').checked
         console.log(randQues)
         options = optionsCheckbox.checked
+        noOptions = 0
+        randOptions = false
         instructions = instructionsInput.value
-        sessionStorage.setItem('quizInfo', JSON.stringify({ subject, interval, noQues, randQues, instructions, options}))
+        sessionStorage.setItem('quizInfo', JSON.stringify({ subject, interval, noQues, randQues, options, noOptions, randOptions, instructions}))
     }
     console.log(JSON.parse(sessionStorage.getItem('quizInfo')));
     document.querySelector('.form-card-inner').style.transform = 'rotateY(180deg)';
@@ -96,3 +98,26 @@ function backQuizInfo() {
         window.location.href = '/';
     })
 }
+document.querySelectorAll('.durationInputs').forEach((dI) => {
+    console.log('for')
+    dI.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace') {
+            e.preventDefault()
+            dI.value = 0 + dI.value[0]
+        }
+        if(e.key >= 0 && e.key <= 9) {
+            e.preventDefault()
+            // dI.value[0] = dI.value[1]
+            dI.value = dI.value[1] + e.key;
+        }
+    })
+})
+
+noOptionsInput.addEventListener('keydown', (e) => {
+    if ((e.key > 5 && e.key <= 9 ) || e.key === 'e') {
+        e.preventDefault()
+    }
+    if(e.key >= 0 && e.key <= 9 && noOptionsInput.value != '') {
+        e.preventDefault()
+    }
+})

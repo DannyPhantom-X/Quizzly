@@ -1,6 +1,7 @@
 const nextButton = document.querySelector('.nextButton');
 const previousButton = document.getElementById('previousButton');
 const quizInfo = JSON.parse(sessionStorage.getItem('quizInfo'));
+const candInfo = JSON.parse(sessionStorage.getItem('candInfo'))
 const questionNum = document.getElementById('questionNum');
 let num = 1
 let currentIndex = 0;
@@ -25,7 +26,7 @@ const zeroOptionLoadout = `<div class="qanda">
 
 `
 console.log('loading')
-if (quizInfo) {
+if (quizInfo && candInfo) {
     if (quizInfo.options) {
         for(let i = 1; i <= quizInfo.noQues; i++) {
             document.querySelector('.body').innerHTML += loadOut;

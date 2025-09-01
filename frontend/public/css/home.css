@@ -1,6 +1,7 @@
 body, html{
     font-family: 'Poppins', sans-serif;
     height: 100%;
+    width: 100%;
     padding: 0px;
     margin: 0px;
     padding: 0px;
@@ -47,6 +48,7 @@ header div:nth-child(4) {
     border-top-right-radius: 50px;
     font-size: 1rem;
     color: white;
+    cursor: pointer;
 }
 .input{
     padding-top: 10%;
@@ -72,6 +74,36 @@ header div:nth-child(4) {
     font-size: 18px;
     margin-top: 5%;
     cursor: pointer;
+}
+.beginning-page{
+    /* height: 95%; */
+    min-height: 90%;
+    width: 95%;
+    padding: 2.5%;
+    padding-top: 100px;
+    /* background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%); */
+    background: linear-gradient(to bottom, #BD53ED, #5396ED, #0f172a);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    color: white;
+}
+.left,.right{
+    /* margin-top: 100px; */
+    width: 100%;
+    /* background-color: blue; */
+}
+.right img{
+    width: 100%;
+}
+.headline{
+    font-size: 3rem;
+    font-weight: bolder;
+    margin-bottom: 10px;
+    color: #243045;
+
+}
+.subtext{
+    font-size: 1.5rem;
 }
 .site-info{
     overflow: hidden;
@@ -242,6 +274,9 @@ footer{
     }
     header div:nth-child(1) {
         padding-left: 20px;
+    }
+    .beginning-page{
+        grid-template-columns: 1fr;
     }
 }
 @keyframes typing{

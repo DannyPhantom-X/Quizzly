@@ -1,18 +1,14 @@
-/* .cand-body{
-    padding-bottom: 2%;
-    position: relative;
-} */
 input{
     outline: none;
 }
 header img{
-    width: 200px;
+    width: 150px;
     /* height: 100px; */
 }
 header{
     width: 100%;
     text-align: center;
-    padding-top: 10px;
+    padding-top: 20px;
     margin-bottom: 30px;
     position: fixed;
     top: 0px;   

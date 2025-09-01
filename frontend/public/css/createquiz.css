@@ -36,7 +36,7 @@ input[type=number]::-webkit-outer-spin-button {
 .quiz-info-form-card, .cand-info-form-card{
     position: absolute;
     transition: all 1s;    
-    color: black;
+    color: #0f172a;
     width: 95%;
     height: 100%;
     padding-left: 5%;

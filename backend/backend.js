@@ -5,12 +5,15 @@ const cors = require('cors')
 const { v4: uuidv4}  = require('uuid')
 const mongoose  = require('mongoose')
 const jwt = require('jsonwebtoken')
+const shortUuid = require('short-uuid')
 const cookieParser = require('cookie-parser')
 const path = require('path')
 require('dotenv').config()
 const quizzlyuri = process.env.QUIZZLYURI
+const quizzesuri = process.env.QUIZZESURI
 console.log(quizzlyuri)
 const quizzlyuriconnect = mongoose.createConnection(quizzlyuri)
+const quizzesuriconnect = mongoose.createConnection(quizzesuri)
 const app = express()
 app.use(cookieParser())
 app.use(cors())
@@ -21,7 +24,8 @@ app.use('/public/', express.static(path.join(__dirname, '../frontend/public')))
 const usersSchema = new mongoose.Schema({
     _id: {
             type: String,
-            default: uuidv4()
+            default: () => uuidv4()
+
         },
     surname: String,
     firstname: String,
@@ -34,6 +38,23 @@ const otpSchema = new mongoose.Schema({
     email: String,
     otp: String,
     expiresin: Number
+})
+const quizInfoSchema = new mongoose.Schema({
+    subject: String,
+    noQues: String,
+    duration: String,
+    randQues: Boolean,
+    options: Boolean,
+    noOptions: Number,
+    randOptions: Boolean,
+    instructions: String,
+    author: String,
+    createdAt: { type: Date, default: Date.now }
+})
+const candInfoSchema = new mongoose.Schema({
+    cand: [String],
+    author: String,
+    createdAt: { type: Date, default: Date.now }
 })
 const usersCollection = quizzlyuriconnect.model('users', usersSchema)
 const otpCollection = quizzlyuriconnect.model('otp', otpSchema)
@@ -118,6 +139,35 @@ app.get('/signup/otp', verifyToken,async (req, res) => {
         }    
     }
 })
+app.get('/takequiz', verifyToken, async (req, res) => {
+    if(req.user === 'tokenissue' || req.user === null || req.user === undefined){
+        res.redirect('/')
+    }
+    else{
+        if(req.user.verified){
+            res.sendFile(path.join(__dirname, '../frontend/takequiz.html'))
+            return;            
+        }else{
+            res.redirect('/')
+        }    
+    }
+})
+app.get('/api/currentuser', verifyToken, async (req, res) => {
+    console.log('reached')
+    if(req.user === 'tokenissue' || req.user === null || req.user === undefined){
+        res.json({
+            statuz: 'failed',
+            message: 'NO CURRENT USER ❌'            
+        })
+    }
+    else{
+        res.json({
+            statuz: 'success',
+            firstname: req.user.firstname,
+            surname: req.user.surname
+        })  
+    }
+})
 app.post('/signup', async (req, res) => {
     const {surname, firstname, email, password, confirmPassword} = req.body
     console.log(req.body)
@@ -156,7 +206,7 @@ app.post('/signup', async (req, res) => {
         res.json({
             statuz: 'failed',
             reason: 'confirmpassword',
-            message: 'Password is incorrect '       
+            message: 'Password is incorrect'       
         })
         return;
     }
@@ -187,19 +237,16 @@ app.post('/signup', async (req, res) => {
         email: newuser.email
     }, process.env.SECRET, {expiresIn: '12h'});
     console.log(token);
-    setTimeout(async () => {
-        await sendOTP(newuser._id, newuser.email);
-        await res.cookie('token', token, {
-            httpOnly: true,
-            secure: false,
-            maxAge: 12 * 1000 * 60 *60
-        })
-        res.json({
-            statuz: 'success',
-            redirect: 'signup/otp'
-        })
-    }, 2000)
-    
+    await sendOTP(newuser._id, newuser.email);
+    await res.cookie('token', token, {
+        httpOnly: true,
+        secure: false,
+        maxAge: 12 * 1000 * 60 *60
+    })
+    res.json({
+        statuz: 'success',
+        redirect: 'signup/otp'
+    })    
 })
 
 app.post('/signup/otp/verification', verifyToken,async (req, res) => {
@@ -222,6 +269,7 @@ app.post('/signup/otp/verification', verifyToken,async (req, res) => {
     }
     if (Date.now() < recorduserotp.expiresin) {
         await usersCollection.findOneAndUpdate({ _id: req.user._id }, {verified: true})
+        await otpCollection.findOneAndDelete({ _id: req.user._id })
         res.json({
             statuz: 'success',
             redirect: '/',
@@ -236,10 +284,10 @@ app.post('/signup/otp/verification', verifyToken,async (req, res) => {
             reason: 'expired otp',
             message: 'OTP has expired'
         })
-    }_
+    }
 })
 
-app.get('/signup/otp/resend', verifyToken,async(req, res) => {
+app.post('/signup/otp/resend', verifyToken,async(req, res) => {
     if (req.user === 'tokenissues' || req.user === null || req.user === undefined) { 
         res.redirect('/')
         return;
@@ -282,7 +330,7 @@ app.post('/login', async (req, res) => {
         res.json({
             statuz: 'failed',
             reason: 'wrong email',
-            message: 'Provide a valid'
+            message: 'Wrong Email'
         })
         console.log('wrong email')
         return;
@@ -332,16 +380,32 @@ app.post('/login', async (req, res) => {
     }
 })
 
+app.post('/createquiz/quizinfo', async () => {
+
+})
+app.post('/createquiz/candinfo', verifyToken,async () => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        res.redirect('/');
+        return;
+    }
+    if(req.user.verified) {
+        
+    }else{
+        res.redirect('/signup/otp');
+    }
+})
+app.post('/createquiz/ques&ans', async () => {})
 async function sendOTP(id, email) {
     console.log(id)
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`
     let mailOptions = {
-        from: 'Quizzly',
-        to: 'dtaiwo453@gmail.com',
+        from: 'quizzly@gmail.com',
+        to: email,
         subject: 'Quizzly OTP Verification',
         html: `<b><p style="font-size: 1.5rem; color: #0f172a;">Hi,</p>
-                <p style="font-size: 1.5rem; color: #0f172a;">Please use the OTP code below to complete your account setup</p>
-                <p style="font-size: 1.5rem; color: #BD53ED">${otp}</p> </b>`
+                <p style="font-size: 1.5rem; color: #0f172a;">Please use the OTP code below to complete the signup process</p>
+                <p style="font-size: 1.5rem; color: #BD53ED">${otp}</p> 
+                <p>This OTP will expire in 5 minutes</b>`
     };
     console.log('Mail Time')
     await transport.sendMail(mailOptions, (err, info) => {
@@ -355,7 +419,7 @@ async function sendOTP(id, email) {
     const exists = await otpCollection.findOne({ _id: id})
     const hashotp = await bcrypt.hash(otp, 10)
     if (exists !== null) {
-        await otpCollection.findOneAndUpdate( {_id: id}, {otp: hashotp} )
+        await otpCollection.findOneAndUpdate( {_id: id}, {otp: hashotp, expiresin: expires} )
     }else{ otpCollection.create({_id: id, email: email, otp: hashotp, expiresin: expires}) }        
 }
 async function verifyToken(req, res, next) {
@@ -378,8 +442,9 @@ async function verifyToken(req, res, next) {
 }
 async function connect() {
     await quizzlyuriconnect;
-    console.log('connected to db')
-    app.listen(7050, 'localhost',() => {console.log('pipe conccefte')})
+    await quizzesuriconnect;
+    console.log('connected to db');
+    app.listen(7050, 'localhost',() => {console.log('pipe conccefte')});
 }
 
 connect()
