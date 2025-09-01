@@ -39,21 +39,15 @@ const otpSchema = new mongoose.Schema({
     otp: String,
     expiresin: Number
 })
-const quizInfoSchema = new mongoose.Schema({
-    subject: String,
-    noQues: String,
-    duration: String,
-    randQues: Boolean,
-    options: Boolean,
-    noOptions: Number,
-    randOptions: Boolean,
-    instructions: String,
+const quizSchema = new mongoose.Schema({
+    quizInfo: Object,
+    candInfo: [String],
     author: String,
-    createdAt: { type: Date, default: Date.now }
-})
-const candInfoSchema = new mongoose.Schema({
-    cand: [String],
-    author: String,
+    questions: [{
+        questionText: String,
+        options: [String],
+        correctAnswer: String
+    }],
     createdAt: { type: Date, default: Date.now }
 })
 const usersCollection = quizzlyuriconnect.model('users', usersSchema)
