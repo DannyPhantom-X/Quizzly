@@ -3,6 +3,9 @@ const previousButton = document.getElementById('previousButton');
 const quizInfo = JSON.parse(sessionStorage.getItem('quizInfo'));
 const candInfo = JSON.parse(sessionStorage.getItem('candInfo'))
 const questionNum = document.getElementById('questionNum');
+const confirmDiv = document.querySelector('.confirm-div');
+const loadScreen = document.querySelector('.load-screen');
+let questions = []
 let num = 1
 let currentIndex = 0;
 console.log(quizInfo)
@@ -54,14 +57,7 @@ if (quizInfo && candInfo) {
     }
 }else{
     console.log('unable to connect')
-    document.body.innerHTML = `Unable to connect at this time........   Please suply Quiz info and Candidate info`;
-    Object.assign(document.body.style, {
-        textAlign: 'center',
-        color: 'red',
-        marginTop: '250px',
-        fontSize: '2.5rem'
-    })
-
+    bodyChangeDueTo('unfilled info')
 }
 
 function onclickNextButton() {
@@ -81,6 +77,9 @@ function onclickNextButton() {
 
 function onclickPreviousButton () {
     previousButton.addEventListener('click' || 'touch', () => {
+        if (currentIndex == (quizInfo.noQues - 1)) {
+            nextButton.removeEventListener('click' || 'touch', onClickProceed)
+        }
         currentIndex --;
         let offset = -currentIndex * 100;
         document.querySelectorAll('.qanda').forEach((qa) => {
@@ -104,9 +103,11 @@ function nextChecker() {
     if (currentIndex == (quizInfo.noQues - 1)) {
         // nextButton.classList.add('remove-button');
         // nextButton.classList.remove('nextButton');
-        // console.log(nextButton.classList);
-        // console.log('yooooo');
+        // const createBttn = document.querySelector('.remove-button');
+        console.log(nextButton.innerHTML)
+        console.log('yooooo');
         nextButton.removeEventListener('click' || 'touch', onclickNextButton)
+        nextButton.addEventListener('click' || 'touch', onClickProceed)
         nextButton.innerHTML = '<i class="fas fa-angle-double-right"></i>';
     }
     else{
@@ -116,3 +117,141 @@ function nextChecker() {
     }
 }
 
+async function onClickCreate() {
+    fade('remove')
+    confirmDiv.innerHTML = ''
+    confirmDiv.classList.remove('confirm-div-style')
+    loadScreen('add')
+    console.log('create')
+    loadScreen.classList.add('load-screen-style')
+    loadScreen.innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
+    const answerInput = document.querySelectorAll('.answerInput')
+    const optionInput = document.querySelectorAll('.options-input')
+    const questionInput = document.querySelectorAll('.questions-input')
+    if(quizInfo.options) {
+        questionInput.forEach((qI, i) => {
+            questions.push({
+                question: qI.value,
+                option: optionInput[i].value,
+                // answer: answerInput[i].value
+            })
+        })
+    }else {
+        questionInput.forEach((qI, i) => {
+            console.log(qI.value)
+            questions.push({
+                question: qI.value,
+                answer: answerInput[i].value
+            })
+        })
+        console.log(questions)
+    }
+    try{
+        const response = await fetch('/createquiz', {
+            method: 'Post',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                quizInfo: quizInfo,
+                candInfo: candInfo,
+                questions: questions
+            })
+        })
+        const result = await response.json()
+        if (result.statuz === 'success') {
+            console.log(result.message)
+            bodyChangeDueTo('quiz created', result.message)
+        }else {
+            console.log('unable')
+            bodyChangeDueTo('fetch error')
+        }
+    } catch{
+        console.log('error')
+    }
+}
+
+
+
+function onClickProceed() {
+    fade('add')
+    confirmDiv.classList.add('confirm-div-style')
+    confirmDiv.innerHTML = `
+            <button class="cancel-bttn">X</button>
+            <div class="confirm-text">You about to Create a Mathematics quiz with a duration of 2h 3m 0s</div>
+            <button class="create-bttn">Create</Proceed>
+    `
+    document.querySelector('.create-bttn').addEventListener('click' || 'touch', onClickCreate)
+    document.querySelector('.cancel-bttn').addEventListener('click' || 'touch', () => {
+        confirmDiv.classList.remove('confirm-div-style')
+        confirmDiv.innerHTML = '';
+        fade('remove')
+    })
+}
+
+
+function fade(param) {
+    if( param === 'add') {
+        document.querySelector('body').style.backgroundColor = 'rgba(15, 23, 42, 0.8)'
+        document.querySelectorAll('body *:not(.confirm-div)').forEach((el) => {
+            el.classList.add('faded')
+        })
+    }else if(param === 'remove') {
+        document.querySelector('body').style.backgroundColor = '#0f172a'
+        document.querySelectorAll('body *:not(.confirm-div)').forEach((el) => {
+            el.classList.remove('faded')
+        })
+    }
+}
+
+function loadScreen(param) {
+    if (param === 'add') {
+        document.querySelector('body').style.backgroundColor = 'rgba(15, 23, 42, 0.8)'
+        document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
+            el.classList.add('faded')
+        })
+        document.querySelector('.load-screen').classList.add('load-screen-style')
+        document.querySelector('.load-screen-style').innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
+    }else if( param === 'remove') {
+        document.querySelector('body').style.backgroundColor = '#0f172a'
+        document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
+            el.classList.remove('faded')
+        })
+        document.querySelector('.load-screen').classList.remove('load-screen-style')
+        document.querySelector('.load-screen').innerHTML = ''
+    }
+
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+function bodyChangeDueTo(param, param2) {
+    if (param === 'unfilled info') {
+        document.body.innerHTML = `Unable to connect at this time........   Please suply <a href='/createquiz'>Quiz info </a> and Candidate info`;
+        Object.assign(document.body.style, {
+            textAlign: 'center',
+            color: 'red',
+            marginTop: '250px',
+            fontSize: '2.5rem'
+        })
+    }else if(param === 'quiz created') {
+        document.querySelector('body').innerHTML = `Quiz has successfully been created, your quiz id is <b> ${param2}`
+        Object.assign(document.body.style, {
+            textAlign: 'center',
+            color: 'white',
+            marginTop: '250px',
+            fontSize: '2.5rem'
+        })
+    }else if(param === 'fetch err') {
+        document.querySelector('body').innerHTML = `Unable to connect to the server at this time try again later`
+            Object.assign(document.body.style, {
+                textAlign: 'center',
+                color: 'red',
+                marginTop: '250px',
+                fontSize: '2.5rem'
+            })
+    }
+}

@@ -25,12 +25,14 @@ const usersSchema = new mongoose.Schema({
     _id: {
             type: String,
             default: () => uuidv4()
-
         },
     surname: String,
     firstname: String,
     password: String,
     email: String,
+    createdQuiz: [String],
+    takenQuiz: [String],
+    createdAt: { type: Date, default: Date.now },
     verified: Boolean
 })
 const otpSchema = new mongoose.Schema({
@@ -40,14 +42,16 @@ const otpSchema = new mongoose.Schema({
     expiresin: Number
 })
 const quizSchema = new mongoose.Schema({
+    _id: {
+            type: String,
+            default: () => uuidv4()
+        },
     quizInfo: Object,
     candInfo: [String],
-    author: String,
-    questions: [{
-        questionText: String,
-        options: [String],
-        correctAnswer: String
-    }],
+    authorName: String,
+    authorId: String,
+    questions: [Object],
+    attemptedBy: [Object],
     createdAt: { type: Date, default: Date.now }
 })
 const usersCollection = quizzlyuriconnect.model('users', usersSchema)
@@ -221,6 +225,8 @@ app.post('/signup', async (req, res) => {
         firstname: firstname,
         email: email,
         password: hashedpassword,
+        createdQuiz: [],
+        takenQuiz: [],
         verified: false,
     });
     console.log(newuser)
@@ -373,22 +379,36 @@ app.post('/login', async (req, res) => {
         }
     }
 })
-
-app.post('/createquiz/quizinfo', async () => {
-
-})
-app.post('/createquiz/candinfo', verifyToken,async () => {
+app.post('/createquiz', verifyToken, async (req, res) => {
+    console.log('reached111111111111111111111111111111111')
     if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
-        res.redirect('/');
+        res.redirect('/')
         return;
     }
     if(req.user.verified) {
-        
+        console.log(req.body)
+        const qid = await uuidv4();
+        console.log(qid)
+        const quizId = `${qid}-${req.body.quizInfo.subject}`
+        console.log(quizId)
+        const quizCollection = await quizzesuriconnect.model(`${quizId}`, quizSchema)
+        await quizCollection.create({
+            quizInfo: req.body.quizInfo,
+            candInfo: req.body.candInfo,
+            authorName: `${req.user.surname} ${req.user.firstname}`,
+            authorId: req.user._id,
+            questions: req.body.questions,
+            attemptedBy: [],
+        })
+        await usersCollection.findOneAndUpdate({ _id: req.body._id}, { $addToSet: {createdQuiz: quizId}})
+        res.json({
+            statuz: 'success',
+            messge: quizId
+        })
     }else{
-        res.redirect('/signup/otp');
+        res.redirect('/signup/otp')
     }
 })
-app.post('/createquiz/ques&ans', async () => {})
 async function sendOTP(id, email) {
     console.log(id)
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`
@@ -417,6 +437,7 @@ async function sendOTP(id, email) {
     }else{ otpCollection.create({_id: id, email: email, otp: hashotp, expiresin: expires}) }        
 }
 async function verifyToken(req, res, next) {
+    console.log('reached000000-00')
     const token = req.cookies.token;
     if (token) {
         try{
