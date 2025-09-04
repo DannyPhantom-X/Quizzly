@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken')
 const shortUuid = require('short-uuid')
 const cookieParser = require('cookie-parser')
 const path = require('path')
+const { type } = require('os')
 require('dotenv').config()
 const quizzlyuri = process.env.QUIZZLYURI
 const quizzesuri = process.env.QUIZZESURI
@@ -41,6 +42,13 @@ const otpSchema = new mongoose.Schema({
     otp: String,
     expiresin: Number
 })
+const ctdQuizSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: () => uuidv4()
+    },
+    quizId: String
+})
 const quizSchema = new mongoose.Schema({
     _id: {
             type: String,
@@ -56,7 +64,7 @@ const quizSchema = new mongoose.Schema({
 })
 const usersCollection = quizzlyuriconnect.model('users', usersSchema)
 const otpCollection = quizzlyuriconnect.model('otp', otpSchema)
-
+const ctdCollection = quizzlyuriconnect.model('ctdquizzes', ctdQuizSchema);
 // usersCollection.create({
 //     surname: 'Par',
 //     firstname: 'String',
@@ -76,12 +84,11 @@ const transport = nodemailer.createTransport({
     }
 })
 app.get('/', async (req, res) => {
-    const token = req.cookies.token
-    console.log(token)
     res.sendFile(path.join(__dirname, '../frontend/home.html'))
 })
-app.get('/signup', (req, res) => {
+app.get('/signup', verifyToken,(req, res) => {
     if(req.user === 'tokenissue' || req.user === undefined || req.user === null) {
+        console.log('token issue')
         res.sendFile(path.join(__dirname, '../frontend/signup.html'))
         }else{
             if(req.user.verified) {
@@ -116,8 +123,7 @@ app.get('/createquiz/ques&ans', verifyToken,async (req, res) => {
         res.redirect('/')
         return;
     }
-    const recordUser = await usersCollection.findOne({_id: req.user.id})
-    if(recordUser.verified) {
+    if(req.user.verified) {
         res.sendFile(path.join(__dirname, '../frontend/createquiz-ques-ans.html'))
     }else{
         res.redirect('/signup/otp')
@@ -130,6 +136,7 @@ app.get('/signup/otp', verifyToken,async (req, res) => {
     }
     else{
         if(!req.user.verified){
+            await sendOTP(req.user._id, req.user.email);
             res.sendFile(path.join(__dirname, '../frontend/otp.html'))
             return;            
         }else{
@@ -151,7 +158,6 @@ app.get('/takequiz', verifyToken, async (req, res) => {
     }
 })
 app.get('/api/currentuser', verifyToken, async (req, res) => {
-    console.log('reached')
     if(req.user === 'tokenissue' || req.user === null || req.user === undefined){
         res.json({
             statuz: 'failed',
@@ -159,11 +165,13 @@ app.get('/api/currentuser', verifyToken, async (req, res) => {
         })
     }
     else{
-        res.json({
-            statuz: 'success',
-            firstname: req.user.firstname,
-            surname: req.user.surname
-        })  
+        if(req.user.verified) {
+            res.json({
+                statuz: 'success',
+                firstname: req.user.firstname,
+                surname: req.user.surname
+            })  
+        }
     }
 })
 app.post('/signup', async (req, res) => {
@@ -237,7 +245,6 @@ app.post('/signup', async (req, res) => {
         email: newuser.email
     }, process.env.SECRET, {expiresIn: '12h'});
     console.log(token);
-    await sendOTP(newuser._id, newuser.email);
     await res.cookie('token', token, {
         httpOnly: true,
         secure: false,
@@ -248,15 +255,35 @@ app.post('/signup', async (req, res) => {
         redirect: 'signup/otp'
     })    
 })
-
+app.get('/takequiz/:quizId', verifyToken,async (req, res) => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        res.redirect('/')
+        return;
+    }
+    if(req.user.verified) {
+        res.sendFile(path.join(__dirname, '../frontend/takequiz-about.html'))
+    }else{
+        res.redirect('/signup/otp')
+    }
+})
+app.post('/takequiz', verifyToken, async (req, res) => {
+    const isExist = await ctdCollection.findOne({ quizId: req.body.quizId})
+    console.log(isExist)
+    if (isExist) {
+        res.json({
+            statuz: 'success'
+        })
+    }else{
+        res.json({
+            statuz: 'failed'
+        })
+    }
+})
 app.post('/signup/otp/verification', verifyToken,async (req, res) => {
     if (req.user === 'tokenissues' && req.user === undefined && req.user === null) {
-        if(!req.user.verified) {
-            res.redirect('/')
-            return;
-        }
+        return;
     }
-    const recorduserotp = await otpCollection.findOne({ _id: req.user.id })
+    const recorduserotp = await otpCollection.findOne({ _id: req.user._id })
     console.log(recorduserotp)
     const otpStats = await bcrypt.compare(req.body.otp, recorduserotp.otp)
     if (!otpStats) {
@@ -304,7 +331,7 @@ app.post('/signup/otp/resend', verifyToken,async(req, res) => {
     res.send('Done')
 })
 
-app.delete('/delete', async (req, res) => {
+app.post('/update',async (req, res) => {
     const emailDelete = req.body.email;
     const userResult = await usersCollection.findOneAndDelete({ email: emailDelete});
     const otpResult = await otpCollection.findOneAndDelete({ email: emailDelete});
@@ -330,7 +357,7 @@ app.post('/login', async (req, res) => {
         res.json({
             statuz: 'failed',
             reason: 'wrong email',
-            message: 'Wrong Email'
+            message: 'Incorrect Email'
         })
         console.log('wrong email')
         return;
@@ -380,7 +407,6 @@ app.post('/login', async (req, res) => {
     }
 })
 app.post('/createquiz', verifyToken, async (req, res) => {
-    console.log('reached111111111111111111111111111111111')
     if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
         res.redirect('/')
         return;
@@ -389,7 +415,7 @@ app.post('/createquiz', verifyToken, async (req, res) => {
         console.log(req.body)
         const qid = await uuidv4();
         console.log(qid)
-        const quizId = `${qid}-${req.body.quizInfo.subject}`
+        const quizId = `${qid}-${req.body.quizInfo.subject.toLowerCase()}`
         console.log(quizId)
         const quizCollection = await quizzesuriconnect.model(`${quizId}`, quizSchema)
         await quizCollection.create({
@@ -400,10 +426,11 @@ app.post('/createquiz', verifyToken, async (req, res) => {
             questions: req.body.questions,
             attemptedBy: [],
         })
-        await usersCollection.findOneAndUpdate({ _id: req.body._id}, { $addToSet: {createdQuiz: quizId}})
+        await ctdCollection.create( { quizId: quizId } )
+        await usersCollection.findOneAndUpdate({ _id: req.user._id}, { $push: {createdQuiz: quizId}})
         res.json({
             statuz: 'success',
-            messge: quizId
+            message: quizId
         })
     }else{
         res.redirect('/signup/otp')
@@ -413,7 +440,7 @@ async function sendOTP(id, email) {
     console.log(id)
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`
     let mailOptions = {
-        from: 'quizzly@gmail.com',
+        from: '"Quizzly" <no-reply@myapp.com>',
         to: email,
         subject: 'Quizzly OTP Verification',
         html: `<b><p style="font-size: 1.5rem; color: #0f172a;">Hi,</p>
@@ -436,6 +463,14 @@ async function sendOTP(id, email) {
         await otpCollection.findOneAndUpdate( {_id: id}, {otp: hashotp, expiresin: expires} )
     }else{ otpCollection.create({_id: id, email: email, otp: hashotp, expiresin: expires}) }        
 }
+app.post('/create', async (req, res) => {
+    console.log(req.body.quizId)
+    const result = await ctdCollection.create( { quizId: req.body.quizId } )
+    res.json({
+        result: result
+    })
+
+})
 async function verifyToken(req, res, next) {
     console.log('reached000000-00')
     const token = req.cookies.token;
