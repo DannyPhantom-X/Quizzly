@@ -179,7 +179,7 @@ body, html{
     height: 7%;
     border-bottom-right-radius: 15px;
     border-top-left-radius: 15px;
-    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%); 
 }
 .design-right{
     position: absolute;

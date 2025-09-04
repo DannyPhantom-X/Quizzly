@@ -121,7 +121,7 @@ async function onClickCreate() {
     fade('remove')
     confirmDiv.innerHTML = ''
     confirmDiv.classList.remove('confirm-div-style')
-    loadScreen('add')
+    loadScreenFunc('add')
     console.log('create')
     loadScreen.classList.add('load-screen-style')
     loadScreen.innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
@@ -161,9 +161,15 @@ async function onClickCreate() {
         const result = await response.json()
         if (result.statuz === 'success') {
             console.log(result.message)
+            await delay(2000)
+            loadScreenFunc('remove')
             bodyChangeDueTo('quiz created', result.message)
+            sessionStorage.clear('quizInfo')
+            sessionStorage.clear('candInfo')
         }else {
             console.log('unable')
+            await delay(2000)
+            loadScreenFunc('remove')
             bodyChangeDueTo('fetch error')
         }
     } catch{
@@ -204,7 +210,7 @@ function fade(param) {
     }
 }
 
-function loadScreen(param) {
+function loadScreenFunc(param) {
     if (param === 'add') {
         document.querySelector('body').style.backgroundColor = 'rgba(15, 23, 42, 0.8)'
         document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
@@ -230,27 +236,25 @@ function delay(ms) {
 
 function bodyChangeDueTo(param, param2) {
     if (param === 'unfilled info') {
-        document.body.innerHTML = `Unable to connect at this time........   Please suply <a href='/createquiz'>Quiz info </a> and Candidate info`;
+        console.log(param)
+        document.body.innerHTML = `<div>Unable to connect at this time........   Please suply <a href='/createquiz' style="color: red;">Quiz info</a> and Candidate info</div>`;
         Object.assign(document.body.style, {
             textAlign: 'center',
             color: 'red',
-            marginTop: '250px',
-            fontSize: '2.5rem'
+            fontSize: '2.5rem',
         })
     }else if(param === 'quiz created') {
-        document.querySelector('body').innerHTML = `Quiz has successfully been created, your quiz id is <b> ${param2}`
+        document.querySelector('body').innerHTML = `<div>Quiz has successfully been created, your quiz id is</div> <b> <div>${param2}</div> <div><a href="/">Back to dashboard</a></div>`
         Object.assign(document.body.style, {
             textAlign: 'center',
             color: 'white',
-            marginTop: '250px',
             fontSize: '2.5rem'
         })
     }else if(param === 'fetch err') {
-        document.querySelector('body').innerHTML = `Unable to connect to the server at this time try again later`
+        document.querySelector('body').innerHTML = `<div>Unable to connect to the server at this time try again later</div><div><a href="/">Back to home</a></div>`
             Object.assign(document.body.style, {
                 textAlign: 'center',
                 color: 'red',
-                marginTop: '250px',
                 fontSize: '2.5rem'
             })
     }

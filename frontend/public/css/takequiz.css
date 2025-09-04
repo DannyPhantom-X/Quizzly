@@ -27,6 +27,7 @@ body{
     font-weight: bolder;
     height: 50px;
     font-size: x-large;
+    cursor: pointer;
 }
 .input-id::placeholder{
     text-align: center;

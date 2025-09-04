@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('.last-div').innerHTML = `${currentUser.surname[0]}.${currentUser.firstname[0]}`;
         document.querySelector('.last-div').style.cssText = 'color: #BD53ED; font-size: 1.2rem; font-weight: bold;'
     } 
+    console.log(currentUser)
 })
 
 
@@ -53,8 +54,7 @@ function checkLoginToMoveon(param) {
         document.querySelector('footer').classList.add('faded')
         onclickcancelButton()
         document.querySelector('.login-bttn').addEventListener('click' || 'touch', () => {
-            // window.location.href = 'login.html'
-            window.location.href = 'http://localhost:7050/login'
+            window.location.href = '/login'
         })
         onclickSignup()
     }
@@ -64,8 +64,7 @@ function checkLoginToMoveon(param) {
 function onclickSignup() {
     document.querySelectorAll('#signup-bttn').forEach((sign) => {
         sign.addEventListener('click' || 'touch', () => {
-            window.location.href = 'http://localhost:7050/signup'
-            // window.location.href = 'signup.html'
+            window.location.href = '/signup'
         })
     })    
 }
@@ -82,41 +81,3 @@ function onclickcancelButton() {
         document.querySelector('footer').classList.remove('faded')
     })
 }
-
-
-
-
-// setInterval(() => {
-//     if (isTyping === true) {
-//         isTyping = false;
-//         document.querySelectorAll('.slide span').forEach((span) =>{
-//             span.style.animation = 'delete 3s ease-in-out';
-//         })
-//     }else {
-//         isTyping = true;
-//         document.querySelectorAll('.slide span').forEach((span) =>{
-//             span.style.animation = 'typing 3s ease-in-out';
-//         })
-//     }
-
-    
-// }, 3000)
-
-// setInterval(() => {
-    
-//     if (currentIndex < (slides.length - 1)) {
-//         // slides.style.transition = 'transform 0.5s eas-in-out';
-//         nextDescription();
-//     }else{
-//         // slides.style.transition '';
-//         currentIndex = -1;
-//         nextDescription();
-//     }
-
-    
-// }, 6000)    
-
-// setTimeout(() => {
-//     document.body.style.overflowY = 'scroll'
-//     document.querySelector('header div').innerHTML = '<img src="resources/quizzlydesign.png">'
-// }, 7000)
