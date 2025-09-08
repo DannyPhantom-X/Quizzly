@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('alright')
         document.querySelector('.last-div').innerHTML = `${currentUser.surname[0]}.${currentUser.firstname[0]}`;
         document.querySelector('.last-div').style.cssText = 'color: #BD53ED; font-size: 1.2rem; font-weight: bold;'
+    }else{
+        document.querySelector('.last-div').innerHTML = `<button class="signup-header-bttn" id="signup-bttn">Signup</button>`;
     } 
     console.log(currentUser)
 })

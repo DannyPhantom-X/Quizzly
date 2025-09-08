@@ -18,9 +18,12 @@ submitBttn.addEventListener('click' || 'touch', async () => {
         })
         const result = await response.json();
         if(result.statuz === 'success') {
+            await delay(2000)
             loadScreenFunc('remove')
-            window.location.href = `/takequiz/${inputId}`
+            console.log('success')
+            window.location.href = `/takequiz/${inputId.value}`
         }else{
+            await delay(2000)
             loadScreenFunc('remove')
             inputId.style.cssText = 'border-style: solid; border-color: red; border-width: 2px;';
         }

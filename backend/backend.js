@@ -261,7 +261,34 @@ app.get('/takequiz/:quizId', verifyToken,async (req, res) => {
         return;
     }
     if(req.user.verified) {
-        res.sendFile(path.join(__dirname, '../frontend/takequiz-about.html'))
+        const quizId = req.params.quizId
+        const isValid = await ctdCollection.findOne({quizId})
+        if (isValid) {
+            res.sendFile(path.join(__dirname, '../frontend/takequiz-about.html'))
+        }else{
+            // res.redirect('/')
+        }
+        
+    }else{
+        res.redirect('/signup/otp')
+    }
+})
+app.get('/api/takequiz/:quizId', verifyToken, async (req, res) => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        res.redirect('/')
+        return;
+    }
+    if(req.user.verified) {
+        const quizId = req.params.quizId
+        const quizCollection = await quizzesuriconnect.model(quizId, quizSchema)
+        let quiz = await quizCollection.find({})
+        quiz = quiz[0]
+        res.json({
+            subject: quiz.quizInfo.subject,
+            noQues: quiz.quizInfo.noQues,
+            duration: quiz.quizInfo.interval,
+            author: quiz.authorName
+        })
     }else{
         res.redirect('/signup/otp')
     }

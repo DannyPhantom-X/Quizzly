@@ -6,26 +6,11 @@ body, html{
 }
 body{
     background-color: #243045;
-    /* background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%); */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: #243045; */
+    font-family: 'Roboto', sans-serif;
 }
-/* .quiz-info{
-    width: 50%;
-    margin-left: 5%;
-    margin-top: 70px;
-    background-color: #243045;
-    border-radius: 15px;
-    color: white;
-    font-size: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    padding: 3%;
-    row-gap: 50px;
-    font-weight: bold;
-} */
 .quiz-info{
     display: flex;
     flex-direction: column;
@@ -35,7 +20,7 @@ body{
     border-radius: 16px;
     padding: 30px;
     backdrop-filter: blur(20px); 
-    -webkit-backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2); 
     color: #fff; 
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
