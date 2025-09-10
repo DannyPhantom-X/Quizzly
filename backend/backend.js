@@ -59,7 +59,7 @@ const quizSchema = new mongoose.Schema({
     authorName: String,
     authorId: String,
     questions: [Object],
-    attemptedBy: [Object],
+    attemptedBy: [String],
     createdAt: { type: Date, default: Date.now }
 })
 const usersCollection = quizzlyuriconnect.model('users', usersSchema)
@@ -271,6 +271,61 @@ app.get('/takequiz/:quizId', verifyToken,async (req, res) => {
         
     }else{
         res.redirect('/signup/otp')
+    }
+})
+app.get('/quizzes', verifyToken, async (req, res) => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        res.redirect('/')
+        return;
+    }
+    if(req.user.verified) {
+        res.sendFile(path.join(__dirname, '../frontend/quizzes.html'))
+    }else{
+        res.redirect('/signup/otp')
+    }
+})
+app.get('/user-tkn-quizzes-info', verifyToken, async (req, res) => {
+    console.log('reached')
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        return;
+    }else{
+        const takenQuiz = []
+            for(const tq of req.user.takenQuiz) {
+                const quizCollection = await quizzesuriconnect.model(tq, quizSchema)
+                let quiz = await quizCollection.find({})
+                quiz = quiz[0];
+                takenQuiz.push({
+                    subject: quiz.quizInfo.subject,
+                    noQues: quiz.quizInfo.noQues,
+                    duration: quiz.quizInfo.duration,
+                    quizId: cq,
+                    authorName: quiz.authorName
+                })
+            }
+        res.json({
+            answer: takenQuiz
+        })
+    }
+})
+app.get('/user-ctd-quizzes-info', verifyToken,async (req, res) => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        return;
+    }else{
+        const createdQuiz = []
+            for(const cq of req.user.createdQuiz) {
+                const quizCollection = await quizzesuriconnect.model(cq, quizSchema)
+                let quiz = await quizCollection.find({})
+                quiz = quiz[0];
+                createdQuiz.push({
+                    subject: quiz.quizInfo.subject,
+                    noQues: quiz.quizInfo.noQues,
+                    quizId: cq,
+                    attemptedBy: quiz.attemptedBy.length
+                })
+            }
+        res.json({
+            answer: createdQuiz
+        })
     }
 })
 app.get('/api/takequiz/:quizId', verifyToken, async (req, res) => {

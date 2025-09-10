@@ -32,11 +32,36 @@ header{
     align-items: center;
  }
 header div img{
-    width: 120px;
+    width: 100px;
 }
-header div:nth-child(4) {
-    padding-right: 20px;
+.right-header {
+    margin-right: 60px;
     justify-content: right;
+    column-gap: 50px;
+}
+.profile-pic{
+    width: 35px;
+    border-radius: 90px;
+    height: 35px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.profile-pic img{
+    height: 100%;
+    width: 100%;
+    /* object-fit: cover; */
+}
+.quizzes-link, .about-link{
+    cursor: pointer;
+    color: #BD53ED;
+    text-decoration: none;
+}
+.quizzes-link:hover,.about-link:hover{
+    text-decoration: underline solid #BD53ED 2px;
+}
+.left-header{
+    justify-content: left;
+    margin-left: 35px;
 }
 .signup-header-bttn{
     background-color: #BD53ED;
@@ -76,21 +101,17 @@ header div:nth-child(4) {
     cursor: pointer;
 }
 .beginning-page{
-    /* height: 95%; */
     min-height: 90%;
     width: 95%;
     padding: 2.5%;
     padding-top: 100px;
-    /* background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%); */
     background: linear-gradient(to bottom, #BD53ED, #5396ED, #0f172a);
     display: grid;
     grid-template-columns: 1fr 1fr;
     color: white;
 }
 .left,.right{
-    /* margin-top: 100px; */
     width: 100%;
-    /* background-color: blue; */
 }
 .right img{
     width: 100%;
@@ -296,10 +317,10 @@ footer{
     }
 }
 @keyframes appearLeft {
-    from{ transform: translateX(-100%);}
-    to{ transform: translateX(0px);}
+    from{ transform: translateX(-100%); opacity: 0;}
+    to{ transform: translateX(0px); opacity: 1;}
 }
 @keyframes appearRight {
-    from{ transform: translateX(100%);}
-    to{ transform: translateX(0px);}
+    from{ transform: translateX(100%); opacity: 0;}
+    to{ transform: translateX(0px); opacity: 1;}
 }

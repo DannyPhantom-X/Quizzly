@@ -13,13 +13,13 @@ const loadOut = `<div class="top">
 let currentUser;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch('http://localhost:7050/api/currentuser')
+    const response = await fetch('/api/currentuser')
     const result = await response.json()
     currentUser = result;
     console.log(currentUser)
     if(currentUser.statuz === 'success') {
         console.log('alright')
-        document.querySelector('.last-div').innerHTML = `${currentUser.surname[0]}.${currentUser.firstname[0]}`;
+        document.querySelector('.last-div').innerHTML = `<span class="about-link">About</span><a href="/quizzes" class="quizzes-link">Quizzes</a> <span class="profile-pic"><img src="/public/resources/unknown.jpg"></span>`;
         document.querySelector('.last-div').style.cssText = 'color: #BD53ED; font-size: 1.2rem; font-weight: bold;'
     }else{
         document.querySelector('.last-div').innerHTML = `<button class="signup-header-bttn" id="signup-bttn">Signup</button>`;
