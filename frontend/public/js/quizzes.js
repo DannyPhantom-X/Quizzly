@@ -3,7 +3,17 @@ const takenSpan = document.querySelector('.taken-text');
 const info = document.querySelector('.info');
 const ctdChoice = document.querySelector('.ctd-choice');
 const tknChoice = document.querySelector('.tkn-choice');
-const backToHomeBttn = document.querySelector('.back-to-home')
+const backToHomeBttn = document.querySelector('.back-to-home');
+const nameDiv = document.querySelector('.name-div');
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch('/api/currentuser');
+    const result = await response.json();
+    nameDiv.innerHTML = `${result.surname} ${result.firstname}`;
+})
+
+
+
 function tkn(param) { return`<div class="taken-info"><div class="taken-quiz-div">
                     <p>${param.subject}</p>
                     <p>${param.noQues} Questions</p>
@@ -103,6 +113,11 @@ function onclicktknCopy() {
 
 async function fetchQuizInfo(param) {
     info.innerHTML = ''
+    if (param === 'tkn' || param === 'ctd') {
+        console.log('if...else... working');
+    }else{
+        return 'helllo world';
+    }
     try{
         const response = await fetch(`/user-${param}-quizzes-info`)
         const result = await response.json()
@@ -110,11 +125,7 @@ async function fetchQuizInfo(param) {
             info.innerHTML = `<span class="unavailable">Unavailable . . .</span>`; 
         }
         result.answer.forEach((res) => {
-            if (param === 'ctd') {
-                info.innerHTML = ctd(res)
-            }else if( param === 'tkn') {
-                info.innerHTML = tkn(res)
-            }
+            param === 'ctd' ? info.innerHTML = ctd(res): param === 'tkn' ? info.innerHTML = tkn(res) : console.log('lost access');
         })
     }catch {
         console.error('An error was occured')

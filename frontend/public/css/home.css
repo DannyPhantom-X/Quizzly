@@ -35,9 +35,10 @@ header div img{
     width: 100px;
 }
 .right-header {
-    margin-right: 60px;
+    margin-right: 20px;
     justify-content: right;
     column-gap: 50px;
+    position: relative;
 }
 .profile-pic{
     width: 35px;
@@ -51,17 +52,42 @@ header div img{
     width: 100%;
     /* object-fit: cover; */
 }
-.quizzes-link, .about-link{
+.quizzes-link, .about-link, .logout-link{
     cursor: pointer;
     color: #BD53ED;
     text-decoration: none;
 }
-.quizzes-link:hover,.about-link:hover{
+.quizzes-link:hover,.about-link:hover, .logout-link:hover{
     text-decoration: underline solid #BD53ED 2px;
 }
 .left-header{
     justify-content: left;
     margin-left: 35px;
+}
+.hidden-menu{
+    display: none;
+    width: 120px;
+    height: fit-content;
+    position: absolute;
+    top: 70px;
+    padding: 10px 20px;
+    right: 0px;
+    border-radius: 10px;
+    background: #243045;
+    font-weight: 0px;
+    /* font-size: 1rem; */
+    flex-direction: column;
+    row-gap: 10px;
+}
+.hidden-menu.active{
+    display: flex;
+}
+.exists{
+    display: none;
+}
+.hidden-menu a{
+    width: 100%;
+    text-align: left;
 }
 .signup-header-bttn{
     background-color: #BD53ED;
@@ -105,7 +131,7 @@ header div img{
     width: 95%;
     padding: 2.5%;
     padding-top: 100px;
-    background: linear-gradient(to bottom, #BD53ED, #5396ED, #0f172a);
+    background: linear-gradient(to bottom, #BD53ED, #5396ED ,#0f172a);
     display: grid;
     grid-template-columns: 1fr 1fr;
     color: white;
@@ -120,7 +146,7 @@ header div img{
     font-size: 3rem;
     font-weight: bolder;
     margin-bottom: 10px;
-    color: #243045;
+    color: #0f172a;
 
 }
 .subtext{
@@ -266,7 +292,7 @@ footer{
     pointer-events: none;
     animation: typing 0s;
 }
-@media (max-width: 800px) {
+@media (max-width: 768px) {
     .input{
         column-gap: 70px;
     }
@@ -299,6 +325,8 @@ footer{
     .beginning-page{
         grid-template-columns: 1fr;
     }
+    .exists{display: flex;}
+    .part{display: none;}
 }
 @keyframes typing{
     0%{

@@ -188,6 +188,9 @@ input[type=radio] {
     flex-direction: column;
     row-gap: 0px;
 }
+.ctd-quiz-div *{
+    margin: 10px 0px;
+}
 .ctd-quiz-div>h1{
     text-align: center;
     background: linear-gradient(to right, #BD53ED 40%, #5396ED 60%);
@@ -215,8 +218,9 @@ input[type=radio] {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .created-info{
-        grid-template-columns: 1fr;
+        grid-template-columns: 300px;
+        justify-content: center;
     }
 }

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Navbar with Logout</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    nav {
+      background: #111;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+    }
+
+    /* Row navigation (desktop) */
+    .nav-row {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-row a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Hamburger and its menu */
+    .hamburger {
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      background: #222;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 200px;
+      padding: 1rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0.5rem 0;
+    }
+
+    .nav-links.active {
+      display: flex;
+    }
+
+    /* 📱 Mobile: hide row menu, show everything in hamburger */
+    @media (max-width: 768px) {
+      .nav-row {
+        display: none;
+      }
+      .nav-links .extra {
+        display: block;
+      }
+    }
+
+    /* 💻 Desktop: show row menu, hamburger only has logout */
+    @media (min-width: 769px) {
+      .nav-row {
+        display: flex;
+      }
+      .nav-links .extra {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">MySite</div>
+
+    <!-- Row links (visible only on big screens) -->
+    <div class="nav-row">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <!-- Hamburger -->
+    <div class="hamburger" id="hamburger">☰</div>
+
+    <!-- Dropdown (hamburger menu) -->
+    <div class="nav-links" id="navLinks">
+      <a href="#">Logout</a>
+      <a href="#" class="extra">Home</a>
+      <a href="#" class="extra">About</a>
+      <a href="#" class="extra">Services</a>
+      <a href="#" class="extra">Contact</a>
+    </div>
+  </nav>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

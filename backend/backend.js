@@ -34,6 +34,8 @@ const usersSchema = new mongoose.Schema({
     createdQuiz: [String],
     takenQuiz: [String],
     createdAt: { type: Date, default: Date.now },
+    lastActive: Date,
+    loggedToken: String,
     verified: Boolean
 })
 const otpSchema = new mongoose.Schema({
@@ -65,17 +67,8 @@ const quizSchema = new mongoose.Schema({
 const usersCollection = quizzlyuriconnect.model('users', usersSchema)
 const otpCollection = quizzlyuriconnect.model('otp', otpSchema)
 const ctdCollection = quizzlyuriconnect.model('ctdquizzes', ctdQuizSchema);
-// usersCollection.create({
-//     surname: 'Par',
-//     firstname: 'String',
-//     password: 'pas',
-//     email: 'deviel.com',
-//     verified: false
-// })
 
 const transport = nodemailer.createTransport({
-    // host: 'smtp.gmail.com',
-    // port: 587,
     service: 'gmail',
     secure: false,
     auth: {
@@ -236,6 +229,8 @@ app.post('/signup', async (req, res) => {
         createdQuiz: [],
         takenQuiz: [],
         verified: false,
+        lastActive: new Date(),
+        loggedToken: 'none'
     });
     console.log(newuser)
     const token = await jwt.sign({
@@ -245,6 +240,7 @@ app.post('/signup', async (req, res) => {
         email: newuser.email
     }, process.env.SECRET, {expiresIn: '12h'});
     console.log(token);
+    await usersCollection.findOneAndUpdate({_id: newuser._id}, {loggedToken: token})
     await res.cookie('token', token, {
         httpOnly: true,
         secure: false,
@@ -284,6 +280,17 @@ app.get('/quizzes', verifyToken, async (req, res) => {
         res.redirect('/signup/otp')
     }
 })
+app.get('/logout', verifyToken, async (req, res) => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        res.redirect('/')
+        return;
+    }
+    if(req.user.verified) {
+        res.sendFile(path.join(__dirname, '../frontend/logout.html'))
+    }else{
+        res.redirect('/signup/otp')
+    }
+})
 app.get('/user-tkn-quizzes-info', verifyToken, async (req, res) => {
     console.log('reached')
     if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
@@ -298,7 +305,7 @@ app.get('/user-tkn-quizzes-info', verifyToken, async (req, res) => {
                     subject: quiz.quizInfo.subject,
                     noQues: quiz.quizInfo.noQues,
                     duration: quiz.quizInfo.duration,
-                    quizId: cq,
+                    quizId: tq,
                     authorName: quiz.authorName
                 })
             }
@@ -361,12 +368,8 @@ app.post('/takequiz', verifyToken, async (req, res) => {
         })
     }
 })
-app.post('/signup/otp/verification', verifyToken,async (req, res) => {
-    if (req.user === 'tokenissues' && req.user === undefined && req.user === null) {
-        return;
-    }
+app.post('/signup/otp/verification', async (req, res) => {
     const recorduserotp = await otpCollection.findOne({ _id: req.user._id })
-    console.log(recorduserotp)
     const otpStats = await bcrypt.compare(req.body.otp, recorduserotp.otp)
     if (!otpStats) {
         res.json({
@@ -415,11 +418,10 @@ app.post('/signup/otp/resend', verifyToken,async(req, res) => {
 
 app.post('/update',async (req, res) => {
     const emailDelete = req.body.email;
-    const userResult = await usersCollection.findOneAndDelete({ email: emailDelete});
-    const otpResult = await otpCollection.findOneAndDelete({ email: emailDelete});
+    const userResult = await usersCollection.findOneAndUpdate({ email: emailDelete}, { $push: {takenQuiz: 'c8df61e6-89e9-407d-b14f-9fdb5dfe8df3-mathematics'}});
     res.json({
-        otp: otpResult,
-        user: userResult
+        result: userResult
+        
     })
     console.log('Deleted')
 })
@@ -453,6 +455,19 @@ app.post('/login', async (req, res) => {
             console.log('unverified')
             return;
         }
+        if (recordUser.loggedToken !== 'none') {
+            const min = 30 * 60 * 1000;
+            const diff = Date.now() - recordUser.lastActive.getTime();
+            console.log(diff)
+            if (diff < min) {
+                res.json({
+                    statuz: 'failed',
+                    reason: 'loggedIn',
+                    message: 'User is already logged In'
+                })
+                return;
+            }
+        }
         const isValid = await bcrypt.compare(password, recordUser.password)
         console.log(isValid)
         if(isValid) {
@@ -461,9 +476,11 @@ app.post('/login', async (req, res) => {
                     surname: recordUser.surname,
                     firstname: recordUser.firstname,
                     email: recordUser.email
-                }, process.env.SECRET, {expiresIn: '12h'})
-                console.log(token)
-                console.log('logged in')
+            }, process.env.SECRET, {expiresIn: '12h'});
+            console.log(token)
+            console.log('logged in')
+            await usersCollection.findOneAndUpdate({_id: recordUser._id}, {lastActive: new Date()})
+            await usersCollection.findOneAndUpdate({_id: recordUser._id}, {loggedToken: token})
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: false,
@@ -521,6 +538,7 @@ app.post('/createquiz', verifyToken, async (req, res) => {
 async function sendOTP(id, email) {
     console.log(id)
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`
+    console.log(otp)
     let mailOptions = {
         from: '"Quizzly" <no-reply@myapp.com>',
         to: email,
@@ -553,30 +571,41 @@ app.post('/create', async (req, res) => {
     })
 
 })
+app.get('/api/user/logout', verifyToken,async (req, res) => {
+    await usersCollection.findOneAndUpdate({_id: req.user._id}, {loggedToken: 'none'})
+    await res.clearCookie('token', {
+                httpOnly: true,
+                secure: false,
+    })
+
+    res.json({message: 'Done'})
+})
 async function verifyToken(req, res, next) {
-    console.log('reached000000-00')
     const token = req.cookies.token;
     if (token) {
         try{
             const userPayload = await jwt.verify(token, process.env.SECRET)
             const recordUser  = await usersCollection.findOne({_id: userPayload.uid})
-            req.user = recordUser;
+            if (token === recordUser.loggedToken) {
+                await usersCollection.findOneAndUpdate({_id: userPayload.uid}, {lastActive: new Date()})
+                req.user = recordUser;
+            }else {
+                req.user = 'tokenissue';
+            }
             next()
         }catch (err){
-            req.user = 'tokenissue'
+            req.user = 'tokenissue';
             next()
-        } 
+        }
     }else{
-        req.user = 'tokenissue'
+        req.user = 'tokenissue';
         next()
     }
-    
 }
 async function connect() {
     await quizzlyuriconnect;
     await quizzesuriconnect;
     console.log('connected to db');
-    app.listen(7050, 'localhost',() => {console.log('pipe conccefte')});
+    app.listen(7050, '0.0.0.0',() => {console.log('pipe conccefte')});
 }
-
 connect()
