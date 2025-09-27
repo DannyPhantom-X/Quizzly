@@ -1,0 +1,112 @@
+body, html{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+}
+body{
+    font-family: 'Roboto', sans-serif;
+    background-color: #0f172a;
+    position: relative;
+}
+header{
+    height: 50px;
+}
+main{
+    padding-top: 70px;
+    width: 90%;
+    margin-left: 5%;
+}
+.instruction-div{
+    width: 60%;
+    color: #BD53ED;
+    font-size: 1.7rem;
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.form label{
+    color: white;
+    font-size: 1.2rem;
+}
+.cand-input{
+    border: 1px solid white;
+    border-radius: 5px;
+    outline: none;
+    height: 30px;
+    width: 280px;
+    color: white;
+    background-color: #243045;
+    padding-left: 5px;
+}
+.start-bttn, .confirm-start-bttn{
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.faded *{
+    pointer-events: none;
+    filter: grayscale(90%);
+    filter: blur(90%);
+    opacity: 0.3;
+}
+.faded aside, .faded aside *{
+    filter: none;
+    opacity: 1;
+    pointer-events: auto;
+} 
+aside {
+    position: fixed;
+    color: white;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: grayscale(50%), blur(3px);
+    display: none;
+}
+aside div{
+    background-color: #0f172a;
+    height: 150px;
+    padding: 10px;
+    width: 300px;
+    font-size: 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.25);
+}
+.confirm-start-bttn{
+    bottom: 10px;
+    right: 10px;
+}
+.cancel-bttn{
+    border-radius: 100px;
+    font-size: 1.2rem;
+    color: white;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    cursor: pointer;
+}
+.cancel-bttn:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+}

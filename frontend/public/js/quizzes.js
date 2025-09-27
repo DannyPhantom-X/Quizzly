@@ -119,7 +119,7 @@ async function fetchQuizInfo(param) {
         return 'helllo world';
     }
     try{
-        const response = await fetch(`/user-${param}-quizzes-info`)
+        const response = await fetch(`/quizzes/${param}-info`)
         const result = await response.json()
         if (result.answer.length === 0){ 
             info.innerHTML = `<span class="unavailable">Unavailable . . .</span>`; 

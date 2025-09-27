@@ -1,10 +1,13 @@
 const nameDiv = document.querySelector('.name-div');
 const logoBttn = document.querySelector('.logo-bttn')
 const logoutBttn = document.querySelector('.logout-bttn')
+const profilePic = document.querySelector('.profile-pic img')
 document.addEventListener('DOMContentLoaded', async () => {
     const response = await fetch('/api/currentuser');
     const result = await response.json();
     nameDiv.innerHTML = `${result.surname} ${result.firstname}`
+    console.log(result)
+    profilePic.src = result.profilePic || "/public/resources/unknown.jpg"
 })
 
 logoBttn.addEventListener('click' || 'touch', () => {

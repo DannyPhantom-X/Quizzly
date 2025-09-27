@@ -55,7 +55,7 @@ document.getElementById('loginBttn').addEventListener('click', async () => {
     const password = document.getElementById('passwordInput').value
     console.log(email, password)
     loadScreen('add')
-    const response = await fetch('http://localhost:7050/login', {
+    const response = await fetch('/login', {
         method: 'Post',
         headers: {
             "content-type": "application/json"

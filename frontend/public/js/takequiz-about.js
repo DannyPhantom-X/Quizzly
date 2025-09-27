@@ -1,13 +1,13 @@
-console.log(window.location.pathname)
-const subjectName = document.querySelector('.subject-name')
-const noQues = document.getElementById('noQues')
-const duration = document.getElementById('duration')
-const author = document.getElementById('author')
-const path = window.location.pathname
+const subjectName = document.querySelector('.subject-name');
+const noQues = document.getElementById('noQues');
+const duration = document.getElementById('duration');
+const author = document.getElementById('author');
+const path = window.location.pathname;
+const proceedBttn = document.querySelector('.proceed-button');
 let duraText = ''
 
 window.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch(`/api${path}`)
+    const response = await fetch(`${path}/api`)
     const result =  await response.json()
     subjectName.textContent = result.subject;
     noQues.textContent = result.noQues;
@@ -21,4 +21,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     duration.textContent = duraText;
     author.textContent = `by ${result.author}`;
     console.log(result)
+})
+
+proceedBttn.addEventListener('click' || 'touch', async () => {
+    const response = await fetch(`${path}/cand-info`)
+    const result = await response.text()
+    document.open();
+    document.write(result);
+    document.close();    
+
 })

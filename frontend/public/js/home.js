@@ -11,18 +11,18 @@ const loadOut = `<div class="top">
                 <button class="login-bttn">Log in</button>`;
 let currentUser;
 
-document.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('DOMContentLoaded', async () => {
     const response = await fetch('/api/currentuser')
-    const result = await response.json()
-    currentUser = result;
-    console.log(currentUser)
-    if(currentUser.statuz === 'success') {
-        console.log('alright')
+    currentUser = await response.json()
+    console.log(response)
+    if(currentUser && currentUser.statuz === 'success') {
         document.querySelector('.last-div').innerHTML = `
         <a class="about-link part">About</a><a href="/quizzes" class="quizzes-link part">Quizzes</a> 
-        <span class="profile-pic"><img src="/public/resources/unknown.jpg"></span>
-        <nav class="hidden-menu"><a href="/quizzes" class="quizzes-link exists">Quizzes</a><a class="about-link exists">About</a><a class="logout-link">Logout</a> </nav>`;
+        <span class="profile-pic"><img id="profPic"></span>
+        <nav class="hidden-menu"><a href="/myprofile" class="quizzes-link">My Profile</a><a href="/quizzes" class="quizzes-link exists">Quizzes</a><a class="about-link exists">About</a><a class="logout-link">Logout</a> </nav>`;
         document.querySelector('.last-div').style.cssText = 'color: #BD53ED; font-size: 1.2rem; font-weight: bold;'
+        console.log('profilePic ' + currentUser.profilePic)
+        document.querySelector('.profile-pic img').src = currentUser.profilePic || '/public/resources/unknown.jpg';
         onclickUser()
     }else{
         document.querySelector('.last-div').innerHTML = `<button class="signup-header-bttn" id="signup-bttn">Signup</button>`;
@@ -30,15 +30,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     console.log(currentUser)
 })
-
-
-function nextDescription() {
-    currentIndex ++;
-    let offset = -currentIndex * 100;
-    slides.forEach((slide) => {
-        slide.style.transform = `translateX(${offset}%)`;
-    })
-}
 
 document.getElementById('takeQuiz').addEventListener('click' || 'touch', () => {
     checkLoginToMoveon('takequiz')
@@ -49,6 +40,7 @@ document.getElementById('createQuiz').addEventListener('click' || 'touch', () =>
 })
 
 function checkLoginToMoveon(param) {
+    console.log(currentUser)
     if (currentUser.statuz === 'success') {
         window.location.href = `/${param}`
     }else{

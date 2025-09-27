@@ -6,9 +6,13 @@ const { v4: uuidv4}  = require('uuid')
 const mongoose  = require('mongoose')
 const jwt = require('jsonwebtoken')
 const shortUuid = require('short-uuid')
+const multer = require('multer')
 const cookieParser = require('cookie-parser')
+const streamifier = require('streamifier')
 const path = require('path')
+const cloudinary = require('cloudinary').v2
 const { type } = require('os')
+const { Verify } = require('crypto')
 require('dotenv').config()
 const quizzlyuri = process.env.QUIZZLYURI
 const quizzesuri = process.env.QUIZZESURI
@@ -19,9 +23,16 @@ const app = express()
 app.use(cookieParser())
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({ extended: true}))
-console.log(__dirname)
+// app.use(express.urlencoded({ extended: true}))
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 app.use('/public/', express.static(path.join(__dirname, '../frontend/public')))
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+})
+
 const usersSchema = new mongoose.Schema({
     _id: {
             type: String,
@@ -31,6 +42,12 @@ const usersSchema = new mongoose.Schema({
     firstname: String,
     password: String,
     email: String,
+    profilePic: {
+        type: {
+            url: String,
+            public_id: String,
+        },default: null
+    },
     createdQuiz: [String],
     takenQuiz: [String],
     createdAt: { type: Date, default: Date.now },
@@ -56,6 +73,7 @@ const quizSchema = new mongoose.Schema({
             type: String,
             default: () => uuidv4()
         },
+    quizId: String,
     quizInfo: Object,
     candInfo: [String],
     authorName: String,
@@ -79,17 +97,7 @@ const transport = nodemailer.createTransport({
 app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/home.html'))
 })
-app.get('/signup', verifyToken,(req, res) => {
-    if(req.user === 'tokenissue' || req.user === undefined || req.user === null) {
-        console.log('token issue')
-        res.sendFile(path.join(__dirname, '../frontend/signup.html'))
-        }else{
-            if(req.user.verified) {
-                res.redirect('/')
-            }
-    }
-})
-app.get('/login', verifyToken,async (req, res) => {
+app.get('/login', verifyToken,async (req, res) => { 
     if(req.user === 'tokenissue' || req.user === undefined || req.user === null) {
         res.sendFile(path.join(__dirname, '../frontend/login.html'))
         }else{
@@ -159,11 +167,27 @@ app.get('/api/currentuser', verifyToken, async (req, res) => {
     }
     else{
         if(req.user.verified) {
+            const profilePic =  req.user.profilePic ? req.user.profilePic.url : null;
             res.json({
                 statuz: 'success',
                 firstname: req.user.firstname,
-                surname: req.user.surname
+                surname: req.user.surname,
+                email: req.user.email,
+                profilePic: profilePic
             })  
+        }
+    }
+})
+app.get('/myprofile', verifyToken, async (req, res) => {
+    if(req.user === 'tokenissue' || req.user === null || req.user === undefined){
+        res.json({
+            statuz: 'failed',
+            message: 'NO CURRENT USER ❌'            
+        })
+    }
+    else{
+        if(req.user.verified) {
+            res.sendFile(path.join(__dirname, '../frontend/profile.html'))
         }
     }
 })
@@ -262,7 +286,7 @@ app.get('/takequiz/:quizId', verifyToken,async (req, res) => {
         if (isValid) {
             res.sendFile(path.join(__dirname, '../frontend/takequiz-about.html'))
         }else{
-            // res.redirect('/')
+            res.redirect('/')
         }
         
     }else{
@@ -342,15 +366,26 @@ app.get('/api/takequiz/:quizId', verifyToken, async (req, res) => {
     }
     if(req.user.verified) {
         const quizId = req.params.quizId
-        const quizCollection = await quizzesuriconnect.model(quizId, quizSchema)
-        let quiz = await quizCollection.find({})
-        quiz = quiz[0]
+        const quizCollection = await quizzesuriconnect.model(req.user._id, quizSchema)
+        let quiz = await quizCollection.findOne({quizId: quizId})
         res.json({
             subject: quiz.quizInfo.subject,
             noQues: quiz.quizInfo.noQues,
             duration: quiz.quizInfo.interval,
-            author: quiz.authorName
+            author: `${req.user.surname} ${req.user.firstname}`
         })
+    }else{
+        res.redirect('/signup/otp')
+    }
+})
+app.get('/takequiz/:quizId/cand-info', verifyToken, async (req, res) => {
+    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
+        res.redirect('/')
+        return;
+    }
+    if(req.user.verified) {
+        console.log(req.params.quizId);
+        res.sendFile(path.join(__dirname, '../frontend/takequiz-cand.html'));
     }else{
         res.redirect('/signup/otp')
     }
@@ -368,7 +403,7 @@ app.post('/takequiz', verifyToken, async (req, res) => {
         })
     }
 })
-app.post('/signup/otp/verification', async (req, res) => {
+app.post('/signup/otp/verification', verifyToken,async (req, res) => {
     const recorduserotp = await otpCollection.findOne({ _id: req.user._id })
     const otpStats = await bcrypt.compare(req.body.otp, recorduserotp.otp)
     if (!otpStats) {
@@ -398,7 +433,40 @@ app.post('/signup/otp/verification', async (req, res) => {
         })
     }
 })
+app.post('/update/user/profilepic', verifyToken, upload.single('profilePic'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
 
+        const result = await new Promise((resolve, reject) => {
+            let stream = cloudinary.uploader.upload_stream(
+            { folder: "quizzly_profiles", // optional folder
+            transformation: [
+                { width: 256, height: 256, crop: "fill", gravity: "face" }, 
+                { quality: "auto", fetch_format: "auto" }
+            ]},
+            (error, result) => {
+                if (result) resolve(result);
+                else reject(error);
+            }
+            );
+            streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+        console.log('result:' + result)
+        const user = await usersCollection.findByIdAndUpdate(req.user._id, {profilePic: {url: result.secure_url, public_id: result.public_id}})
+        // result.secure_url is the image link
+        // res.json({ imageUrl: result.secure_url });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Upload failed" });
+        }
+})
+app.post('/update/user/info', verifyToken, async (req, res) => {
+    const newUser = await usersCollection.findByIdAndUpdate(req.user._id, req.body)
+    console.log(newUser)
+})
 app.post('/signup/otp/resend', verifyToken,async(req, res) => {
     if (req.user === 'tokenissues' || req.user === null || req.user === undefined) { 
         res.redirect('/')
@@ -516,8 +584,9 @@ app.post('/createquiz', verifyToken, async (req, res) => {
         console.log(qid)
         const quizId = `${qid}-${req.body.quizInfo.subject.toLowerCase()}`
         console.log(quizId)
-        const quizCollection = await quizzesuriconnect.model(`${quizId}`, quizSchema)
+        const quizCollection = await quizzesuriconnect.model(`${req.user._id}`, quizSchema)
         await quizCollection.create({
+            quizId: quizId,
             quizInfo: req.body.quizInfo,
             candInfo: req.body.candInfo,
             authorName: `${req.user.surname} ${req.user.firstname}`,

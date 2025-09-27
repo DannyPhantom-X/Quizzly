@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/public/css/profile.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+</head>
+    <body>
+        <header></header>
+        <main>
+            <div class="sec-one">
+                <div class="prof-img-div">
+                    <img class="profile-pic">
+                    <label class="change-profpic"><i class="fa-regular fa-pen-to-square"></i><input type="file" class="file-input" accept="image/*"></label>
+                </div>
+            </div>
+            <div class="sec-two">
+                <div class="form">
+                    <label class="change-label" for="">Surname</label>
+                    <div class="change-form">
+                        <input type="text" class="faded change-input surname-input"><button class="change-bttn"><i class="fa-regular fa-pen-to-square"></i></button>
+                    </div>
+                </div>
+                
+                <div class="form">
+                    <label class="change-label" for="">Firstname</label>
+                    <div class="change-form"><input type="text" class="faded change-input firstname-input"><button class="change-bttn"><i class="fa-regular fa-pen-to-square"></i></button></div>
+                </div>
+
+                <div class="form">
+                    <label class="change-label" for="">Email</label>
+                    <div class="change-form"><input type="email" class="faded change-input email-input"><button class="change-bttn"><i class="fa-regular fa-pen-to-square"></i></button></div>
+                </div>
+
+                <button class="change-password-bttn">Change Password</button>
+
+                <label class="instruction-label show"><i>**Please input the following information to successfully change your Password**</i></label>
+
+                <div class="form show">
+                    <label class="change-label">Old Password</label>
+                    <div class="change-form"><input type="password" class="change-input old-password-input"></div>
+                </div>
+
+                <div class="form show">
+                    <label class="change-label">New Password</label>
+                    <div class="change-form"><input type="password" class="change-input new-password-input"></div>
+                </div>
+
+                <div class="form show">
+                    <label class="change-label">Confirm new Password</label>
+                    <div class="change-form">
+                        <input type="password" class="change-input confirm-password-input">
+                        <button class="confirm-done-bttn">D</button>
+                    </div>
+                    
+                </div>
+
+                <div class="form latest-show">
+                    <label class="change-label">Verification Code</label>
+                    <div class="change-form"><input type="number" class="change-input verification-input"></div>
+                    <label class="verification-label">A Verification Code has been sent to the dtaiwo453@gmail.com</label>
+                </div>
+
+                <button class="save-bttn faded">Save</button>
+            </div>
+        </main>
+
+        <script src="/public/js/profile.js"></script>
+    </body>
+</html>

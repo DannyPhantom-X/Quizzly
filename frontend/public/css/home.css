@@ -50,6 +50,9 @@ header div img{
 .profile-pic img{
     height: 100%;
     width: 100%;
+    color: white;
+    object-fit: contain;
+    border-radius: 90px;
     /* object-fit: cover; */
 }
 .quizzes-link, .about-link, .logout-link{
