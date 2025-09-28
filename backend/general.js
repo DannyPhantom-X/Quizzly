@@ -52,4 +52,4 @@ async function verifyToken(req, res, next) {
         res.redirect('/')
     }
 }
-module.exports = {authVerifyToken, verifyToken}
+module.exports = {authVerifyToken, verifyToken, quizzesuriconnect, quizzlyuriconnect}

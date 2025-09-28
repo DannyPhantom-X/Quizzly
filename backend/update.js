@@ -8,7 +8,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 require('dotenv').config()
 const path = require('path')
-const {authVerifyToken, verifyToken} = require('./general')
+const {authVerifyToken, verifyToken, quizzesuriconnect, quizzlyuriconnect} = require('./general')
 const {usersCollection, otpCollection, ctdCollection, quizSchema} = require('./models')
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

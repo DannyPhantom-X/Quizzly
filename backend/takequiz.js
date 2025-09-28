@@ -2,12 +2,7 @@ const express = require('express')
 const takeQuizRouter = express.Router()
 const jwt = require('jsonwebtoken')
 const path = require('path')
-const mongoose = require('mongoose')
-const quizzlyuri = process.env.QUIZZLYURI
-const quizzesuri = process.env.QUIZZESURI
-const quizzlyuriconnect = mongoose.createConnection(quizzlyuri)
-const quizzesuriconnect = mongoose.createConnection(quizzesuri)
-const {authVerifyToken, verifyToken} = require('./general')
+const {authVerifyToken, verifyToken, quizzesuriconnect, quizzlyuriconnect} = require('./general')
 const {usersCollection, otpCollection, ctdCollection, quizSchema} = require('./models')
 takeQuizRouter.get('/', verifyToken, async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/takequiz.html'))

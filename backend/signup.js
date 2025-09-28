@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const path = require('path')
-const {authVerifyToken, verifyToken} = require('./general')
+const {authVerifyToken, verifyToken, quizzesuriconnect, quizzlyuriconnect} = require('./general')
 require('dotenv').config()
 const {usersCollection, otpCollection, ctdCollection, quizSchema} = require('./models')
 const transport = nodemailer.createTransport({

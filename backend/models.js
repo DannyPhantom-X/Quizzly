@@ -1,9 +1,6 @@
 const mongoose  = require('mongoose')
 require('dotenv').config()
-const quizzlyuri = process.env.QUIZZLYURI
-const quizzesuri = process.env.QUIZZESURI
-const quizzlyuriconnect = mongoose.createConnection(quizzlyuri)
-const quizzesuriconnect = mongoose.createConnection(quizzesuri)
+const {authVerifyToken, verifyToken, quizzesuriconnect, quizzlyuriconnect} = require('./general')
 const { v4: uuidv4}  = require('uuid')
 const usersSchema = new mongoose.Schema({
     _id: {
