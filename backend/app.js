@@ -61,7 +61,6 @@ app.get('/api/currentuser', async (req, res) => {
         try{
             const userPayload = await jwt.verify(token, process.env.SECRET)
             const recordUser  = await usersCollection.findOne({_id: userPayload.uid})
-            console.log(recordUser)
             if (token === recordUser.loggedToken) {
                 await usersCollection.findOneAndUpdate({_id: userPayload.uid}, {lastActive: new Date()})
                 req.user = recordUser;
@@ -86,7 +85,6 @@ app.get('/api/currentuser', async (req, res) => {
 async function connect() {
     await quizzlyuriconnect;
     await quizzesuriconnect;
-    console.log('connected to db');
     app.listen(7000, '0.0.0.0',() => {console.log('Listening on port 7000')});
 }
 connect()

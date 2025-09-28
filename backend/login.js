@@ -11,9 +11,7 @@ loginRouter.get('/', authVerifyToken,async (req, res) => {
 })
 
 loginRouter.post('/', authVerifyToken, async (req, res) => {
-    console.log('brroo')
     const { email, password} = req.body
-    console.log(req.body)
     if(email === '' || email.indexOf('@') < 1 || email.lastIndexOf('.') < email.indexOf('@') ) {
         res.json({
             statuz: 'failed',
@@ -23,14 +21,12 @@ loginRouter.post('/', authVerifyToken, async (req, res) => {
         return;
     }
     const recordUser = await usersCollection.findOne( {email: email} )
-    console.log(recordUser)
     if(recordUser === null) {
         res.json({
             statuz: 'failed',
             reason: 'wrong email',
             message: 'Incorrect Email'
         })
-        console.log('wrong email')
         return;
     }else{
         if (!recordUser.verified) {
@@ -83,7 +79,6 @@ loginRouter.post('/', authVerifyToken, async (req, res) => {
                 reason: 'incorrect password',
                 message: 'Password is incorrect'
             })
-            console.log('incorrect password')
         }
     }
 })

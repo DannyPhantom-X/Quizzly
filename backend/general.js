@@ -8,7 +8,6 @@ const jwt = require('jsonwebtoken')
 const {usersCollection, otpCollection, ctdCollection, quizSchema} = require('./models')
 async function authVerifyToken(req, res, next) {
     const token = req.cookies.token;
-    console.log(token)
     if (token) {
         try{
             const userPayload = await jwt.verify(token, process.env.SECRET)

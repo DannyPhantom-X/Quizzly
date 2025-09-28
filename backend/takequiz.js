@@ -10,7 +10,6 @@ takeQuizRouter.get('/', verifyToken, async (req, res) => {
 
 takeQuizRouter.post('/', verifyToken, async (req, res) => {
     const isExist = await ctdCollection.findOne({ quizId: req.body.quizId})
-    console.log(isExist)
     if (isExist) {
         res.json({
             statuz: 'success'
@@ -27,7 +26,6 @@ takeQuizRouter.get('/:quizId/cand-info', verifyToken, async (req, res) => {
 })
 
 takeQuizRouter.get('/:quizId/api', verifyToken, async (req, res) => {
-    console.log('blochhh')
     const quizId = req.params.quizId
     const quizCollection = await quizzesuriconnect.model(req.user._id, quizSchema)
     let quiz = await quizCollection.findOne({quizId: quizId})

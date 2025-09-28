@@ -21,10 +21,8 @@ createQuizRouter.get('/ques&ans', verifyToken,async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/createquiz-ques-ans.html'))
 })
 createQuizRouter.post('/', verifyToken, async (req, res) => {
-    console.log(req.body)
     const qid = await uuidv4();
     const quizId = `${qid}-${req.body.quizInfo.subject.toLowerCase()}`
-    console.log(quizId)
     const quizCollection = await quizzesuriconnect.model(`${req.user._id}`, quizSchema)
     await quizCollection.create({
         quizId: quizId,

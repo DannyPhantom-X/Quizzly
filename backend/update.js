@@ -34,7 +34,6 @@ updateRouter.post('/update/profilepic', verifyToken, upload.single('profilePic')
             );
             streamifier.createReadStream(req.file.buffer).pipe(stream);
         });
-        console.log('result:' + result)
         const user = await usersCollection.findByIdAndUpdate(req.user._id, {profilePic: {url: result.secure_url, public_id: result.public_id}})
         // result.secure_url is the image link
         // res.json({ imageUrl: result.secure_url });
@@ -46,7 +45,6 @@ updateRouter.post('/update/profilepic', verifyToken, upload.single('profilePic')
 })
 updateRouter.post('/update', verifyToken, async (req, res) => {
     const newUser = await usersCollection.findByIdAndUpdate(req.user._id, req.body)
-    console.log(newUser)
 })
 
 updateRouter.get('/', verifyToken, async (req, res) => {

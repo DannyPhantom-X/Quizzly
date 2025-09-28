@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const path = require('path')
 const {authVerifyToken, verifyToken, quizzesuriconnect, quizzlyuriconnect} = require('./general')
 const {usersCollection, otpCollection, ctdCollection, quizSchema} = require('./models')
-quizzesRouter.get('/ctd-info', verifyToken, async (req, res) => {
+quizzesRouter.get('/tkn-info', verifyToken, async (req, res) => {
     const takenQuiz = []
         for(const tq of req.user.takenQuiz) {
             const quizCollection = await quizzesuriconnect.model(tq, quizSchema)
@@ -22,12 +22,11 @@ quizzesRouter.get('/ctd-info', verifyToken, async (req, res) => {
         answer: takenQuiz
     })
 })
-quizzesRouter.get('/tkn-info', verifyToken,async (req, res) => {
+quizzesRouter.get('/ctd-info', verifyToken,async (req, res) => {
     const createdQuiz = []
         for(const cq of req.user.createdQuiz) {
-            const quizCollection = await quizzesuriconnect.model(cq, quizSchema)
-            let quiz = await quizCollection.find({})
-            quiz = quiz[0];
+            const quizCollection = await quizzesuriconnect.model(req.user._id, quizSchema)
+            let quiz = await quizCollection.findOne({quizId: cq})
             createdQuiz.push({
                 subject: quiz.quizInfo.subject,
                 noQues: quiz.quizInfo.noQues,

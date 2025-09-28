@@ -20,7 +20,6 @@ signupRouter.get('/otp', authVerifyToken, async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/otp.html'))
 })
 signupRouter.get('/', authVerifyToken,(req, res) => {
-    console.log('token issue')
     res.sendFile(path.join(__dirname, '../frontend/signup.html'))
 })
 signupRouter.post('/', async (req, res) => {
@@ -72,11 +71,9 @@ signupRouter.post('/', async (req, res) => {
             reason: 'email exists',
             message: 'Email already exists'
         })
-        console.log('already failed')
         return;
     }
     const hashedpassword = await bcrypt.hash(password, 10)
-    console.log(hashedpassword)
     const newuser = await usersCollection.create({
         surname: surname,
         firstname: firstname,
@@ -88,14 +85,12 @@ signupRouter.post('/', async (req, res) => {
         lastActive: new Date(),
         loggedToken: 'none'
     });
-    console.log(newuser)
     const token = await jwt.sign({
         uid: newuser._id,
         surname: newuser.surname,
         firstname: newuser.firstname,
         email: newuser.email
     }, process.env.SECRET, {expiresIn: '12h'});
-    console.log(token);
     await usersCollection.findOneAndUpdate({_id: newuser._id}, {loggedToken: token})
     await res.cookie('token', token, {
         httpOnly: true,
@@ -140,9 +135,7 @@ signupRouter.post('/otp/verification', authVerifyToken, async (req, res) => {
 })
 
 async function sendOTP(id, email) {
-    console.log(id)
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`
-    console.log(otp)
     let mailOptions = {
         from: '"Quizzly" <no-reply@myapp.com>',
         to: email,
@@ -152,7 +145,6 @@ async function sendOTP(id, email) {
                 <p style="font-size: 1.5rem; color: #BD53ED">${otp}</p> 
                 <p>This OTP will expire in 5 minutes</b>`
     };
-    console.log('Mail Time')
     await transport.sendMail(mailOptions, (err, info) => {
     if (err) {
         console.error("Error:", err);
