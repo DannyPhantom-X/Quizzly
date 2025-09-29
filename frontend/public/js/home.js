@@ -10,11 +10,19 @@ const loadOut = `<div class="top">
                 <button class="signup-bttn" id="signup-bttn">Sign up</button>
                 <button class="login-bttn">Log in</button>`;
 let currentUser;
-
 window.addEventListener('DOMContentLoaded', async () => {
-    const response = await fetch('/api/currentuser')
-    currentUser = await response.json()
-    console.log(response)
+    sessionStorage.getItem('allow') ? document.querySelector('.welcome-body-div').style.display = 'flex': null;
+    sessionStorage.getItem('allow') ? sessionStorage.clear('allow') : null;
+    currentUser = JSON.parse(sessionStorage.getItem('user')) 
+    console.log(currentUser)
+    if (!currentUser) {
+        try{
+            const response = await fetch('/api/currentuser')
+            currentUser = await response.json()
+        }catch{
+            alert('Unable to connect to the server at this time')
+        }
+    }
     if(currentUser && currentUser.statuz === 'success') {
         document.querySelector('.last-div').innerHTML = `
         <a class="about-link part">About</a><a href="/quizzes" class="quizzes-link part">Quizzes</a> 
@@ -28,7 +36,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('.last-div').innerHTML = `<button class="signup-header-bttn" id="signup-bttn">Signup</button>`;
         onclickSignup();
     }
-    console.log(currentUser)
 })
 
 document.getElementById('takeQuiz').addEventListener('click' || 'touch', () => {
@@ -82,7 +89,7 @@ function onclickcancelButton() {
 function onclickUser() {
     const hiddenMenu = document.querySelector('.hidden-menu')
     const logoutLink = document.querySelector('.logout-link')
-    document.querySelector('.profile-pic').addEventListener('click' || 'touch', (e) => {
+    document.querySelector('.profile-pic').addEventListener('click', (e) => {
         hiddenMenu.classList.toggle('active')
         e.stopPropagation()
     })

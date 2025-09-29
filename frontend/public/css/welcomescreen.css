@@ -5,10 +5,10 @@
     height: 100%;
     top: 0;
     background-color: #0f172a;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
-    animation: remove 2s ease-in-out 5s;
+    animation: remove 1s ease-in-out 5s;
     animation-fill-mode: forwards;
     z-index: 5;
 }
@@ -95,7 +95,7 @@
 }
 @keyframes remove {
     to{
-        height: 5%;
+        opacity: 0;
         /* opacity: 0; */
         display: none;
     }

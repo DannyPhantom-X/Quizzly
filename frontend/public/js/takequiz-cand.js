@@ -26,3 +26,6 @@ cancelBttn.addEventListener('click' || 'touch', () => {
     document.querySelector('body').classList.remove('faded')
     document.querySelector('aside').style.display = 'none'    
 })
+document.querySelector('header img').addEventListener('click' || 'touch', () => {
+    window.location.href = '/'
+})

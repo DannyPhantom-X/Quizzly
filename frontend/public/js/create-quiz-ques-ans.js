@@ -27,8 +27,7 @@ const zeroOptionLoadout = `<div class="qanda">
                                 <textarea name="answer" class="answerInput" id=""></textarea>
                             </div>
 
-`
-console.log('loading')
+`;
 if (quizInfo && candInfo) {
     if (quizInfo.options) {
         for(let i = 1; i <= quizInfo.noQues; i++) {
@@ -68,6 +67,7 @@ function onclickNextButton() {
             qa.style.transform = `translateX(${offset}%)`
         })
         num += 1
+        console.log(num)
         questionNum.innerHTML = num
         previousChecker()
         nextChecker()
@@ -198,12 +198,12 @@ function onClickProceed() {
 
 function fade(param) {
     if( param === 'add') {
-        document.querySelector('body').style.backgroundColor = 'rgba(15, 23, 42, 0.8)'
+        document.querySelector('body' && 'header').style.backgroundColor = 'rgba(15, 23, 42, 0.8)'
         document.querySelectorAll('body *:not(.confirm-div)').forEach((el) => {
             el.classList.add('faded')
         })
     }else if(param === 'remove') {
-        document.querySelector('body').style.backgroundColor = '#0f172a'
+        document.querySelector('body' && 'header').style.backgroundColor = '#0f172a'
         document.querySelectorAll('body *:not(.confirm-div)').forEach((el) => {
             el.classList.remove('faded')
         })
@@ -212,6 +212,7 @@ function fade(param) {
 
 function loadScreenFunc(param) {
     if (param === 'add') {
+        profilePic.classList.add('faded')
         document.querySelector('body').style.backgroundColor = 'rgba(15, 23, 42, 0.8)'
         document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
             el.classList.add('faded')
@@ -230,7 +231,7 @@ function loadScreenFunc(param) {
 }
 
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 

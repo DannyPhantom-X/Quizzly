@@ -67,7 +67,9 @@ loginRouter.post('/', authVerifyToken, async (req, res) => {
             res.json({
                 statuz: 'success',
                 redirect: '/',
-                names: {
+                user: {
+                    statuz: 'success',
+                    profilePic: recordUser.profilePic.url,
                     surname: recordUser.surname,
                     firstname: recordUser.firstname
                 }

@@ -2,26 +2,26 @@ function candInfoJs () {
     let target;
     const container = document.getElementById('cand-body')
     const originalInput = document.getElementById('originalInput')
-    console.log(JSON.parse(sessionStorage.getItem('quizInfo')))
     let currentIndex = 0
     document.querySelector('.add-button').addEventListener('click' || 'touch', () => {
         let div;
         const info = document.querySelectorAll('.info')
         console.log(info.length)
         if (info.length === 1) {
+            target = document.getElementById('infoOriginal');
             div = document.createElement('div')
             div.classList.add('info')
-            target = document.getElementById('infoOriginal')
             div.classList.add('deleteInfo')
             div.innerHTML = `<input type="text" class="deleteInput" value="${originalInput.value}"> <button class='delete-button'><i class="fas fa-trash" title="Delete"></i></button>`
             originalInput.value = ''
+            console.log(target)
             container.insertBefore(div, target)
-            target = document.querySelector('.deleteInfo')
         }else {
             div = document.createElement('div')
             div.classList.add('info')
             target = document.querySelector('.deleteInfo')
-            div.innerHTML = `<input type="text" value="${originalInput.value}">`
+            div.innerHTML = `<input type="text" value="${document.querySelector('.deleteInput').value}">`
+            document.querySelector('.deleteInput').value = originalInput.value
             originalInput.value = ''
             container.insertBefore(div, target)
         }
@@ -64,14 +64,12 @@ function candInfoJs () {
             event.stopImmediatePropagation()
             const info = document.querySelectorAll('.info')
             document.querySelectorAll('.info').forEach((inf, i) => {
-                console.log('in loop')
-                console.log(inf.id)
-                console.log(inf.classList.length)
                 if (inf.id == 'infoOriginal') {
                     let j = i - 1
                     console.log(i, j)
                     info[j].innerHTML += `<button class='delete-button'><i class="fas fa-trash" title="Delete"></i></button>`
                     info[j].classList.add('deleteInfo')
+                    info[j].querySelector('input').classList.add('deleteInput')
                     event.stopImmediatePropagation()
                     onclickDeleteButton()
                 }

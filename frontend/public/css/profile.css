@@ -61,11 +61,11 @@ input{
     background-color: #243045;
     font-size: 1rem;
 }
-.faded{
+.shaded{
     pointer-events: none;
     filter: grayscale(90%);
     filter: blur(90%);
-    opacity: 0.3;
+    opacity: 0.8;
 }
 .change-label{
     display: block;

@@ -73,8 +73,9 @@ document.getElementById('loginBttn').addEventListener('click', async () => {
         document.querySelector('.message').innerHTML = result.message
     }else if(result.statuz === 'success') {
         loadScreen('remove')
+        sessionStorage.setItem('allow', 'allow')
         window.location.href = result.redirect
-        sessionStorage.setItem('user', JSON.stringify(result.names))
+        sessionStorage.setItem('user', JSON.stringify(result.user))
     }
 })
 
@@ -97,5 +98,5 @@ function loadScreen(param) {
 
 
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

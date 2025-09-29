@@ -180,7 +180,7 @@ input[type=radio] {
     border: 1px solid rgba(255, 255, 255, 0.2); 
     color: #fff; 
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    animation: fadeEntrance 0.5s; 
+    animation: fadeEntrance 1s; 
     font-size: 1.5rem;
     font-weight: 400;
     cursor: pointer;

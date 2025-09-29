@@ -45,6 +45,7 @@ updateRouter.post('/update/profilepic', verifyToken, upload.single('profilePic')
 })
 updateRouter.post('/update', verifyToken, async (req, res) => {
     const newUser = await usersCollection.findByIdAndUpdate(req.user._id, req.body)
+    res.json({statuz: 'success', user: newUser})
 })
 
 updateRouter.get('/', verifyToken, async (req, res) => {

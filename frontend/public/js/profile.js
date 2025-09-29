@@ -16,6 +16,7 @@ const verificationInut = document.querySelector('.verification-input');
 const surnameInput = document.querySelector('.surname-input');
 const firstnameInput = document.querySelector('.firstname-input');
 const emailInput = document.querySelector('.email-input')
+const loadScreen = document.querySelector('.load-screen');
 let isEdited = [false, false, false, false, false];
 let currentUser;
 
@@ -102,6 +103,7 @@ confirmDoneBttn.addEventListener('click' || 'touch', () => {
 })
 
 saveBttn.addEventListener('click' || 'touch', async () => {    
+    loadScreenFunc('add')
     let isFailed = false;
     saveChecker()
     const newInfo = {}
@@ -121,10 +123,13 @@ saveBttn.addEventListener('click' || 'touch', async () => {
         form = new FormData()
         form.append('profilePic', file)
         try{
-            await fetch('/myprofile/update/profilepic', {
+            const response = await fetch('/myprofile/update/profilepic', {
                 method: 'Post',
                 body: form,
             })
+            const result = await response.json()
+            await delay(3000)
+            loadScreenFunc('remove')
         }catch{
             alert('Unable To connect to server at this time!!!')
         }
@@ -133,7 +138,9 @@ saveBttn.addEventListener('click' || 'touch', async () => {
     isEdited[1] && currentUser.surname !== surnameInput.value ? newInfo.surname = surnameInput.value : null;
     isEdited[2] && currentUser.firstname !== firstnameInput.value ? newInfo.firstname = firstnameInput.value : null;
     isEdited[3] && currentUser.email !== emailInput.value ? newInfo.email = emailInput.value : null;
-    requestToChangeUserInfo(newInfo)
+    await requestToChangeUserInfo(newInfo)
+    await delay(3000)
+    loadScreenFunc('remove');
 })
 function passwordChecker() {
     oldPasswordInput.style.borderColor = 'white';
@@ -176,11 +183,30 @@ async function requestToChangeUserInfo(newInfo) {
                 },
                 body: JSON.stringify(newInfo)
             })
-            const result = await response.json()
+            const result = response.json();
         }
     }catch{
         alert('Unable to connect to server at this time!!!')
     }
-    
-    
+}
+function loadScreenFunc(param) {
+    console.log('hello')
+    if (param === 'add') {
+        document.querySelector('body').style.background = 'rgba(15, 23, 42, 0.8)'
+        document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
+            el.classList.add('shaded')
+        })
+        document.querySelector('.load-screen').classList.add('load-screen-style')
+        document.querySelector('.load-screen-style').innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
+    }else if( param === 'remove') {
+        document.querySelector('body').style.background = '#0f172a'
+        document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
+            el.classList.remove('shaded')
+        })
+        document.querySelector('.load-screen').classList.remove('load-screen-style')
+        document.querySelector('.load-screen').innerHTML = ''
+    }
+}
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
