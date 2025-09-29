@@ -31,9 +31,9 @@ createQuizRouter.post('/', verifyToken, async (req, res) => {
         authorName: `${req.user.surname} ${req.user.firstname}`,
         authorId: req.user._id,
         questions: req.body.questions,
-        attemptedBy: [],
+        attemptedBy: []
     })
-    await ctdCollection.create( { quizId: quizId } )
+    await ctdCollection.create( { quizId: quizId, authorId: req.user._id } )
     await usersCollection.findOneAndUpdate({ _id: req.user._id}, { $push: {createdQuiz: quizId}})
     res.json({
         statuz: 'success',

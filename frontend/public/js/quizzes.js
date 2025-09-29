@@ -5,28 +5,31 @@ const ctdChoice = document.querySelector('.ctd-choice');
 const tknChoice = document.querySelector('.tkn-choice');
 const backToHomeBttn = document.querySelector('.back-to-home');
 const nameDiv = document.querySelector('.name-div');
+let takenQuiz;
+let createdQuiz;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const response = await fetch('/api/currentuser');
     const result = await response.json();
+    await checker()
+    console.log(result)
+    document.querySelector('.pic-div img').src = result.profilePic || '/public/resources/unknown.jpg'
     nameDiv.innerHTML = `${result.surname} ${result.firstname}`;
 })
 
 
 
-function tkn(param) { return`<div class="taken-info"><div class="taken-quiz-div">
-                    <p>${param.subject}</p>
-                    <p>${param.noQues} Questions</p>
-                    <p>${param.duration}</p>
-                    <div class="quiz-id-copy-div">
-                        <p class="quiz-id-tkn">${param.quizId}</p>
-                        <button class="copy-bttn"><i class="fa fa-copy"></i></button>
-                    </div>
-                    <h1 class="author">by ${param.authorName}</h1>
-                </div>
+function tkn(param) { return`<div class="taken-quiz-div">
+                        <p>${param.subject}</p>
+                        <p>${param.noQues} Questions</p>
+                        <p>${param.duration}</p>
+                        <div class="quiz-id-copy-div">
+                            <p class="quiz-id-tkn">${param.quizId}</p>
+                            <button class="copy-bttn"><i class="fa fa-copy"></i></button>
+                        </div>
+                        <h1 class="author">by ${param.authorName}</h1>
                 </div>`;}
-function ctd(param) {return` <div class="created-info">
-                    <div class="ctd-quiz-div">
+function ctd(param) {return`<div class="ctd-quiz-div">
                         <h1>${param.subject}</h1>
                         <p>${param.noQues} Questions</p>
                         <div class="quiz-id-copy-div">
@@ -34,9 +37,7 @@ function ctd(param) {return` <div class="created-info">
                             <button class="copy-bttn"><i class="fa fa-copy"></i></button>
                         </div>
                         <p>Attemted by: ${param.attemptedBy}</p>
-                    </div>
-                </div>`};
-checker()
+                    </div>`};
 createdSpan.addEventListener('click', async () => {
     if(!ctdChoice.checked) {
         await fetchQuizInfo('ctd')
@@ -112,23 +113,30 @@ function onclicktknCopy() {
 }
 
 async function fetchQuizInfo(param) {
-    info.innerHTML = ''
-    if (param === 'tkn' || param === 'ctd') {
-        console.log('if...else... working');
-    }else{
-        return 'helllo world';
-    }
+    let result;
+    param === 'ctd' ? info.innerHTML =  '<div class="created-info"></div>' : param === 'tkn' ? info.innerHTML = '<div class="taken-info"></div>' : null;
     try{
-        const response = await fetch(`/quizzes/${param}-info`)
-        const result = await response.json()
+        if(!createdQuiz || !takenQuiz) {
+            const response = await fetch(`/quizzes/${param}-info`)
+            result = await response.json()
+            param === 'ctd' ? createdQuiz = result : param === 'tkn' ? takenQuiz = result : null;
+        }else{
+            param === 'ctd' ? result = createdQuiz : param === 'tkn' ? result = takenQuiz : null;
+        }
         if (result.answer.length === 0){ 
-            info.innerHTML = `<span class="unavailable">Unavailable . . .</span>`; 
+            info.innerHTML = `<span class="unavailable">Unavailable . . .</span>`;
+            return; 
         }
         result.answer.forEach((res) => {
-            param === 'ctd' ? info.innerHTML = ctd(res): param === 'tkn' ? info.innerHTML = tkn(res) : console.log('lost access');
+            if (param === 'ctd') {
+                document.querySelector('.created-info').innerHTML += ctd(res)
+            }else if(param === 'tkn'){
+                document.querySelector('.taken-info').innerHTML += tkn(res)
+            }else{
+                return;
+            }
         })
-    }catch {
+    }catch(err){
         console.error('An error was occured')
     }
-       
 }

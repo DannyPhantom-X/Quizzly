@@ -39,7 +39,8 @@ const ctdQuizSchema = new mongoose.Schema({
         type: String,
         default: () => uuidv4()
     },
-    quizId: String
+    quizId: String,
+    authorId: String
 })
 const quizSchema = new mongoose.Schema({
     _id: {

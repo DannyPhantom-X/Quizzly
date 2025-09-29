@@ -44,6 +44,7 @@ body{
     border-radius: 10px;
     color: white;
     background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+    cursor: pointer;
 }
 .no-ques, .duration{
     display: flex;

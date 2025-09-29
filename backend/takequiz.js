@@ -24,11 +24,21 @@ takeQuizRouter.post('/', verifyToken, async (req, res) => {
 takeQuizRouter.get('/:quizId/cand-info', verifyToken, async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/takequiz-cand.html'));
 })
-
+takeQuizRouter.get('/:quizId/cand-info/api', verifyToken, async (req, res) => {
+    const quizId = req.params.quizId;
+    const ctdQuiz = await ctdCollection.findOne({quizId: quizId});
+    const quiz = await quizzesuriconnect.model(ctdQuiz.authorId, quizSchema).findOne({quizId: quizId});
+    console.log(quiz)
+    console.log('this is it: ' + quiz.quizInfo.instruction)
+    res.json({
+        instruction: quiz.quizInfo.instructions,
+        candInfo: quiz.candInfo
+    })
+})
 takeQuizRouter.get('/:quizId/api', verifyToken, async (req, res) => {
-    const quizId = req.params.quizId
-    const quizCollection = await quizzesuriconnect.model(req.user._id, quizSchema)
-    let quiz = await quizCollection.findOne({quizId: quizId})
+    const quizId = req.params.quizId;
+    const ctdQuiz = await ctdCollection.findOne({quizId: quizId});
+    const quiz = await quizzesuriconnect.model(ctdQuiz.authorId, quizSchema).findOne({quizId: quizId});
     res.json({
         subject: quiz.quizInfo.subject,
         noQues: quiz.quizInfo.noQues,
