@@ -39,7 +39,7 @@ async function verifyToken(req, res, next) {
                     req.user = recordUser;
                     next()
                 }else{
-                    if (req.path === '/otp') {
+                    if (req.path === '/otp' || req.path == '/otp/verification') {
                         req.user = recordUser;
                         next()
                     }else{

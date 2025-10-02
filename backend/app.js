@@ -36,15 +36,7 @@ app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/home.html'))
 })
 app.get('/logout', verifyToken, async (req, res) => {
-    if (req.user === 'tokenissues' || req.user === undefined || req.user === null) { 
-        res.redirect('/')
-        return;
-    }
-    if(req.user.verified) {
-        res.sendFile(path.join(__dirname, '../frontend/logout.html'))
-    }else{
-        res.redirect('/signup/otp')
-    }
+    res.sendFile(path.join(__dirname, '../frontend/logout.html'))
 })
 app.get('/api/user/logout', verifyToken,async (req, res) => {
     await usersCollection.findOneAndUpdate({_id: req.user._id}, {loggedToken: 'none'})
