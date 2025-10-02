@@ -60,7 +60,7 @@ document.getElementById('signupButton').addEventListener('click' || 'touch', asy
     const email = document.getElementById('emailInput').value
     const password = document.getElementById('passwordInput').value
     const confirmPassword = document.getElementById('confirmPasswordInput').value
-    const response = await fetch('http://localhost:7050/signup', {
+    const response = await fetch('/signup', {
         method: 'Post',
         headers: {
             'Content-type': 'application/json'

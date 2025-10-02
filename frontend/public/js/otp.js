@@ -46,7 +46,7 @@ function submit() {
                 otp += numInput.value
             })
             loadScreen('add')
-            const response = await fetch('http://localhost:7050/signup/otp/verification', {
+            const response = await fetch('/signup/otp/verification', {
                 method: 'Post',
                 headers: {
                     "content-type": "application/json"

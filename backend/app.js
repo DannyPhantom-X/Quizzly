@@ -11,10 +11,16 @@ const loginRouter = require('./login')
 const updateRouter = require('./update')
 const takeQuizRouter = require('./takequiz')
 const createQuizRouter = require('./createquiz')
+const expressSession = require('express-session')
 const quizzesRouter = require('./quizzes')
 const jwt = require('jsonwebtoken')
 const {usersCollection, otpCollection, ctdCollection, quizSchema} = require('./models')
 app.use(cookieParser())
+ app.use(expressSession({
+    secret: "supersecretkey",
+    resave: false,
+    saveUninitialized: true
+}))
 app.use(cors())
 app.use(express.json())
 // app.use(express.urlencoded({ extended: true}))

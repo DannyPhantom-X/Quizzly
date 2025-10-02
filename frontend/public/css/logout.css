@@ -86,3 +86,7 @@ main div{
     font-weight: bold;
     font-size: 2rem;
 }
+button:active{
+    background-color: #444;
+    transform: scale(0.98);
+}

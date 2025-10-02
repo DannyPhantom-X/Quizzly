@@ -29,14 +29,19 @@ main{
     margin-bottom: 50px;
     font-weight: bold;
 }
-.form{
+.form-main{
+    display: flex;
+    flex-direction: column;
+}
+.form-main label{
+    color: white;
+    font-size: 1.2rem;
+}
+.form-div{
     display: flex;
     flex-direction: column;
     row-gap: 10px;
-}
-.form label{
-    color: white;
-    font-size: 1.2rem;
+    margin-bottom: 20px;
 }
 .cand-input{
     border: 1px solid white;
@@ -83,25 +88,25 @@ aside {
     right: 0;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: grayscale(50%), blur(3px);
+    background: rgba(255, 255, 255, 0.01);
+    /* backdrop-filter: grayscale(50%), blur(3px); */
     display: none;
 }
 aside div{
-    background-color: #0f172a;
+    background-color: #243045;
     height: 150px;
-    padding: 10px;
-    width: 300px;
+    padding: 15px;
+    width: 350px;
     font-size: 1.5rem;
-    border-radius: 20px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     position: relative;
     box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.25);
 }
 .confirm-start-bttn{
-    bottom: 10px;
-    right: 10px;
+    bottom: 15px;
+    right: 15px;
 }
 .cancel-bttn{
     border-radius: 100px;

@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log(result)
     document.querySelector('.pic-div img').src = result.profilePic || '/public/resources/unknown.jpg'
     nameDiv.innerHTML = `${result.surname} ${result.firstname}`;
+    document.querySelector('body').style.display = 'block'
 })
 
 

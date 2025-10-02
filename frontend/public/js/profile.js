@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         firstnameInput.value = currentUser.firstname;
         emailInput.value = currentUser.email;
         profilePic.src = currentUser.profilePic || '/public/resources/unknown.jpg'
+        document.querySelector('body').style.display = 'block'
     }catch{
         alert('Unable to connect to server at this time!!!')
     }

@@ -24,10 +24,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 })
 
 proceedBttn.addEventListener('click' || 'touch', async () => {
-    const response = await fetch(`${path}/cand-info`)
-    const result = await response.text()
-    document.open();
-    document.write(result);
-    document.close();    
-
+    console.log('clicked')
+    const response = await fetch(`${path}/proceed`)
+    const result = await response.json()
+    window.location.href = result.redirectTo
 })

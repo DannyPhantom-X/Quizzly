@@ -34,6 +34,7 @@ updateRouter.post('/update/profilepic', verifyToken, upload.single('profilePic')
             );
             streamifier.createReadStream(req.file.buffer).pipe(stream);
         });
+        await cloudinary.uploader.destroy(req.user.profilePic.public_id);
         const user = await usersCollection.findByIdAndUpdate(req.user._id, {profilePic: {url: result.secure_url, public_id: result.public_id}})
         // result.secure_url is the image link
         // res.json({ imageUrl: result.secure_url });

@@ -352,3 +352,7 @@ footer{
     from{ transform: translateX(100%); opacity: 0;}
     to{ transform: translateX(0px); opacity: 1;}
 }
+button:active{
+    background-color: #444;
+    transform: scale(0.98);
+}

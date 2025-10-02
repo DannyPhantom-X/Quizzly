@@ -39,3 +39,7 @@ body{
         background-size: 150px;
     }
 }
+button:active{
+    background-color: #444;
+    transform: scale(0.98);
+}

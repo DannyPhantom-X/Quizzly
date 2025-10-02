@@ -14,7 +14,7 @@ async function authVerifyToken(req, res, next) {
             const recordUser  = await usersCollection.findOne({_id: userPayload.uid})
             if (token === recordUser.loggedToken) {
                 await usersCollection.findOneAndUpdate({_id: userPayload.uid}, {lastActive: new Date()})
-                req.user = recordUser;
+                req.user = recordUser;  
                 res.redirect('/')
             }else{
                 next()
@@ -27,7 +27,8 @@ async function authVerifyToken(req, res, next) {
     }
 }
 async function verifyToken(req, res, next) {
-    const token = req.cookies.token;
+    console.log('Done')
+    const token = req.cookies.token
     if (token) {
         try{
             const userPayload = await jwt.verify(token, process.env.SECRET)
@@ -38,7 +39,13 @@ async function verifyToken(req, res, next) {
                     req.user = recordUser;
                     next()
                 }else{
-                    res.redirect('/signup/otp')
+                    if (req.path === '/otp') {
+                        req.user = recordUser;
+                        next()
+                    }else{
+                        req.user = recordUser;
+                        res.redirect('/signup/otp')
+                    }
                 }
             }else{
                 res.redirect('/')

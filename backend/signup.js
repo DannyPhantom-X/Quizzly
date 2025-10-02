@@ -15,14 +15,14 @@ const transport = nodemailer.createTransport({
         pass: process.env.AUTH_PASS
     }
 })
-signupRouter.get('/otp', authVerifyToken, async (req, res) => {
+signupRouter.get('/otp', verifyToken, async (req, res) => {
     await sendOTP(req.user._id, req.user.email);
     res.sendFile(path.join(__dirname, '../frontend/otp.html'))
 })
 signupRouter.get('/', authVerifyToken,(req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/signup.html'))
 })
-signupRouter.post('/', async (req, res) => {
+signupRouter.post('/', authVerifyToken ,async (req, res) => {
     const {surname, firstname, email, password, confirmPassword} = req.body
     console.log(req.body)
     if (surname === '') {
@@ -103,8 +103,10 @@ signupRouter.post('/', async (req, res) => {
     })    
 })
 
-signupRouter.post('/otp/verification', authVerifyToken, async (req, res) => {
+signupRouter.post('/otp/verification', verifyToken,async (req, res) => {
+    console.log('method')
     const recorduserotp = await otpCollection.findOne({ _id: req.user._id })
+    console.log(recorduserotp)
     const otpStats = await bcrypt.compare(req.body.otp, recorduserotp.otp)
     if (!otpStats) {
         res.json({
