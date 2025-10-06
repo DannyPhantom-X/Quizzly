@@ -36,3 +36,10 @@
     pointer-events: none;
     animation: typing 0s;
 }
+button:active{
+    transform: scale(0.95);
+}
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}

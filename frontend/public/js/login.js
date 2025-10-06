@@ -80,7 +80,7 @@ document.getElementById('loginBttn').addEventListener('click', async () => {
 })
 
 document.getElementById('signupLink').addEventListener('click' || 'touch', () => {
-    window.location.href = 'http://localhost:7050/signup'
+    window.location.href = '/signup'
 })
 
 function loadScreen(param) {

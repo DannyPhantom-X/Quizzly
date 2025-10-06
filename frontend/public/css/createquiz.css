@@ -3,7 +3,6 @@ body {
     background: white;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
     min-height: 100vh;
     margin: 0;
@@ -31,7 +30,7 @@ input[type=number]::-webkit-outer-spin-button {
     height: 450px;
     border-radius: 16px;
     transform-style: preserve-3d;
-    background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%);
+    /* background: linear-gradient(135deg, #BD53ED 0%, #5396ED 100%); */
 }
 .quiz-info-form-card, .cand-info-form-card{
     position: absolute;
@@ -44,6 +43,7 @@ input[type=number]::-webkit-outer-spin-button {
     top: 0;
     border-radius: 16px;
     overflow: scroll;
+    overflow-x: hidden;
     scrollbar-width: none;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -199,9 +199,13 @@ input[type=number]::-webkit-outer-spin-button {
 
 @media (max-width: 800px) {
     .form-card{
-        margin-top: calc(20vh);
+        margin-top: calc(25vh);
     }
-    .form-card-inner{
-        height: 550px;
-    }
+}
+button:active{
+    transform: scale(0.95);
+}
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }

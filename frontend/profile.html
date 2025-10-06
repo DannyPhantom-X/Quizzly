@@ -13,7 +13,7 @@
 </head>
     <body>
         <div class="load-screen"></div>
-        <header></header>
+        <header><img src="/public/resources/quizzlydesign.png" alt=""></header>
         <main>
             <div class="sec-one">
                 <div class="prof-img-div">
@@ -25,7 +25,8 @@
                 <div class="form">
                     <label class="change-label" for="">Surname</label>
                     <div class="change-form">
-                        <input type="text" class="faded change-input surname-input"><button class="change-bttn"><i class="fa-regular fa-pen-to-square"></i></button>
+                        <input type="text" class="faded change-input surname-input">
+                        <button class="change-bttn"><i class="fa-regular fa-pen-to-square"></i></button>
                     </div>
                 </div>
                 
@@ -36,7 +37,16 @@
 
                 <div class="form">
                     <label class="change-label" for="">Email</label>
-                    <div class="change-form"><input type="email" class="faded change-input email-input"><button class="change-bttn"><i class="fa-regular fa-pen-to-square"></i></button></div>
+                    <div class="change-form"><input type="email" class="faded change-input email-input">
+                        <button class="change-bttn"><i class="fa-regular fa-pen-to-square"></i></button>
+                        <buttton class="done-bttn"><i class="fas fa-check check-icon" title="Mark as complete"></i></buttton>
+                    </div>
+                </div>
+                
+                <div class="form email-show">
+                    <label class="change-label">Verification Code</label>
+                    <div class="change-form"><input type="number" class="change-input verification-input verification-email"></div>
+                    <label class="verification-label">In order to change your email a Verification Code has been sent to <span></span> </label>
                 </div>
 
                 <button class="change-password-bttn">Change Password</button>
@@ -57,18 +67,19 @@
                     <label class="change-label">Confirm new Password</label>
                     <div class="change-form">
                         <input type="password" class="change-input confirm-password-input">
-                        <button class="confirm-done-bttn">D</button>
+                        <button class="confirm-done-bttn"><i class="fas fa-check check-icon" title="Mark as complete"></i></button>
                     </div>
                     
                 </div>
 
                 <div class="form latest-show">
                     <label class="change-label">Verification Code</label>
-                    <div class="change-form"><input type="number" class="change-input verification-input"></div>
-                    <label class="verification-label">A Verification Code has been sent to the dtaiwo453@gmail.com</label>
+                    <div class="change-form"><input type="number" class="change-input verification-password "></div>
+                    <label class="verification-label">A Verification Code has been sent to <span></span></label>
                 </div>
 
                 <button class="save-bttn faded">Save</button>
+                <div class="message"></div>
             </div>
         </main>
 

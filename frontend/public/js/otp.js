@@ -69,6 +69,7 @@ function submit() {
                 document.querySelector('.message').innerHTML = result.message
             }else if(result.statuz === 'success') {
                 loadScreen('remove')
+                sessionStorage.setItem('allow', 'allow')
                 sessionStorage.setItem('user', JSON.stringify(result.names))
                 window.location.href= '/'
             }
@@ -76,7 +77,6 @@ function submit() {
     })
     
 }
-
 const intervalId = setInterval(() => {
     if(seconds.innerHTML == '00' || sec == 0) {
         sec = 59;
@@ -95,10 +95,11 @@ const intervalId = setInterval(() => {
 
 setTimeout(() => {
     clearInterval(intervalId)
-    document.querySelector('.resend').innerHTML = `Didn't recieve OTP, <span class="resend-link"> Resend</span>`
+    document.querySelector('.resend').innerHTML = `<span class="resend-link"> Resend Verification Email</span>`
+    document.querySelector('.resend').style.fontSize = '1.2rem'
     document.querySelector('.resend-link').addEventListener('click', async () => {
         console.log('resend')
-        await fetch('http://localhost:7050/signup/otp/resend', {
+        await fetch('/signup/otp/resend', {
             method: 'Post',
             headers: {
                 'Content-type': 'application/json'

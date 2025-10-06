@@ -119,12 +119,15 @@ signupRouter.post('/otp/verification', verifyToken,async (req, res) => {
     if (Date.now() < recorduserotp.expiresin) {
         await usersCollection.findOneAndUpdate({ _id: req.user._id }, {verified: true})
         await otpCollection.findOneAndDelete({ _id: req.user._id })
+        const profilePic =  req.user.profilePic ? req.user.profilePic.url : null;
         res.json({
             statuz: 'success',
             redirect: '/',
             names: {
+                statuz: 'success',
                 surname: req.user.surname,
-                firstname: req.user.firstname
+                firstname: req.user.firstname,
+                profilePic: profilePic
             }
         })
     }else{
@@ -155,11 +158,11 @@ async function sendOTP(id, email) {
     }
     }) 
     const expires = Date.now() + (5 * 60 * 1000);
-    const exists = await otpCollection.findOne({ _id: id})
+    const exists = await otpCollection.findOne({ _id: `${id}-otp`})
     const hashotp = await bcrypt.hash(otp, 10)
     if (exists !== null) {
-        await otpCollection.findOneAndUpdate( {_id: id}, {otp: hashotp, expiresin: expires} )
-    }else{ otpCollection.create({_id: id, email: email, otp: hashotp, expiresin: expires}) }        
+        await otpCollection.findOneAndUpdate( {_id: `${id}-otp`}, {otp: hashotp, reason: 'otp', expiresin: expires} )
+    }else{ otpCollection.create({_id: `${id}-otp`, email: email, reason: 'otp', otp: hashotp, expiresin: expires}) }        
 }
 
 module.exports = signupRouter

@@ -21,7 +21,6 @@ submitBttn.addEventListener('click' || 'touch', async () => {
             await delay(2000)
             console.log('success')
             window.location.href = `/takequiz/${inputId.value}`
-            loadScreenFunc('remove')
         }else{
             await delay(2000)
             loadScreenFunc('remove')
@@ -39,7 +38,7 @@ function delay(ms) {
 }
 function loadScreenFunc(param) {
     if (param === 'add') {
-        document.querySelector('body').style.backgroundColor = 'rgba(15, 23, 42, 0.8)'
+        document.querySelector('body').style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
         document.querySelector('body').style.backgroundImage = 'none'
         document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
             el.classList.add('faded')

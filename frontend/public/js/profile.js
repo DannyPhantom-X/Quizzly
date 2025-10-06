@@ -12,16 +12,19 @@ const saveBttn = document.querySelector('.save-bttn');
 const oldPasswordInput = document.querySelector('.old-password-input');
 const newPasswordInput = document.querySelector('.new-password-input');
 const confirmPasswordInput = document.querySelector('.confirm-password-input');
-const verificationInut = document.querySelector('.verification-input');
+const verificationPassword = document.querySelector('.verification-password');
 const surnameInput = document.querySelector('.surname-input');
 const firstnameInput = document.querySelector('.firstname-input');
 const emailInput = document.querySelector('.email-input')
 const loadScreen = document.querySelector('.load-screen');
+const doneBttn = document.querySelector('.done-bttn');
+const emailShow = document.querySelector('.email-show');
+const verificationEmail = document.querySelector('.verification-email')
 let isEdited = [false, false, false, false, false];
 let currentUser;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    try{ 
+    try{
         const response = await fetch('/api/currentuser');
         currentUser = await response.json();
         surnameInput.value = currentUser.surname;
@@ -39,36 +42,70 @@ document.addEventListener('DOMContentLoaded', async () => {
 changeProfPic.addEventListener('click', () => {
     console.log('Done')
 })
-
 changeBttn.forEach((cb, i) => {
     cb.addEventListener('click' || 'touch', () => {
         changeInput[i].classList.toggle('faded')
         if(changeInput[i].classList.contains('faded')) {
+            i === 0 ? surnameInput.value = currentUser.surname : null;
+            i === 1 ? firstnameInput.value = currentUser.firstname : null;
+            i === 2 ? doneBttn.style.display = 'none': null;
+            i === 2 ? emailInput.value = currentUser.email : null;
             cb.innerHTML = '<i class="fa-regular fa-pen-to-square"></i>';
-            const j = i + 1
+            const j = i + 1;
             isEdited[j] = false;
             saveChecker();
         }else{
             cb.innerHTML = 'X';
             changeInput[i].addEventListener('keyup', () => {
+                const j = i + 1;
                 if(i === 0 && currentUser.surname != changeInput[i].value) {
-                    const j = i + 1
-                    console.log('worked')
                     isEdited[j] = true;            
                 }else if(i === 1 && currentUser.firstname != changeInput[i].value) {
-                    const j = i + 1
                     isEdited[j] = true;
                 }else if(i === 2 && currentUser.email != changeInput[i].value) {
-                    const j = i + 1
-                    isEdited[j] = true;
+                    doneBttn.style.display = 'flex';
                 }else{
-                    return;
+                    j == 3 ? doneBttn.style.display = 'none' : null;
+                    isEdited[j] = false;
                 }
-                console.log(isEdited)
                 saveChecker()
             })
         }
     })
+})
+
+
+doneBttn.addEventListener('click' || 'touch', async () => {
+    try{
+        doneBttn.innerHTML = `<div class="processing"></div>`
+        const response = await fetch('/myprofile/update/verification', {
+            method: 'Post',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                reason: 'email'
+            })
+
+        })
+        console.log(response)
+        const result = await response.json()
+        if (result.statuz == 'success') {
+            const [email, domain] = currentUser.email.split('@')
+            const visible = email.slice(0, 2);
+            const masked = '*'.repeat(Math.max(email.length - 2,2))
+            emailShow.querySelector('span').innerHTML = `${visible}${masked}@${domain}`
+            emailShow.style.display = 'block'
+            doneBttn.innerHTML = '<i class="fas fa-check check-icon" title="Mark as complete"></i>'
+            doneBttn.style.display = 'none'
+            isEdited[3] = true;
+            saveChecker()
+        }else{
+            alert('Server failed ❌')
+        }
+    }catch{
+        alert('Server failed ❌')
+    }
 })
 
 changePasswordBttn.addEventListener('click' || 'touch', () => {
@@ -93,31 +130,49 @@ fileInput.addEventListener('change', () => {
     saveChecker()
 })
 
-confirmDoneBttn.addEventListener('click' || 'touch', () => {
+confirmDoneBttn.addEventListener('click' || 'touch', async () => {
     const isFailed = passwordChecker()
     if(!isFailed) {
+        try{
+            confirmDoneBttn.innerHTML = `<div class="processing"></div>`
+            const response = await fetch('/myprofile/update/verification', {
+                method: 'Post',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    reason: 'password'
+                })
+
+            })
+            console.log(response)
+            const result = await response.json()
+            console.log(result)
+            if (result.statuz == 'success') {
+                const [email, domain] = currentUser.email.split('@')
+                const visible = email.slice(0, 2);
+                const masked = '*'.repeat(Math.max(email.length - 2,2))
+                document.querySelector('.latest-show').querySelector('span').innerHTML = `${visible}${masked}@${domain}`
+                document.querySelector('.latest-show').style.display = 'block'
+                confirmDoneBttn.innerHTML = '<i class="fas fa-check check-icon" title="Mark as complete"></i>'
+                confirmDoneBttn.style.display = 'none'
+                isEdited[4] = true;
+                saveChecker()
+            }else{
+                alert('Server failed ❌')
+            }
+        }catch{
+            alert('Server failed ❌')
+        }
         saveBttn.classList.remove('faded')
         confirmDoneBttn.style.display = 'none'
-        document.querySelector('.latest-show').style.display = 'block'
-        isEdited[4] = true
+        isEdited[4] = true;
     }
 })
-
 saveBttn.addEventListener('click' || 'touch', async () => {    
     loadScreenFunc('add')
-    let isFailed = false;
     saveChecker()
     const newInfo = {}
-    show.forEach((s) => {
-        if(s.style.display !== '') {
-            isFailed = passwordChecker()
-            if(!isFailed && verificationInut.value === '') {
-                verificationInut.style.borderColor = 'red';
-                return isFailed = true;
-            }
-        }
-    })
-    if(isFailed) {return;}
     let form;
     if(isEdited[0] && fileInput.files[0]) {
         const file = fileInput.files[0]
@@ -133,21 +188,46 @@ saveBttn.addEventListener('click' || 'touch', async () => {
             loadScreenFunc('remove')
         }catch{
             alert('Unable To connect to server at this time!!!')
+            document.querySelector('body') = '404 | Unable to connect To server'
         }
-        
     }
     isEdited[1] && currentUser.surname !== surnameInput.value ? newInfo.surname = surnameInput.value : null;
     isEdited[2] && currentUser.firstname !== firstnameInput.value ? newInfo.firstname = firstnameInput.value : null;
-    isEdited[3] && currentUser.email !== emailInput.value ? newInfo.email = emailInput.value : null;
-    await requestToChangeUserInfo(newInfo)
-    await delay(3000)
+    if ( isEdited[3] && currentUser.email !== emailInput.value) {
+        if (verificationEmail.value !== '' && verificationEmail.value.length === 4) {
+            newInfo.newEmail = emailInput.value
+            newInfo.verificationEmailCode = verificationEmail.value
+        }else{
+            verificationEmail.style.borderColor = 'red';
+            loadScreenFunc('remove');
+            return;
+        }
+    }
+    if (isEdited[4]) {
+        if (verificationPassword.value !== '' && verificationPassword.value.length === 4) {
+            newInfo.oldPassword = oldPasswordInput.value
+            newInfo.newPassword = newPasswordInput.value
+            newInfo.confirmPassword = confirmPasswordInput.value
+            newInfo.verificationPasswordCode = verificationPassword.value
+        }else{
+            verificationPassword.style.borderColor = 'red';
+            loadScreenFunc('remove');
+            return;
+        }
+    } 
+    const data = await requestToChangeUserInfo(newInfo)
+    if (data) {
+        await delay(3000)
+        window.location.reload();
+        loadScreenFunc('remove');
+    }
     loadScreenFunc('remove');
 })
 function passwordChecker() {
     oldPasswordInput.style.borderColor = 'white';
     newPasswordInput.style.borderColor = 'white';
     confirmPasswordInput.style.borderColor = 'white';
-    verificationInut.style.borderColor = 'white';
+    verificationPassword.style.borderColor = 'white';
     if(oldPasswordInput.value === '') {
         oldPasswordInput.style.borderColor = 'red';
         return true;
@@ -157,7 +237,11 @@ function passwordChecker() {
     }else if(confirmPasswordInput.value === '') {
         confirmPasswordInput.style.borderColor = 'red';
         return true;
-    }else{
+    }else if(confirmPasswordInput.value !== newPasswordInput.value){
+        confirmPasswordInput.style.borderColor = 'red';
+        return true;
+    }
+    else{
         return false;
     }
 }
@@ -165,7 +249,6 @@ saveChecker()
 function saveChecker() {
     for(i = 0; i <= 4; i++) {   
         if(isEdited[i]){
-            console.log('broken at ' + i)
             saveBttn.classList.remove('faded');
             break;
         }else{
@@ -184,16 +267,22 @@ async function requestToChangeUserInfo(newInfo) {
                 },
                 body: JSON.stringify(newInfo)
             })
-            const result = response.json();
+            const result = await response.json();
+            console.log(result)
+            if (result.statuz === 'success') {
+                return true;
+            }else{
+                document.querySelector('.message').innerHTML = result.message;
+                return false;
+            }
         }
     }catch{
         alert('Unable to connect to server at this time!!!')
     }
 }
 function loadScreenFunc(param) {
-    console.log('hello')
     if (param === 'add') {
-        document.querySelector('body').style.background = 'rgba(15, 23, 42, 0.8)'
+        document.querySelector('body').style.background = 'rgba(255, 255, 255, 0.1)'
         document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
             el.classList.add('shaded')
         })
@@ -210,4 +299,14 @@ function loadScreenFunc(param) {
 }
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+document.querySelector('header img').addEventListener('click' || 'touch', () => {
+    window.location.href = '/'
+})
+
+
+function capitalize(word) {
+    const capital = word.slice(0, 1).toUpperCase()
+    const rest = word.slice(1, (word.length))
+    return `${capital}${rest}`
 }

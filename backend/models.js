@@ -32,6 +32,7 @@ const otpSchema = new mongoose.Schema({
     _id: String,
     email: String,
     otp: String,
+    reason: String,
     expiresin: Number
 })
 const ctdQuizSchema = new mongoose.Schema({

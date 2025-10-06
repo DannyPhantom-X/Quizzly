@@ -49,22 +49,20 @@
 
         <div class="form-group fade">
           <label for="options">Number of Options</label>
-          <input type="number" id="noOptionsInput" placeholder="Enter number of options">
-          <!-- <datalist for="noOptionsInput">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </datalist> -->
+          <input type="number" list="noOptionsInput" id="noOptionsInput" placeholder="Enter number of options"> 
+          <datalist id="noOptionsInput">
+            <option value="1">
+            <option value="2">
+            <option value="3">
+            <option value="4">
+            <option value="5">
+          </datalist>
         </div>
-
         <div class="toggle">
           <span>Options</span>
           <input type="checkbox" id="optionsToggle">
           <label for="optionsToggle"></label>
         </div>
-
         <div class="toggle fade">
           <span>Randomised Optioning</span>
           <input type="checkbox" id="randOptionsInput">

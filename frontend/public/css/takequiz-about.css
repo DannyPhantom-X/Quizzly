@@ -60,3 +60,10 @@ body{
     font-size: 2rem;
     font-weight: bold;
 }
+button:active{
+    transform: scale(0.95);
+}
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}

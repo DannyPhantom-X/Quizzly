@@ -125,7 +125,7 @@ async function fetchQuizInfo(param) {
             param === 'ctd' ? result = createdQuiz : param === 'tkn' ? result = takenQuiz : null;
         }
         if (result.answer.length === 0){ 
-            info.innerHTML = `<span class="unavailable">Unavailable . . .</span>`;
+            info.innerHTML = `<span class="unavailable">None Found!!! . . .</span>`;
             return; 
         }
         result.answer.forEach((res) => {

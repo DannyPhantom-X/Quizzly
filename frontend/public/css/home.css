@@ -140,20 +140,25 @@ header div img{
     color: white;
 }
 .left,.right{
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    margin-left: 10px;
 }
 .right img{
-    width: 100%;
+    width: 80%;
+    margin-top: 30px;
 }
 .headline{
-    font-size: 3rem;
+    margin-top: 30px;
+    font-size: 2.5rem;
     font-weight: bolder;
     margin-bottom: 10px;
     color: #0f172a;
-
 }
 .subtext{
-    font-size: 1.5rem;
+    font-weight: 100;
+    font-size: 1.2rem;
 }
 .site-info{
     overflow: hidden;
@@ -324,6 +329,9 @@ footer{
     }
     .beginning-page{
         grid-template-columns: 1fr;
+    }
+    .headline, .right img{
+        margin-top: 0px;
     }
     .exists{display: flex;}
     .part{display: none;}

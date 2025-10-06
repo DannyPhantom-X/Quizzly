@@ -27,7 +27,6 @@ async function authVerifyToken(req, res, next) {
     }
 }
 async function verifyToken(req, res, next) {
-    console.log('Done')
     const token = req.cookies.token
     if (token) {
         try{

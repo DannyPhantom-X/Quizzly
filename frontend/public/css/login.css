@@ -25,14 +25,12 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background-image: url(../resources/quizzlyBackground.png);
-    background-size: 200px; */
     color: white;
     background-color: #0f172a;
 }
 .body{
-    width: 90vw;
-    height: 90vh;
+    width: 90%;
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
@@ -106,10 +104,10 @@ body{
     margin-top: 2%;
 }
 .choice{
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-align: center;
     margin-right: 10%;
-    margin-bottom: 3%;
+    margin-bottom: 10px;
 }
 .signup {
     color: #BD53ED;
@@ -130,7 +128,7 @@ body{
     font-weight: bold;
     width: 85%;
     border-radius: 3px;
-    margin-bottom: 2%;
+    margin-bottom: 15px;
     cursor: pointer;
     color: #243045;
 }
@@ -178,11 +176,7 @@ body{
 .login-button:hover{
     border-radius: 50px;
 }
-@media (max-width: 600px) {
-    body{
-        background-size: 100px;
-        
-    }
+@media (max-width: 768px) {
     .description{
         display: none;
     }
@@ -192,7 +186,11 @@ body{
     .message{
         height: 7px;
     }
-    /* .quizzlyIcon{
-        width: 80px;
-    } */
+}
+button:active{
+    transform: scale(0.95);
+}
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }

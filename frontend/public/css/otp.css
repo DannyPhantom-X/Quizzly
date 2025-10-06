@@ -15,12 +15,11 @@ body{
     height: 300px;
 }
 .otp-container>span{
-    font-size: 2rem;
+    font-size: 1rem;
     color: white;
     text-align: center;
     display: block;
     margin-top: 50px;
-
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {

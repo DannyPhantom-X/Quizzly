@@ -2,24 +2,24 @@ input{
     outline: none;
 }
 header img{
-    width: 150px;
+    width: 120px;
     /* height: 100px; */
 }
 header{
     width: 100%;
-    text-align: center;
-    padding-top: 20px;
+    text-align: left;
+    padding-top: 10px;
     margin-bottom: 30px;
+    padding-left: 30px;
     position: fixed;
     top: 0px;   
     z-index: 3;
     background-color: #0f172a;  
-    /* height: 30px;   */
 }
 .intro{
     font-size: 1.2rem;
     text-align: center;
-    margin-top: 50px;
+    margin-top: 60px;
 }
 .eg{
     opacity: 0.3;
@@ -42,14 +42,14 @@ header{
     margin-right: 2%;
     padding-left: 1%;
     font-size: 1rem;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 .add-button,.delete-button{
     height: 35px;
     width: 15%;
     border: none;
     background-color: #0f172a;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 1.2rem;
     cursor: pointer;
     color: white;
@@ -62,16 +62,16 @@ header{
 } */
 .next-button{
     position: absolute;
-    right: 5%;
-    top: 85%;
-    /* margin-bottom: 5%; */
+    right: 10px;
     border: none;
+    bottom: 20px;
     height: 40px;
-    background-color: hsl(281, 81%, 63%);
+    background-color: #BD53ED;
     width: 80px;
     border-radius: 2px;
     font-size: 1.2rem;
     cursor: pointer;
+    color: white;
 }
 @media (max-width: 800px) {
     .add-button,.delete-button {
@@ -86,7 +86,6 @@ header{
         margin-bottom: 10%;
     }
     .next-button{
-        bottom: 0%;
         height: 40px;
         width: 17%;
     }

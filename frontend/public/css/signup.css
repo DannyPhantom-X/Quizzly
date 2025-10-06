@@ -139,14 +139,16 @@ body, html{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
-    margin-top: 2%;
+    font-size: 1rem;
+    margin-top: 15px;
+    margin-bottom: 15px;
     color: white;
 }
 .login-link{
     color: #BD53ED;
     cursor: pointer;
     margin-left: 10px;
+    font-weight: bold;
 }
 .signup-button{
     border: none;
@@ -170,7 +172,7 @@ body, html{
 }
 .quizzlyIcon{
     margin-top: 3%;
-    width: 40%;
+    width: 150px;
 }
 .design-left{
     position: absolute;
@@ -237,4 +239,11 @@ body, html{
     input{
         font-size: 10px;
     }
+}
+button:active{
+    transform: scale(0.95);
+}
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }

@@ -213,14 +213,14 @@ function fade(param) {
 function loadScreenFunc(param) {
     if (param === 'add') {
         profilePic.classList.add('faded')
-        document.querySelector('body').style.backgroundColor = 'rgba(15, 23, 42, 0.8)'
+        document.querySelector('body' && 'header').style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
         document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
             el.classList.add('faded')
         })
         document.querySelector('.load-screen').classList.add('load-screen-style')
         document.querySelector('.load-screen-style').innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
     }else if( param === 'remove') {
-        document.querySelector('body').style.backgroundColor = '#0f172a'
+        document.querySelector('body' && 'header').style.backgroundColor = '#0f172a'
         document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
             el.classList.remove('faded')
         })
