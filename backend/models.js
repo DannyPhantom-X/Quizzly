@@ -43,6 +43,16 @@ const ctdQuizSchema = new mongoose.Schema({
     quizId: String,
     authorId: String
 })
+const tknQuizSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: () => uuidv4()
+    },
+    quizId: String,
+    candInfo: [Object],
+    score: String,
+    authorId: String
+})
 const quizSchema = new mongoose.Schema({
     _id: {
             type: String,
@@ -61,4 +71,4 @@ const usersCollection = quizzlyuriconnect.model('users', usersSchema)
 const otpCollection = quizzlyuriconnect.model('otp', otpSchema)
 const ctdCollection = quizzlyuriconnect.model('ctdquizzes', ctdQuizSchema);
 
-module.exports = {usersCollection, otpCollection, ctdCollection, quizSchema}
+module.exports = {usersCollection, otpCollection, ctdCollection, quizSchema, tknQuizSchema}

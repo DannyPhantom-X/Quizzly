@@ -1,14 +1,14 @@
 body, html{
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
     margin: 0px;
+    background-color: #0f172a;
 }
 body{
     font-family: 'Roboto', sans-serif;
-    background-color: #0f172a;
     font-size: 1.4rem;
     color: white;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -20,7 +20,7 @@ header{
     top: 0px;
     background-color: red;
 }
-main{
+.spec-main{
     background-color: #243045;
     width: 80%;
     min-height: 250px;
@@ -108,4 +108,79 @@ button:active{
 * {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
+}
+.faded {
+    filter: grayscale(90%);
+    filter: blur(90%);
+    opacity: 0.3;
+    pointer-events: none;
+    animation: typing 0s;
+}
+.finish-main{
+    color: white;
+    padding-top: 50px;
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+.score-ring{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    border-radius: 100px;
+    margin-bottom: 50px;
+}
+.score-value{
+    position: absolute;
+    top: 12.5px;
+    left: 12.5px;
+    width: 175px;
+    height: 175px;
+    background: #0f172a;
+    border-radius: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+}
+.subject{
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    margin-bottom: 80px;
+    font-weight: bold;
+    height: 70px;
+    overflow: hidden;
+}
+.subject div{
+    animation: arrive 2s;
+}
+.noQues-div, .score-percentage, .home-div{
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    animation: fadein 2s;
+    display: none;
+}
+.home-div{
+    margin-bottom: 80px;
+}
+.home-div a{
+    color: #BD53ED;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    animation: fadein 2s;
+}
+@keyframes fadein {
+    from{opacity: 0;}
+    to{opacity: 1;}
+}
+@keyframes arrive {
+    from{transform: translateY(-300px);}
+    to{transform: translateY(0px);}
 }

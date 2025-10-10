@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     result.candInfo.forEach((ci) => {
         formMain.innerHTML += form(ci);
     })
+    document.querySelector('body').style.display = 'revert'
 })
 startBttn.addEventListener('click' || 'touch', () => {
     const formDiv = document.querySelectorAll('.form-div')
@@ -27,14 +28,20 @@ startBttn.addEventListener('click' || 'touch', () => {
             input.style.borderColor = 'red'
             return;
         }
-        candDetails.push({label: fd.querySelector('label'), value: input.value})
+        candDetails.push({label: fd.querySelector('label').textContent, value: input.value})
     }
     document.querySelector('body').classList.add('faded')
     document.querySelector('aside').style.display = 'flex'
 })
 confirmStartBttn.addEventListener('click' || 'touch', async () => {
     sessionStorage.setItem('candDetails', JSON.stringify(candDetails))
-    const response = await fetch(`${path}/details/proceed`)
+    const response = await fetch(`${path}/details/proceed`, {
+        method: 'Post',
+        headers: {
+            "Content-type": 'application/json'
+        },
+        body: JSON.stringify(candDetails)
+    })
     const result = await response.json()
     window.location.href = result.redirectTo
 })

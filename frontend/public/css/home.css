@@ -81,6 +81,8 @@ header div img{
     /* font-size: 1rem; */
     flex-direction: column;
     row-gap: 10px;
+    padding-bottom: 15px;
+    padding-top: 15px;
 }
 .hidden-menu.active{
     display: flex;

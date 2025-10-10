@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (!currentUser) {
         try{
             const response = await fetch('/api/currentuser')
-            currentUser = await response.json()
+            currentUser = await response.json();
         }catch{
             alert('Unable to connect to the server at this time')
         }
