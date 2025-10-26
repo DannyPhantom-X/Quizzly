@@ -21,6 +21,24 @@ createQuizRouter.get('/ques&ans', verifyToken,async (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/createquiz-ques-ans.html'))
 })
 createQuizRouter.post('/', verifyToken, async (req, res) => {
+    for (const q of req.body.questions) {
+            console.log(q.answer)
+            console.log(q.question)
+            if (q.answer === ''|| q.answer ===  undefined || q.question === '') {
+                questions = []
+                await delay(2000)
+                res.json({statuz: 'failed'})
+                return;
+            }
+            for (const op of q.option) {
+                if(op === '') {
+                    questions = []
+                    await delay(2000)
+                    res.json({statuz: 'failed'})
+                    return;
+                }
+            }
+    }
     const qid = await uuidv4();
     const quizId = `${qid}-${req.body.quizInfo.subject.toLowerCase()}`
     const quizCollection = await quizzesuriconnect.model(`${req.user._id}`, quizSchema)

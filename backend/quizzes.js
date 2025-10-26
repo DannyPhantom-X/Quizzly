@@ -22,14 +22,16 @@ quizzesRouter.get('/tkn-info', verifyToken, async (req, res) => {
         answer: takenQuiz
     })
 })
-quizzesRouter.get('/ctd-info', verifyToken,async (req, res) => {
+quizzesRouter.get('/ctd-info', verifyToken, async (req, res) => {
     const createdQuiz = []
     for(const cq of req.user.createdQuiz) {
         const quizCollection = await quizzesuriconnect.model(req.user._id, quizSchema)
         let quiz = await quizCollection.findOne({quizId: cq})
+        let subject = quiz.quizInfo.subject
+        let noQues = quiz.quizInfo.noQues
         createdQuiz.push({
-            subject: quiz.quizInfo.subject,
-            noQues: quiz.quizInfo.noQues,
+            subject: subject,
+            noQues: noQues,
             quizId: cq,
             attemptedBy: quiz.attemptedBy.length
         })
