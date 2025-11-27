@@ -52,7 +52,7 @@ updateRouter.post('/update/profilepic', verifyToken, upload.single('profilePic')
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Upload failed" });
-        }
+    }
 })
 updateRouter.post('/update', verifyToken, async (req, res) => {
     if (req.body.newEmail) {

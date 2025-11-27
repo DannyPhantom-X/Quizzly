@@ -619,11 +619,11 @@ async function sendOTP(id, email) {
     };
     console.log('Mail Time')
     await transport.sendMail(mailOptions, (err, info) => {
-      if (err) {
+    if (err) {
         console.error("Error:", err);
-      } else {
+    } else {
         console.log("Email sent:", info.response);
-      }
+    }
     }) 
     const expires = Date.now() + (5 * 60 * 1000);
     const exists = await otpCollection.findOne({ _id: id})

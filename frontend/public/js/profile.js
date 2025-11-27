@@ -125,7 +125,6 @@ fileInput.addEventListener('change', () => {
     profilePic.src = url;
     const form = new FormData()
     form.append('profilePic', file)
-    console.log(form)
     isEdited[0] = true;
     saveChecker()
 })

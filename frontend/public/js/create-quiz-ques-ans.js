@@ -8,7 +8,6 @@ const loadScreen = document.querySelector('.load-screen');
 let questions = []
 let num = 1
 let currentIndex = 0;
-console.log(quizInfo)
 const loadOut = `<div class="qanda">
                     <label class="questions-label">Questions:</label>
                     <textarea name="" class="questions-input" id="questionsInput"></textarea>
@@ -16,9 +15,9 @@ const loadOut = `<div class="qanda">
                     <div class="options-div"></div>
                 </div>
 `;
-const optionLoadOut = `
-                        <div><input type="radio" name="option"><textarea class="options-input" name="options" id=""></textarea></div>
-`;
+function optionLoadOut(param) { return `
+                        <div><input type="radio" name="option option${param}"><textarea class="options-input options-input${(param)}" name="options${param}" id=""></textarea></div>
+`}
 
 const zeroOptionLoadout = `<div class="qanda">
                                 <label class="questions-label">Questions:</label>
@@ -33,18 +32,16 @@ if (quizInfo && candInfo) {
         for(let i = 1; i <= quizInfo.noQues; i++) {
             document.querySelector('.body').innerHTML += loadOut;
         }
-        if (quizInfo.options) {
-            for(let i = 1; i <= quizInfo.noOptions; i++) {
-                document.querySelectorAll('.options-div').forEach((opd) => {
-                opd.innerHTML += optionLoadOut;  
-                })
+        document.querySelectorAll('.options-div').forEach((opd, i) => {
+            const j = i + 1
+            for(let k = 1; k <= quizInfo.noQues; k++) {
+                opd.innerHTML += optionLoadOut(j);
             }
-        }
+
+        })
         onclickPreviousButton()
         previousChecker()
         nextChecker()
-
-
     }else{
         for(let i = 1; i <= quizInfo.noQues; i++) {
             document.querySelector('.body').innerHTML += zeroOptionLoadout;
@@ -55,19 +52,16 @@ if (quizInfo && candInfo) {
 
     }
 }else{
-    console.log('unable to connect')
     bodyChangeDueTo('unfilled info')
 }
 
 function onclickNextButton() {
-        console.log(quizInfo)
         currentIndex ++;
         let offset = -currentIndex * 100;
         document.querySelectorAll('.qanda').forEach((qa) => {
             qa.style.transform = `translateX(${offset}%)`
         })
         num += 1
-        console.log(num)
         questionNum.innerHTML = num
         previousChecker()
         nextChecker()
@@ -104,8 +98,6 @@ function nextChecker() {
         // nextButton.classList.add('remove-button');
         // nextButton.classList.remove('nextButton');
         // const createBttn = document.querySelector('.remove-button');
-        console.log(nextButton.innerHTML)
-        console.log('yooooo');
         nextButton.removeEventListener('click' || 'touch', onclickNextButton)
         nextButton.addEventListener('click' || 'touch', onClickProceed)
         nextButton.innerHTML = '<i class="fas fa-angle-double-right"></i>';
@@ -122,29 +114,50 @@ async function onClickCreate() {
     confirmDiv.innerHTML = ''
     confirmDiv.classList.remove('confirm-div-style')
     loadScreenFunc('add')
-    console.log('create')
-    loadScreen.classList.add('load-screen-style')
     loadScreen.innerHTML = '<div class="image-div"><img src="/public/resources/quizzlyIcon.png"></div>'
     const answerInput = document.querySelectorAll('.answerInput')
-    const optionInput = document.querySelectorAll('.options-input')
     const questionInput = document.querySelectorAll('.questions-input')
     if(quizInfo.options) {
-        questionInput.forEach((qI, i) => {
+        document.querySelectorAll('.qanda').forEach((qI, i) => {
+            let options = []
+            let answer;
+            qI.querySelectorAll(`.options-input${i + 1}`).forEach((op) => {
+                options.push(op.value)
+                if (op.previousElementSibling.checked) {
+                    answer = op.value
+                }
+            })
             questions.push({
-                question: qI.value,
-                option: optionInput[i].value,
-                // answer: answerInput[i].value
+                question: questionInput[i].value,
+                option: options,
+                answer: answer
             })
         })
+        console.log(questions)
+        for (const q of questions) {
+            if (q.answer === '' || q.answer === undefined|| q.question === '') {
+                questions = []
+                await delay(2000)
+                loadScreenFunc('remove')
+                return;
+            }
+            for (const op of q.option) {
+                if(op === '') {
+                    questions = []
+                    await delay(2000)
+                    loadScreenFunc('remove')
+                    return;
+                }
+            }
+        }
+        console.log('about to make the questions and save it to the backend')
     }else {
         questionInput.forEach((qI, i) => {
-            console.log(qI.value)
             questions.push({
                 question: qI.value,
                 answer: answerInput[i].value
             })
         })
-        console.log(questions)
     }
     try{
         const response = await fetch('/createquiz', {
@@ -160,20 +173,17 @@ async function onClickCreate() {
         })
         const result = await response.json()
         if (result.statuz === 'success') {
-            console.log(result.message)
             await delay(2000)
             loadScreenFunc('remove')
             bodyChangeDueTo('quiz created', result.message)
             sessionStorage.clear('quizInfo')
             sessionStorage.clear('candInfo')
         }else {
-            console.log('unable')
             await delay(2000)
             loadScreenFunc('remove')
             bodyChangeDueTo('fetch error')
         }
     } catch{
-        console.log('error')
     }
 }
 
@@ -212,7 +222,7 @@ function fade(param) {
 
 function loadScreenFunc(param) {
     if (param === 'add') {
-        profilePic.classList.add('faded')
+        document.querySelector('.body').classList.add('faded')
         document.querySelector('body' && 'header').style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
         document.querySelectorAll('body *:not(.load-screen)').forEach((el) => {
             el.classList.add('faded')
@@ -237,7 +247,6 @@ function delay(ms) {
 
 function bodyChangeDueTo(param, param2) {
     if (param === 'unfilled info') {
-        console.log(param)
         document.body.innerHTML = `<div>Unable to connect at this time........   Please suply <a href='/createquiz' style="color: red;">Quiz info</a> and Candidate info</div>`;
         Object.assign(document.body.style, {
             textAlign: 'center',

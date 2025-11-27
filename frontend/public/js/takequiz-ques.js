@@ -7,28 +7,36 @@ const previousBttn = document.querySelector('.previous-bttn')
 const path = window.location.pathname
 let number = 1;
 let noQue;
+let optionsStats;
 function renderQues(param, num) {
     return `<span class="number">${num}. </span>
         <span>${param}</span>
     `
 }
-function renderOption() {
+function renderOption(param, num) {
     return `<label class="option">
-                    <input type="radio" name="option">
-                    <span>5x + 3x²</span>
+                    <input type="radio" name="option${num}" class="check-option">
+                    <span>${param}</span>
             </label>`
 }
 window.addEventListener('DOMContentLoaded', async () => {
     const response = await fetch(`${path}/ques/api`);
     const result = await response.json();
     questions = result.questions
-    console.log(questions)
+    noQue = Number(result.noQues)
+    optionsStats = result.optionsStats
     if (!result.optionsStats) {
-        noQue = Number(result.noQues)
         questionDiv.innerHTML = renderQues(questions[number - 1].question, number)
         options.style.display = 'none';
         answerArea.style.display = 'flex';
         answerArea.value = questions[number-1].answer
+    }else{
+        questionDiv.innerHTML = renderQues(questions[number - 1].question, number)    
+        answerArea.style.display = 'none';
+        options.style.display = 'flex';
+        questions[number-1].options.forEach((option) => {
+            options.innerHTML += renderOption(option, number)
+        })
     }
     number === 1 ? previousBttn.classList.add('faded') : null;
     document.querySelector('body').style.display = 'flex'
@@ -55,21 +63,54 @@ nextBttn.addEventListener('click' || 'touch', async () => {
         animate(result.percentage, result.score)
         // return;
     }else{
-        questions[number-1].answer = answerArea.value
-        number += 1
+        if (!optionsStats) {
+            questions[number-1].answer = answerArea.value;
+            number += 1;
+            answerArea.value = questions[number-1].answer;
+        }else{
+            document.querySelectorAll('.check-option').forEach((co) => {
+                if(co.checked) {
+                    questions[number-1].answer = co.nextElementSibling.innerHTML;
+                    co.checked = false;
+                }
+            })
+            number += 1;
+            document.querySelectorAll('.check-option').forEach((co, i) => {
+                co.nextElementSibling.innerHTML = questions[number-1].options[i]
+                if(questions[number-1].answer == co.nextElementSibling.innerHTML) {
+                    console.log(co.innerHTML)
+                    co.checked = true;
+                }
+            })
+        }
         questionDiv.innerHTML = renderQues(questions[number - 1].question, number)
-        answerArea.value = questions[number-1].answer
         noQue === number ? nextBttn.textContent = 'Submit' : null;
         number !== 1 ? previousBttn.classList.remove('faded') : null;
-
     }
 })
 previousBttn.addEventListener('click' || 'touch', () => {
     noQue === number ? nextBttn.textContent = 'Next' : null;
-    questions[number-1].answer = answerArea.value
-    number -= 1
+    if (!optionsStats) {
+        questions[number-1].answer = answerArea.value
+        number -= 1
+        answerArea.value = questions[number-1].answer
+    }else{
+        document.querySelectorAll('.check-option').forEach((co) => {
+            if(co.checked) {
+                questions[number-1].answer = co.nextElementSibling.innerHTML;
+                co.checked = false;
+            }
+        })
+        number -= 1;
+        document.querySelectorAll('.check-option').forEach((co, i) => {
+            co.nextElementSibling.innerHTML = questions[number-1].options[i]
+            if(questions[number-1].answer == co.nextElementSibling.innerHTML) {
+                console.log(co.innerHTML)
+                co.checked = true;
+            }
+        })
+    }
     questionDiv.innerHTML = renderQues(questions[number - 1].question, number)
-    answerArea.value = questions[number-1].answer
     number === 1 ? previousBttn.classList.add('faded') : null;
 })
 function loadScreen(param) {
@@ -84,7 +125,7 @@ function loadScreen(param) {
     }
 }
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 console.log(JSON.parse(sessionStorage.getItem('candDetails')))
 
@@ -103,10 +144,8 @@ function showScore(param) {
         </main>`
 }
 function animate(limit, score) {
-    console.log(limit)
     let current = 0
     let intervalId = setInterval(() => {
-        console.log(current)
         if(current >= limit) {
             document.querySelector('.score-value').innerHTML = `${score}`
             clearInterval(intervalId)

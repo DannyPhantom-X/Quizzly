@@ -16,7 +16,7 @@ const quizzesRouter = require('./quizzes')
 const jwt = require('jsonwebtoken')
 const {usersCollection, otpCollection, ctdCollection, quizSchema} = require('./models')
 app.use(cookieParser())
- app.use(expressSession({
+app.use(expressSession({
     secret: "supersecretkey",
     resave: false,
     saveUninitialized: true
