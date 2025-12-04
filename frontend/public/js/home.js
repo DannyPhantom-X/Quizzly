@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         document.querySelector('.last-div').innerHTML = `
         <a class="about-link part">About</a><a href="/quizzes" class="quizzes-link part">Quizzes</a> 
         <span class="profile-pic"><img id="profPic"></span>
-        <nav class="hidden-menu"><a href="/myprofile" class="quizzes-link">My Profile</a><a href="/quizzes" class="quizzes-link exists">Quizzes</a><a class="about-link exists">About</a><a class="logout-link">Logout</a> </nav>`;
+            <nav class="hidden-menu"><a href="/myprofile" class="quizzes-link">My Profile</a><a href="/quizzes" class="quizzes-link exists">Quizzes</a><a class="about-link exists">About</a><a class="logout-link">Logout</a> </nav>`;
         document.querySelector('.last-div').style.cssText = 'color: #BD53ED; font-size: 1.2rem; font-weight: bold;'
         console.log('profilePic ' + currentUser.profilePic)
         document.querySelector('.profile-pic img').src = currentUser.profilePic || '/public/resources/unknown.jpg';
